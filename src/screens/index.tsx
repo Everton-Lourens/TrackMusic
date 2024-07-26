@@ -35,11 +35,10 @@ function DetailsScreen() {
 
 const StackNavigation = () => {
   return (
-    <Stack.Navigator initialRouteName={SCREENS.LOADING}>
-      <Stack.Screen name={SCREENS.LOADING} component={Loading} />
+    <Stack.Navigator initialRouteName={SCREENS.LOADING} >
+      <Stack.Screen name={SCREENS.LOADING} component={Loading} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.HOME} component={Home} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.DETAILS} component={DetailsScreen} options={{ headerShown: false }} />
-      {/*<Stack.Screen name="Details" component={DetailsScreen} />*/}
     </Stack.Navigator>
   )
 };

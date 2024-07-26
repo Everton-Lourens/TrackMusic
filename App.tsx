@@ -1,18 +1,54 @@
-<<<<<<< HEAD
-import React from 'react';
 import { Provider as RRProvider } from 'react-redux';
 import store from '@/src/store';
 import Screens from '@/src/screens';
 
-export default function App() {
-  return (
-    <RRProvider store={store}>
-      <Screens />
-    </RRProvider>
-  );
-}
+import React, { useEffect } from 'react';
+import { PermissionsAndroid, Platform, Alert } from 'react-native';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import RNFS from 'react-native-fs';
 
-=======
+const requestAudioPermissions = async () => {
+    if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.requestMultiple([
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        ]);
+
+        if (
+            granted['android.permission.READ_EXTERNAL_STORAGE'] !== PermissionsAndroid.RESULTS.GRANTED ||
+            granted['android.permission.WRITE_EXTERNAL_STORAGE'] !== PermissionsAndroid.RESULTS.GRANTED
+        ) {
+            Alert.alert('Permissões necessárias não foram concedidas');
+            return false;
+        }
+    } else {
+        const res = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+        if (res !== RESULTS.GRANTED) {
+            Alert.alert('Permissões necessárias não foram concedidas');
+            return false;
+        }
+    }
+    return true;
+};
+
+
+export default function App() {
+    const [permissionGranted, setPermissionGranted] = React.useState(false);
+    useEffect(() => {
+        (async () => {
+            const result = await requestAudioPermissions();
+            setPermissionGranted(result);
+        })();
+    }, [permissionGranted]);
+
+    return permissionGranted ? (
+        <RRProvider store={store}>
+            <Screens />
+        </RRProvider>
+    ) : null;
+}
+/*
+
 import * as React from 'react';
 import { View, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -52,4 +88,5 @@ const Index = () => {
 };
 
 export default Index;
->>>>>>> 13d87ab274aeb51725fe308104972a9cf65c36f7
+
+*/

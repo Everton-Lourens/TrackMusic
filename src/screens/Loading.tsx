@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet } from 'react-native';
+import { Alert, Dimensions, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 import { Storage } from '@/src/helpers';
-import { get, store } from '../helpers/storage';
+import { get, store } from '@/src/helpers/storage';
 
 const { width, height } = Dimensions.get('screen');
 
 const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [mp3Files, setMp3Files] = useState<Array<any>>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	async function getAllSongs() {
 		await getAllFiles();
-		return setMp3Files(mp3Files);
+		setMp3Files(mp3Files);
+		return setLoading(false);
 
 		async function getAllFiles() {
 			try {
@@ -98,7 +100,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 
 	const init = async () => {
 		///////////await getStorage();
-		if (mp3Files.length) {
+		if (mp3Files.length || !loading) {
 			replace(SCREENS.DETAILS)
 		}
 	};
@@ -110,18 +112,18 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 
 				if (mp3IsStorage !== null) {
 					setMp3Files(mp3IsStorage);
+					setLoading(false);
 				} else {
 					await getAllSongs();
 					await store('mp3Files', mp3Files, true);
 				}
 			}
-			if (mp3Files.length) {
+			if (mp3Files.length || !loading) {
 				replace(SCREENS.HOME)
 			}
 		};
-
 		getMyMp3();
-	}, [mp3Files.length]);
+	}, [mp3Files.length, loading]);
 
 	/*
 	useEffect(() => {
