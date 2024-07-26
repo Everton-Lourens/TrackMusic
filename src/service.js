@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 
 module.exports = async function () {
@@ -12,8 +11,3 @@ module.exports = async function () {
 
   // Outros eventos de controle remoto, se necessário
 };
-
-
-export async function play() {
-  return Alert.alert('Playing');
-}
