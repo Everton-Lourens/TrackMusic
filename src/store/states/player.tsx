@@ -2,6 +2,17 @@ function getSongs() {
 	return [
 		{
 			id: 1,
+			ctime: null,
+			mtime: "2024-07-26T22:05:06.000Z",
+			name: "Fernandinho - Seu Sangue (DVD Uma Nova História).mp3",
+			path: "/storage/emulated/0/Download/Fernandinho - Seu Sangue (DVD Uma Nova História).mp3",
+			size: 6935960
+		}
+	];
+
+	return [
+		{
+			id: 1,
 			title: 'Heartless',
 			author: 'The Weeknd',
 			img: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/heartless_du9yxe.jpg',

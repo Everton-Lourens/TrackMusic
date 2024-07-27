@@ -8,7 +8,6 @@ const Index = () => {
 		const mp3IsStorage = await get('mp3Files', true);
 		if (mp3IsStorage !== null) {
 			setMp3Files(JSON.stringify(mp3IsStorage, null, 2));
-			console.log(JSON.stringify(mp3IsStorage, null, 2));
 		}
 	}
 	useEffect(() => {
