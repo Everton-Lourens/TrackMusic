@@ -1,8 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ImageBackground, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import { connect } from 'react-redux';
 
 import { Section } from '../../widgets';
@@ -45,7 +44,7 @@ const Index = ({ songs }: any) => {
 	return (
 		<>
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: 'https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376252.jpg' }} blurRadius={20} resizeMode="cover">
-			<StatusBar style="light" backgroundColor='black' />
+			<StatusBar barStyle="light-content" backgroundColor='black' />
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 				<SafeAreaView style={styles.container}>
 					<View style={styles.header}>
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
 	backgroundcontainer: {
 		flex: 1,
 		backgroundColor: 'black',
-		paddingTop: Constants.statusBarHeight,
+		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	header: {
 		flexDirection: 'row',

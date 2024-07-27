@@ -3,10 +3,10 @@ import { FlatList, ScrollView, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { connect } from 'react-redux';
 
-import { Card } from '../../../components';
-import { DISPATCHES, SCREENS } from '../../../constants';
-import { Storage } from '../../../helpers';
-import * as Modal from '../../Modals';
+import { Card } from '@/src/components';
+import { DISPATCHES, SCREENS } from '@/src/constants';
+import { Storage } from '@/src/helpers';
+import * as Modal from '@/src/widgets/Modals';
 
 const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, useIndex = false }: any) => {
 	const { navigate } = useNavigation();

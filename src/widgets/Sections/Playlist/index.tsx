@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 
 import Container from '../Container';
-import { Card } from '../../../components';
-import { SCREENS } from '../../../constants';
+import { Card } from '@/src/components';
+import { SCREENS } from '@/src/constants';
 
 const Index = ({ songs, playlists, style = {} }: any) => {
 	const navigation = useNavigation();

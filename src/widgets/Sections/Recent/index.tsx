@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import Container from '../Container';
-import { Card } from '../../../components';
+import { Card } from '@/src/components';
 import { useNavigation } from '@react-navigation/native';
-import { SCREENS } from '../../../constants';
+import { SCREENS } from '@/src/constants';
 
 const Index = ({ recents, songs, style = {} } : any) => {
 	const { navigate } = useNavigation();

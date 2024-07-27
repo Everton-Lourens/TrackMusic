@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Container from '../Container';
-import * as Card from '../../../components/Cards';
+import * as Card from '@/src/components/Cards';
 import { SCREENS } from '@/src/constants';
-import { useNavigation } from 'expo-router';
+
 const Index = ({ style = {} }) => {
-	const { navigate } = useNavigation();
+	const navigation = useNavigation<any>();
 
 	return (
 		<Container style={style} title="For you">
@@ -14,11 +15,14 @@ const Index = ({ style = {} }) => {
 				style={{ marginLeft: 20 }}
 				title="Suas Músicas"
 				subtitle="Lista de músicas"
-				// @ts-ignore
-				onPress={() => navigate(SCREENS.SONGS)}
+				onPress={() => navigation.navigate(SCREENS.SONGS)}
 			/>
+
 			<Card.Explore />
-			<Card.Explore />
+
+			<Card.Explore
+				style={{ marginRight: 20 }}
+			/>
 		</Container>
 	);
 };

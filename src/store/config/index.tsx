@@ -98,6 +98,6 @@ export function setUriPicture(uri: string) {
   uriImgValue = uri;
 }
 export function getUriPicture() {
-  return uriImgValue || '';
+  return uriImgValue || getRandomImg();
 }
 

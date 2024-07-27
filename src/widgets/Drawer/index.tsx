@@ -1,10 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Dimensions, Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { StatusBar } from 'expo-status-bar';
-import { useAssets } from 'expo-asset';
-import Constants from 'expo-constants';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import { Linking } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
@@ -33,7 +30,6 @@ const Index = ({
 	children,
 }) => {
 	const { navigate } = useNavigation();
-	useAssets([require('@/src/assets/logo.png')]);
 	const screenScale = useRef(new Animated.Value(1)).current;
 	const screenLeft = useRef(new Animated.Value(0)).current;
 	const screenRadius = useRef(new Animated.Value(0)).current;
@@ -54,8 +50,8 @@ const Index = ({
 
 	return (
 		<>
-			<StatusBar style={active ? 'light' : 'dark'} backgroundColor={active ? 'black' : 'white'} />
-			{/*<StatusBar barStyle={active ? 'light-content' : 'dark-content'} backgroundColor={active ? 'black' : 'white'} />*/}
+
+			<StatusBar barStyle={active ? 'light-content' : 'dark-content'} backgroundColor={active ? 'black' : 'white'} />
 
 			<LinearGradient style={styles.container} colors={['#C07037', '#C55234']}>
 				<View style={styles.menuContainer}>
@@ -131,7 +127,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'space-between',
 		width: Dimensions.get('screen').width * 0.6 - 35,
-		paddingVertical: Constants.statusBarHeight,
+		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 		paddingLeft: 15,
 	},
 	header: {

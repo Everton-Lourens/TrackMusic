@@ -1,7 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useAssets } from 'expo-asset';
 import { SCREENS } from '@/src/constants';
 
 const LeftChildren = () => <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />;
@@ -21,7 +20,6 @@ const RightChildren = () => <Image source={require('@/src/assets/icons/search.pn
 
 const Index = ({ style = { marginTop: 10, marginHorizontal: 10 }, options = {} }) => {
 	const { navigate } = useNavigation();
-	const [assets] = useAssets([require('@/src/assets/icons/hamburger.png'), require('@/src/assets/icons/search.png')]);
 	const config = {
 		left: {
 			style: {},

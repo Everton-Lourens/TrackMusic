@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import Constants from 'expo-constants';
 
@@ -51,7 +50,8 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 
 	return playlist && Object.keys(playlist).length > 0 ? (
 		<>
-			<StatusBar style="light" backgroundColor='black' />
+<StatusBar barStyle="light-content" backgroundColor='black' />
+
 			<View style={{ flex: 1 }}>
 				<ImageBackground style={styles.header} source={{ uri: songs[playlist?.songs[0]].img }}>
 					<LinearGradient style={styles.overlay} colors={['rgba(0, 0, 0, 1)', 'transparent']} start={[0, 1]} end={[0, 0]} />
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 	header: {
 		width: Dimensions.get('screen').width,
 		height: Dimensions.get('screen').height / 3.2,
-		paddingTop: Constants.statusBarHeight,
+		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	overlay: {
 		justifyContent: 'center',

@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { Animated, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
@@ -363,7 +362,8 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 	return (
 		<>
-			<StatusBar style="light" backgroundColor='black' />
+			<StatusBar barStyle="light-content" backgroundColor='black' />
+
 			<ImageBackground style={styles.container} source={{ uri: song?.detail?.img }} blurRadius={10} resizeMode="cover">
 				<View style={[StyleSheet.absoluteFill, styles.overlay]} />
 				<Header
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'black',
-		paddingTop: Constants.statusBarHeight,
+		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	shuffleBtn: {
 		position: 'absolute',

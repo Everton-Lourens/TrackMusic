@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 
-import Icon from '../Icon';
+//import Icon from '../Icon';
 import * as Modal from '../../widgets/Modals';
 import { millisToMin } from '../../helpers';
 
@@ -43,7 +43,7 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', author = `Autho
 					<TouchableOpacity onPress={onPlayPress}>
 						<LinearGradient style={styles.playBtn} colors={['#939393', '#000']}>
 							{/*// @ts-ignore*/}
-							<Icon name="play" color="#C4C4C4" />
+							{/*<Icon name="play" color="#C4C4C4" />*/}
 						</LinearGradient>
 					</TouchableOpacity>
 				</View>

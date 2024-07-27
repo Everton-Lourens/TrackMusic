@@ -1,15 +1,18 @@
 import React from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useAssets } from 'expo-asset';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Explore = ({ style = {}, imageURL, title = 'Explore', subtitle = `Listen to what's trending now`, onPress = () => {} }: any) => {
-	const [assets] = useAssets([require('@/src/assets/explore/default.png'), require('@/src/assets/icons/play.png')]);
+const Explore = ({ style = {}, imageURL, title = 'Explore', subtitle = `Listen to what's trending now`, onPress = () => { } }: any) => {
 
 	return (
 		<View style={[styles.container, style]}>
 			<ImageBackground style={styles.card} imageStyle={styles.imageStyle} source={imageURL ? { uri: imageURL } : require('@/src/assets/explore/default.png')} resizeMode="cover">
-				<LinearGradient style={styles.overlay} colors={['rgba(0, 0, 0, 1)', 'transparent']} start={[0, 0]} end={[1, 0]} />
+				<LinearGradient
+					style={styles.overlay}
+					colors={['rgba(0, 0, 0, 1)', 'transparent']}
+					start={{ x: 0, y: 0 }}
+					end={{ x: 1, y: 0 }}
+				/>
 				<View>
 					<Text style={styles.title}>{title}</Text>
 					<Text style={styles.subtitle}>{subtitle}</Text>
@@ -17,8 +20,8 @@ const Explore = ({ style = {}, imageURL, title = 'Explore', subtitle = `Listen t
 				<TouchableOpacity style={styles.btn} onPress={onPress}>
 					<Image style={{ width: 40, height: 40 }} source={require('@/src/assets/icons/play.png')} resizeMode="contain" />
 				</TouchableOpacity>
-			</ImageBackground>
-		</View>
+		</ImageBackground>
+		</View >
 	);
 };
 

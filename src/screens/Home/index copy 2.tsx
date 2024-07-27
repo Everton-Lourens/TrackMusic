@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-/*
-import Drawer from '@/src/widgets/Drawer';
-import Header from '@/src/widgets/Header';
-import { Section } from '@/src/widgets';
-*/
-import { Drawer, Footer, Header, Section } from '@/src/widgets';
+import { Drawer } from '@/src/widgets';
+//import { Drawer, Footer, Header, Section } from '@/src/widgets';
+import { Icon } from '@/src/components';
 import { getUriPicture } from '@/src/store/config';
 
 const Index = () => {
@@ -15,13 +12,11 @@ const Index = () => {
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
 
 	useEffect(() => {
-		/*
 		const intervalId = setInterval(() => {
 			setUrlImg(getUriPicture || urlImg);
 		}, 1000);
 		// Cleanup
 		return () => clearInterval(intervalId);
-		*/
 	}, []);
 
 	return (
@@ -34,13 +29,12 @@ const Index = () => {
 						options={{
 							left: {
 								// @ts-ignore
-								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+								children: drawer ? <Icon name="x" color="red" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
 						}}
 					/>
 					<View style={styles.sections}>
-						
 						<Section.Explore />
 						<Section.Recent style={{ marginTop: 30 }} />
 						<Section.Playlist style={{ marginTop: 30 }} />
@@ -54,7 +48,7 @@ const Index = () => {
 						</ScrollView>
 
 					</View>
-					{/*<Footer />*/}
+					<Footer />
 				</SafeAreaView>
 
 			</ImageBackground>

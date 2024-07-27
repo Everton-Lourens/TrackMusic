@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Playlist = ({ style = {}, overlayStyle = {}, imageURL, title = 'Title', subtitle = `Subtitle`, onPress = () => {} }: any) => (
 	<ImageBackground
@@ -11,7 +11,14 @@ const Playlist = ({ style = {}, overlayStyle = {}, imageURL, title = 'Title', su
 		source={{ uri: imageURL }}
 		resizeMode="cover"
 	>
-		<LinearGradient style={[styles.overlay, overlayStyle]} colors={['rgba(0, 0, 0, 1)', 'transparent']} start={[0, 1]} end={[0, 0]} />
+
+		<LinearGradient
+					style={styles.overlay}
+					colors={['rgba(0, 0, 0, 1)', 'transparent']}
+					start={{ x: 0, y: 1 }}
+					end={{ x: 0, y: 0 }}
+				/>
+		
 		<TouchableOpacity style={[styles.overlay, overlayStyle]} onPress={onPress}>
 			<View style={styles.content}>
 				<Text style={styles.title} numberOfLines={1}>

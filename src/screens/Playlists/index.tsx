@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAssets } from 'expo-asset';
 import { connect } from 'react-redux';
@@ -8,7 +8,6 @@ import { Header, Drawer } from '../../widgets';
 import { Card, Icon } from '../../components';
 import { SCREENS } from '@/src/constants';
 import Constants from 'expo-constants';
-import { StatusBar } from 'expo-status-bar';
 
 const Index = ({ songs, playlists, navigation }: any) => {
 	const [assets] = useAssets([require('@/src/assets/icons/hamburger.png'), require('@/src/assets/icons/search.png')]);
@@ -17,7 +16,8 @@ const Index = ({ songs, playlists, navigation }: any) => {
 	return (
 		<Drawer active={drawer} current="playlist" onItemPressed={() => setDrawer(false)}>
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: 'https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376252.jpg' }} blurRadius={20} resizeMode="cover">
-				<StatusBar style="light" backgroundColor='black' />
+			<StatusBar barStyle="light-content" backgroundColor='black' />
+
 				<SafeAreaView style={styles.container}>
 					<Header
 						options={{
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 	backgroundcontainer: {
 		flex: 1,
 		backgroundColor: 'black',
-		paddingTop: Constants.statusBarHeight,
+		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	sections: {
 		flexDirection: 'row',
