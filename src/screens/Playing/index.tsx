@@ -1,11 +1,10 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
-import Constants from 'expo-constants';
+
 import { LinearGradient } from 'expo-linear-gradient';
 import Slider from '@react-native-community/slider';
 
-import { Icon } from '@/src/components';
 import { Header } from '../../widgets';
 import { Audio } from '../../hooks';
 import { DISPATCHES } from '@/src/constants';

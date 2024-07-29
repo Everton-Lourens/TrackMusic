@@ -44,6 +44,7 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', author = `Autho
 						<LinearGradient style={styles.playBtn} colors={['#939393', '#000']}>
 							{/*// @ts-ignore*/}
 							{/*<Icon name="play" color="#C4C4C4" />*/}
+							<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
 						</LinearGradient>
 					</TouchableOpacity>
 				</View>
@@ -96,6 +97,6 @@ const styles = StyleSheet.create({
 		paddingLeft: 4,
 		borderRadius: 100,
 		borderWidth: 1.5,
-		borderColor: '#FFF',
+		borderColor: '#006680',
 	},
 });

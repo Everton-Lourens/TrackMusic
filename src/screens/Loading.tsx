@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 import { Storage } from '@/src/helpers';
+import Sound from 'react-native-sound';
+import { getRandomImg } from '@/src/store/config';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -21,14 +23,25 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 				if (!files || !files?.length) return [];
 
 				for (const file of files) {
-					if (file.isFile() && file.name.endsWith('.mp3')) {
-						const isObjectInArray = mp3Files.some(obj =>
-							obj.path === file.path
+					if (file?.isFile() && file?.name.endsWith('.mp3')) {
+						const alreadyContains = mp3Files.some(obj =>
+							obj.path === file?.path
 						);
-						if (isObjectInArray) return;
-						else mp3Files.push(file);
+						if (alreadyContains) return;
+						else {
+							const durationMillis = await getDurationMillis(file?.path)
+							if (!durationMillis) return;
+							mp3Files.push({
+								id: mp3Files.length + 1,
+								title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
+								author: '',
+								img: getRandomImg(),
+								uri: file?.path,
+								durationMillis,
+							})
+						}
 					}
-					else if (file.isDirectory()) {
+					else if (file?.isDirectory()) {
 						// Recurre em diretórios
 						await getMp3Files(file?.path);
 					}
@@ -46,20 +59,51 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 				if (!files || !files?.length) return [];
 
 				for (const file of files) {
-					if (file.isFile() && file.name.endsWith('.mp3')) {
-						const isObjectInArray = mp3Files.some(obj =>
-							obj.path === file.path
+					if (file?.isFile() && file?.name.endsWith('.mp3')) {
+						const alreadyContains = mp3Files.some(obj =>
+							obj.path === file?.path
 						);
-						if (isObjectInArray) return;
-						else mp3Files.push(file);
-					} else if (file.isDirectory()) {
-						await getMp3Files(file.path);
+						if (alreadyContains) return;
+						else {
+							const durationMillis = await getDurationMillis(file?.path)
+							if (!durationMillis) return;
+							mp3Files.push({
+								id: mp3Files.length + 1,
+								title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
+								author: '',
+								img: getRandomImg(),
+								uri: file?.path,
+								durationMillis,
+							})
+						}
+					} else if (file?.isDirectory()) {
+						await getMp3Files(file?.path);
 					}
 				}
 			} catch (error) {
 				console.error(error);
 			}
 		}
+
+		async function getDurationMillis(file: string): Promise<number | false> {
+			return new Promise<number | false>((resolve, reject) => {
+				const sound = new Sound(file, Sound.MAIN_BUNDLE, (error) => {
+					if (error) {
+						console.error('Erro ao carregar o áudio', error);
+						return resolve(false);
+					}
+					const duration = sound.getDuration();
+					if (duration * 1000 < 5000) {
+						return resolve(false);
+					}
+					resolve(duration * 1000);
+				});
+			}).catch((error) => {
+				console.error('Erro ao obter a duração do áudio', error);
+				return false;
+			});
+		}
+
 	}
 	const getStorage = () => {
 		return new Promise<void>(async (resolve) => {
@@ -73,6 +117,13 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 					favourites,
 					recents,
 					playlists,
+				},
+			});
+
+			dispatch({
+				type: DISPATCHES.SET_CURRENT_SONG,
+				payload: {
+					songs: mp3Files,
 				},
 			});
 
@@ -91,17 +142,12 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 		});
 	};
 
-	const init = async () => {
-		await getStorage();
-		replace(SCREENS.HOME)
-	};
-
 	useEffect(() => {
 		const getMyMp3 = async () => {
 			if (!mp3Files.length) {
 				const mp3IsStorage = await Storage.get('mp3Files', true);
 
-				if (mp3IsStorage !== null) {
+				if (mp3IsStorage !== null && false) {
 					setMp3Files(mp3IsStorage);
 				} else {
 					await getAllSongs();
@@ -112,6 +158,11 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 		};
 		getMyMp3();
 	});
+
+	const init = async () => {
+		await getStorage();
+		replace(SCREENS.HOME)
+	};
 
 	useEffect(() => {
 		if (mp3Files.length || !loading) {

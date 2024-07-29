@@ -4,8 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { Header, Section, Drawer } from '../../widgets';
-import { Icon } from '../../components';
-import Constants from 'expo-constants';
 
 const Index = ({ songs }: any) => {
 const [drawer, setDrawer] = useState(false);
@@ -20,7 +18,7 @@ const [drawer, setDrawer] = useState(false);
 						options={{
 							left: {
 								// @ts-ignore
-								children: drawer ? <Icon name="x" color="red" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
 							middle: {

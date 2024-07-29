@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Card } from '@/src/components';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 import { Storage } from '@/src/helpers';
+import { getRandomImg } from '@/src/store/config';
 import * as Modal from '@/src/widgets/Modals';
 
 const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, useIndex = false }: any) => {
@@ -81,10 +82,10 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 
 						return (
 							<Card.MusicList
-								imageURL={item?.img}
+								imageURL={item?.img || getRandomImg()}
 								title={item?.title}
-								author={item?.author}
-								duration={item?.durationMillis}
+								author={item?.author || ''}
+								duration={item?.durationMillis || 0}
 								onPlayPress={() => onPlayPress(item, songIndex)}
 								moreOptions={[
 									// @ts-ignore
@@ -129,7 +130,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 				{audios.map((index: any, key: any) => (
 					<Card.MusicList
 						key={key}
-						imageURL={songs[index]?.img}
+						imageURL={songs[index]?.img || getRandomImg()}
 						title={songs[index]?.title}
 						author={songs[index]?.author}
 						duration={songs[index]?.durationMillis}

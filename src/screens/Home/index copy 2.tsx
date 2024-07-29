@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Drawer } from '@/src/widgets';
 //import { Drawer, Footer, Header, Section } from '@/src/widgets';
-import { Icon } from '@/src/components';
+//import { Icon } from '@/src/components';
 import { getUriPicture } from '@/src/store/config';
 
 const Index = () => {
@@ -29,7 +29,7 @@ const Index = () => {
 						options={{
 							left: {
 								// @ts-ignore
-								children: drawer ? <Icon name="x" color="red" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
 						}}

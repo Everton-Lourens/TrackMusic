@@ -3,7 +3,6 @@ import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, View,
 //import { SafeAreaView } from 'react-native-safe-area-context';
 
 //import { Footer, Header, Section, Drawer } from '@/src/widgets';
-//import { Icon } from '@/src/components';
 import { getUriPicture } from '@/src/store/config';
 
 const Index = () => {
