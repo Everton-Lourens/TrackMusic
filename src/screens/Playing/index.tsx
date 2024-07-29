@@ -12,6 +12,8 @@ import { millisToMin, Storage } from '../../helpers';
 import { getAllSongs } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
 
+//CONTINUE CODE HERE
+
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
 	const stopBtnAnim = useRef(new Animated.Value(song?.soundObj?.isPlaying ? 1 : 0.3)).current;
 	const [isFav, setIsFav] = useState(false);
