@@ -1,12 +1,11 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ImageBackground, StatusBar } from 'react-native';
+import { StyleSheet, Image, Text, View, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, ImageBackground, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
-import { Section } from '../../widgets';
-import { Icon } from '../../components';
-import Constants from 'expo-constants';
+import { Section } from '@/src/widgets';
+//import { Icon } from '../../components';
 
 const Index = ({ songs }: any) => {
 	const { goBack } = useNavigation();
@@ -32,7 +31,7 @@ const Index = ({ songs }: any) => {
 		if (value.length > 3) {
 			const results = songs.filter((song: any) => {
 				let regex = new RegExp(value, 'ig');
-				return regex.exec(song?.title) || regex.exec(song?.author);
+				return regex.exec(song?.title) || regex.exec(song?.artist);
 			});
 
 			setAudios(results);
@@ -44,31 +43,31 @@ const Index = ({ songs }: any) => {
 	return (
 		<>
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: 'https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376252.jpg' }} blurRadius={20} resizeMode="cover">
-			<StatusBar barStyle="light-content" backgroundColor='black' />
-			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-				<SafeAreaView style={styles.container}>
-					<View style={styles.header}>
-						<View style={styles.input}>
-							{/*// @ts-ignore */}
-							<Icon name="search" color="#FFF" />
-							<TextInput style={styles.textInput} onChangeText={handleInput} value={search} returnKeyType="search" ref={textInputRef} placeholder="Pesquisar..." />
-						</View>
-						<TouchableOpacity style={styles.btn} onPress={() => goBack()}>
-							<Text style={styles.btnTxt}>Cancelar</Text>
-						</TouchableOpacity>
-					</View>
-					<View style={styles.result}>
-						{audios.length > 0 ? (
-							<Section.MusicList audios={audios} />
-						) : (
-							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-								{/*<Text style={{ fontSize: 24, fontWeight: 'bold', color: 'rgba(0, 0, 0, .3)' }}>Pesquise algo...</Text>*/}
-								<Text style={{ fontSize: 24, fontWeight: 'bold', color: '#C4C4C4' }}>Pesquise algo...</Text>
+				<StatusBar barStyle="light-content" backgroundColor='black' />
+				<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+					<SafeAreaView style={styles.container}>
+						<View style={styles.header}>
+							<View style={styles.input}>
+								{/*// @ts-ignore */}
+								<Image source={require('@/src/assets/icons/search.png')} />
+								<TextInput style={styles.textInput} onChangeText={handleInput} value={search} returnKeyType="search" ref={textInputRef} placeholder="Pesquisar..." />
 							</View>
-						)}
-					</View>
-				</SafeAreaView>
-			</TouchableWithoutFeedback>
+							<TouchableOpacity style={styles.btn} onPress={() => goBack()}>
+								<Text style={styles.btnTxt}>Cancelar</Text>
+							</TouchableOpacity>
+						</View>
+						<View style={styles.result}>
+							{audios.length > 0 ? (
+								<Section.MusicList audios={audios} />
+							) : (
+								<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+									{/*<Text style={{ fontSize: 24, fontWeight: 'bold', color: 'rgba(0, 0, 0, .3)' }}>Pesquise algo...</Text>*/}
+									<Text style={{ fontSize: 24, fontWeight: 'bold', color: '#C4C4C4' }}>Pesquise algo...</Text>
+								</View>
+							)}
+						</View>
+					</SafeAreaView>
+				</TouchableWithoutFeedback>
 			</ImageBackground>
 		</>
 	);
