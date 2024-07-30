@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import TrackPlayer, { Capability, RatingType, RepeatMode } from 'react-native-track-player'
-const songs = [
+const exempleSongs = [
 	{
 		id: '1',
 		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986838/GitHub/Projects/Musicont/mock/audios/peaches_dzluia.mp3', // URL da música

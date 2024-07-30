@@ -82,9 +82,9 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 
 						return (
 							<Card.MusicList
-								imageURL={item?.img || getRandomImg()}
+								imageURL={item?.img || item?.artwork}
 								title={item?.title}
-								author={item?.author || ''}
+								author={item?.author || item?.artist}
 								duration={item?.durationMillis || 0}
 								onPlayPress={() => onPlayPress(item, songIndex)}
 								moreOptions={[
@@ -130,7 +130,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 				{audios.map((index: any, key: any) => (
 					<Card.MusicList
 						key={key}
-						imageURL={songs[index]?.img || getRandomImg()}
+						imageURL={songs[index]?.img}
 						title={songs[index]?.title}
 						author={songs[index]?.author}
 						duration={songs[index]?.durationMillis}

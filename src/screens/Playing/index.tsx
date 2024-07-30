@@ -13,10 +13,24 @@ import { getAllSongs, getRandomImg } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
 import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
 import { PlayerControls } from '@/src/components/PlayerControls';
+import TrackPlayer from 'react-native-track-player';
 
 //CONTINUE CODE HERE
 
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
+	const onPlayPress = (song: any, index: any) => {
+		// @ts-ignore
+		navigate(SCREENS.PLAYING, {
+			forcePlay: true,
+			song,
+			index,
+		});
+	};
+	useEffect(() => {
+		if (params?.index) {
+			TrackPlayer.skip(params?.index);
+		}
+	})
 	return (
 		<>
 			<StatusBar barStyle="light-content" backgroundColor='black' />

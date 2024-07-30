@@ -33,14 +33,19 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							);
 							if (alreadyContains) return;
 							else {
-								//const durationMillis = await getDurationMillis(file?.path)
-								//if (!durationMillis) return;
+								const durationMillis = await getDurationMillis(file?.path)
+								if (!durationMillis) return;
+								const img = getRandomImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
 									url: file?.path,
+									uri: file?.path,
 									title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
 									artist: '',
-									artwork: getRandomImg(),
+									author: '',
+									artwork: img,
+									img,
+									durationMillis: durationMillis
 								})
 							}
 						}
@@ -72,14 +77,19 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							if (alreadyContains) return;
 
 							else {
-								//const durationMillis = await getDurationMillis(file?.path)
-								//if (!durationMillis) return;
+								const durationMillis = await getDurationMillis(file?.path)
+								if (!durationMillis) return;
+								const img = getRandomImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
 									url: file?.path,
+									uri: file?.path,
 									title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
 									artist: '',
-									artwork: getRandomImg(),
+									author: '',
+									artwork: img,
+									img,
+									durationMillis: durationMillis
 								})
 							}
 						} else if (file?.isDirectory()) {
