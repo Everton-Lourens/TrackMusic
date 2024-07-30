@@ -66,7 +66,7 @@ const Index = () => {
 						</ScrollView>
 
 					</View>
-					{/*<Footer />*/}
+					<Footer />
 				</SafeAreaView>
 
 			</ImageBackground>

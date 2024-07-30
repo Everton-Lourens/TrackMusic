@@ -1,23 +1,54 @@
 import { useEffect, useRef, useState } from 'react'
 import TrackPlayer, { Capability, RatingType, RepeatMode } from 'react-native-track-player'
+
 const exempleSongs = [
 	{
 		id: '1',
-		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986838/GitHub/Projects/Musicont/mock/audios/peaches_dzluia.mp3', // URL da música
-		title: 'Song Title 1',
-		artist: 'Matuê',
-		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623895066/GitHub/Projects/Musicont/mock/images/maquina_do_tempo_gc3j68.jpg' // URL da arte do álbum
+		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623987046/GitHub/Projects/Musicont/mock/audios/heartless_u7exot.mp3', title: 'Heartless',
+		artist: 'The Weeknd',
+		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/heartless_du9yxe.jpg',
 	},
 	{
 		id: '2',
-		url: 'https://audio.jukehost.co.uk/rZ9sshicVlki8Dnm95ps1eWhK95dYgKF',
-		title: 'Song Title 2',
-		artist: 'Xamã',
-		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623895066/GitHub/Projects/Musicont/mock/images/maquina_do_tempo_gc3j68.jpg'
-	}
+		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986838/GitHub/Projects/Musicont/mock/audios/peaches_dzluia.mp3',
+		title: 'Peaches',
+		artist: 'Justin Bieber',
+		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623987767/GitHub/Projects/Musicont/mock/images/peaches_sm4qvm.jpg',
+	},
+	{
+		id: '3',
+		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623988277/GitHub/Projects/Musicont/mock/audios/therefore-i-am_sea49g.mp3',
+		title: 'Therefore I Am',
+		artist: 'Billie Eilish',
+		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623987985/GitHub/Projects/Musicont/mock/images/therefore-i-am_t9xxfs.jpg',
+	},
+	{
+		id: '4',
+		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986820/GitHub/Projects/Musicont/mock/audios/kungs-vs-cookin_gbvmhs.mp3',
+		title: 'This Girl',
+		artist: "Kungs vs Cookin' on 3 Burners",
+		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/kungs-vs-cookin_yhuqv3.jpg',
+	},
+	{
+		id: '5',
+		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986803/GitHub/Projects/Musicont/mock/audios/dance-monkey_disxa8.mp3',
+		title: 'Dance Monkey',
+		artist: "Tones and I",
+		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/dance-monkey_dht1uv.jpg',
+	},
 ];
 
 export const setupPlayer = async (musics: Array<any>) => {
+	const isInitialized = await TrackPlayer.isServiceRunning();
+	if (isInitialized) {
+		console.log('@@@@@@@@@@@@@@ Player já foi inicializado');
+		return;
+	}
+
+	if (__DEV__) {
+		musics = exempleSongs
+	}
+
 	await TrackPlayer.setupPlayer({
 		maxCacheSize: 1024 * 10,
 	});
@@ -39,10 +70,12 @@ export const setupPlayer = async (musics: Array<any>) => {
 	const currentTrackIds = currentTracks.map(track => track.id);
 	const newTracks = musics.filter(mp3 => !currentTrackIds.includes(mp3.id));
 	if (newTracks.length > 0) {
-		// Adicione apenas as músicas novas
 		await TrackPlayer.add(newTracks);
 	}
-	await test();
+
+	if (__DEV__) {
+		await test();
+	}
 	async function test() {
 		const queue = await TrackPlayer.getQueue();
 		if (queue.length > 0) {

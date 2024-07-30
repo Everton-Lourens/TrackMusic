@@ -4,12 +4,15 @@ import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import Slider from '@react-native-community/slider';
 
-import Icon from '@/src/components/Icon';
+//import Icon from '@/src/components/Icon';
 import { DISPATCHES, SCREENS } from '@/src/constants';
-import { Audio } from '@/src/hooks';
+//import { Audio } from '@/src/hooks';
 import { Storage } from '@/src/helpers';
 import { getAllSongs, setUriPicture } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
+import { PlayerControls, PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
+import TrackPlayer, { useTrackPlayerEvents, Event, State, usePlaybackState, useIsPlaying, useProgress } from 'react-native-track-player';
+
 //import { PlayerControls } from '@/src/components/PlayerControls';
 
 const { width } = Dimensions.get('screen');
@@ -20,62 +23,38 @@ const Index = ({ song, songs, dispatch }: any) => {
 	const [newList, setNewList] = useState(null);
 	const [shuffle, setShuffle] = useState(false);
 	const [newRecents] = useState<Array<any>>([]);
+	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	const [actions, setActions] = useState({
 		prev: false,
 		play: false,
 		stop: false,
 		next: false,
 	});
+	const [myTitle, setTMyTitle] = useState('');
+	const [artist, setArtist] = useState('');
+	const [image, setImage] = useState('https://res.cloudinary.com/jsxclan/image/upload/v1623987767/GitHub/Projects/Musicont/mock/images/peaches_sm4qvm.jpg');
 
+	const { duration, position } = useProgress(250)
+
+	// Evento para atualizar o estado quando a música em reprodução mudar
+	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
+		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
+			const track: any = await TrackPlayer.getTrack(event.nextTrack);
+			setArtist(track?.artist);
+			setImage(track?.artwork);
+			setTMyTitle(track?.title);
+		}
+	});
+
+	const handlePlayAndPause = async () => {
+		if (playing) await TrackPlayer.pause();
+		if (!playing) await TrackPlayer.play();
+	}
 
 	const soundDetailRecovery = async () => {
 		if (!song?.detail) {
 			song.detail = await Storage.get('detail', true) || songDetail?.currentSong?.detail;
 		}
-	}
-
-	const newListOfSongs_OLD = async () => {
-		try {
-			if (!newList) {
-				const allSongs: any = await getAllSongs();
-				songs = allSongs;
-				setNewList(allSongs);
-				setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false);
-			}
-			if (shuffle) {
-				// @ts-ignore
-				const listLength = newList.length;
-				// Cria uma lista de IDs únicos
-				const uniqueIDs = Array.from({ length: listLength }, (_, index) => index);
-				// Embaralha a lista de IDs únicos
-				uniqueIDs.sort(() => Math.random() - 0.5);
-				// Atribui os IDs embaralhados aos itens da lista
-				// @ts-ignore
-				return songs = [...newList].map((song: any, index) => ({ ...song, id: uniqueIDs[index] })); // shueffled list
-			}
-			return songs = newList ? newList : songs; // original list
-		} catch (error: any) {
-			console.error(error);
-		}
-	}
-
-	const newListOfSongs = async () => {
-		/*
-		try {
-									setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false); 
-			if (shuffle) {
-				// @ts-ignore
-				const listLength = songs.length;
-				const uniqueIDs = Array.from({ length: listLength }, (_, index) => index);
-				uniqueIDs.sort(() => Math.random() - 0.5);
-				// @ts-ignore
-				return songs = [...songs].map((song: any, index) => ({ ...song, id: uniqueIDs[index] })); // shueffled list
-			}
-			return songs = songs ? songs : songs; // original list
-		} catch (error: any) {
-			console.error(error);
-		}
-			*/
 	}
 
 	const _e = (arg = {}) => {
@@ -117,6 +96,7 @@ const Index = ({ song, songs, dispatch }: any) => {
 	};
 
 	const configAndPlay = (shouldPlay = false) => {
+		/*
 		// ERROR INIT: Audio Error: "playbackObj" was set to an invalid value.
 		if (!song?.soundObj?.isLoaded) {
 			return Audio.configAndPlay(
@@ -134,9 +114,10 @@ const Index = ({ song, songs, dispatch }: any) => {
 				addToRecentlyPlayed(songs.findIndex((i: any) => i.id === song?.detail?.id));
 			})(onPlaybackStatusUpdate);
 		}
+			*/
 	};
 
-	const handlePlayAndPause = async () => {
+	const handlePlayAndPause_OLD = async () => {
 		_e({ play: true });
 
 		if (!song?.soundObj?.isLoaded) {
@@ -256,7 +237,7 @@ const Index = ({ song, songs, dispatch }: any) => {
 	}
 
 	useEffect(() => {
-		if (song?.soundObj?.isPlaying) {
+		if (playing) {
 			Animated.timing(stopBtnAnim, {
 				toValue: 1,
 				duration: 1000,
@@ -272,6 +253,7 @@ const Index = ({ song, songs, dispatch }: any) => {
 	}, [song]);
 
 	useEffect(() => {
+		/*
 		(async () => {
 			setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false);
 			await soundDetailRecovery();
@@ -279,6 +261,7 @@ const Index = ({ song, songs, dispatch }: any) => {
 			await Audio.init();
 			configAndPlay();
 		})();
+		*/
 	}, []);
 
 
@@ -294,11 +277,11 @@ const Index = ({ song, songs, dispatch }: any) => {
 				/>
 				<Slider
 					minimumValue={0}
-					maximumValue={song?.detail?.durationMillis}
-					minimumTrackTintColor="#C07037"
+					maximumValue={duration}
+					minimumTrackTintColor="red"
 					thumbTintColor="transparent"
 					maximumTrackTintColor="transparent"
-					value={song?.playbackStatus?.positionMillis || 0}
+					value={position}
 				/>
 			</View>
 			<View style={styles.left}>
@@ -314,45 +297,30 @@ const Index = ({ song, songs, dispatch }: any) => {
 								opacity: 0.5,
 								alignSelf: 'center',
 							}}
-							source={{ uri: song?.detail?.img }}
+							source={{ uri: image }}
 							resizeMode="cover"
 							borderRadius={150}
 							blurRadius={100}
 						/>
-						<Image style={styles.coverArt} source={{ uri: song?.detail?.img }} resizeMode="cover" borderRadius={150} />
+						<Image style={styles.coverArt} source={{ uri: image }} resizeMode="cover" borderRadius={150} />
 					</View>
 				</TouchableWithoutFeedback>
 			</View>
 			<View style={styles.content}>
-				<Text style={styles.songTitle} numberOfLines={song?.detail?.author ? 1 : 2}>
-					{song?.detail?.title}
+				<Text style={styles.songTitle} numberOfLines={artist ? 1 : 2}>
+					{myTitle}
 				</Text>
-				{song?.detail?.author ?
+				{artist ?
 					<Text style={styles.songArtist} numberOfLines={1}>
-						{song?.detail?.author}
+						{artist}
 					</Text> : null}
 			</View>
 			<View style={styles.actions}>
-				{/*<PlayerControls style={{ marginTop: 40 }} />*/}
-				<TouchableOpacity style={styles.btn} onPress={handlePrev} disabled={actions?.prev}>
-					{/*// @ts-ignore*/}
-					<Icon name="skip-back" color="#C4C4C4" />
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.btn} onPress={handlePlayAndPause} disabled={actions?.play}>
-					{/*// @ts-ignore*/}
-					<Icon size={40} name={song?.soundObj?.isPlaying ? `pause` : `play`} color={song?.soundObj?.isPlaying ? `#C07037` : `white`} />
-				</TouchableOpacity>
-				{/*<TouchableOpacity style={styles.btn} onPress={() => (song?.soundObj?.isPlaying ? handleStop(() => { }) : () => { })} disabled={actions?.stop}>*/}
-				{/*<Animated.View style={{ opacity: stopBtnAnim }}>*/}
-				{/*// @ts-ignore*/}
-				{/*<Icon family="Ionicons" name="stop-outline" color="white" />*/}
-				{/*</Animated.View>*/}
-				{/*</TouchableOpacity>*/}
+				<SkipToPreviousButton iconSize={30} />
 
-				<TouchableOpacity style={styles.btn} onPress={handleNext} disabled={actions?.next}>
-					{/*// @ts-ignore*/}
-					<Icon size={30} name="skip-forward" color="white" />
-				</TouchableOpacity>
+				<PlayPauseButton iconSize={30} />
+
+				<SkipToNextButton iconSize={30} />
 			</View>
 		</View>
 	);
@@ -375,7 +343,7 @@ const styles = StyleSheet.create({
 	tracker: {
 		position: 'absolute',
 		width,
-		top: -10,
+		top: -11,
 		right: 0,
 		left: 0,
 		backgroundColor: 'rgba(0, 0, 0, .08)',

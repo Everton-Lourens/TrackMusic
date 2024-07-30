@@ -33,17 +33,12 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				activeOpacity={0.85}
 				onPress={async () => {
 					try {
-						console.log('@PLAY ');
-						if (playing) {
-							await TrackPlayer.pause();
-						} else {
-							const queue = await TrackPlayer.getQueue();
-							if (queue.length > 0) {
-								console.log("A fila: ", queue.length);
-								await TrackPlayer.play();
-							} else {
-								console.log("A fila está vazia");
-							}
+						if (playing) await TrackPlayer.pause();
+						else await TrackPlayer.play();
+
+						if (__DEV__) {
+							if (playing) console.log('@PAUSE ');
+							else console.log('@PLAY ');
 						}
 					} catch (error) {
 						console.error("Erro ao controlar a reprodução:", error);
@@ -51,38 +46,46 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				}}
 
 			>
-				<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
+				{playing ? (
+					<Image source={require('@/src/assets/icons/pause.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+				) : (
+					<Image source={require('@/src/assets/icons/play.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+				)}
+
 			</TouchableOpacity>
 		</View>
 	)
 }
 
-export const SkipToNextButton = ({ iconSize = 30 }: PlayerButtonProps) => {
+export const SkipToNextButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
-			<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
-		</TouchableOpacity>
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+				<Image source={require('@/src/assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+			</TouchableOpacity>
+		</View>
+
 	)
 }
 
-export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
+export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
-			<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
-		</TouchableOpacity>
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+				<Image source={require('@/src/assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+			</TouchableOpacity>
+		</View>
 	)
 }
 
 const styles = StyleSheet.create({
-	playBtn: {
+	controlBtn: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		width: 50,
-		height: 50,
 		paddingLeft: 4,
-		borderRadius: 100,
+		borderRadius: 10,
 		borderWidth: 1.5,
-		borderColor: '#006680',
+		marginHorizontal: 5,
 	},
 	container: {
 		width: '100%',
