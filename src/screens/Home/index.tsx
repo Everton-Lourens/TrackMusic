@@ -12,6 +12,8 @@ import { Section } from '@/src/widgets';
 */
 import { Drawer, Footer, Header, Section } from '@/src/widgets';
 import { getUriPicture } from '@/src/store/config';
+import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
+import { PlayerControls } from '@/src/components/PlayerControls';
 
 const Index = () => {
 	const [drawer, setDrawer] = useState(false);
@@ -48,6 +50,13 @@ const Index = () => {
 						<Section.Recent style={{ marginTop: 30 }} />
 						<Section.Playlist style={{ marginTop: 30 }} />
 
+						<View style={styles.row}>
+							<PlayerProgressBar style={{ marginTop: 32 }} />
+						</View>
+						<View style={styles.row}>
+							<PlayerControls style={{ marginTop: 40 }} />
+						</View>
+
 						<ScrollView>
 							<View style={{
 								flex: 1,
@@ -79,5 +88,10 @@ const styles = StyleSheet.create({
 	sections: {
 		flex: 1,
 		marginTop: Dimensions.get('screen').height * 0.025,
+	},
+	row: {
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		alignItems: 'center',
 	},
 });

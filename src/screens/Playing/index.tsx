@@ -2,19 +2,37 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { LinearGradient } from 'expo-linear-gradient';
+import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 
 import { Header } from '../../widgets';
 import { Audio } from '../../hooks';
 import { DISPATCHES } from '@/src/constants';
 import { millisToMin, Storage } from '../../helpers';
-import { getAllSongs } from '@/src/store/config';
+import { getAllSongs, getRandomImg } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
+import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
+import { PlayerControls } from '@/src/components/PlayerControls';
 
 //CONTINUE CODE HERE
 
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
+	return (
+		<>
+			<StatusBar barStyle="light-content" backgroundColor='black' />
+
+			<ImageBackground style={styles.container} source={{ uri: getRandomImg() }} blurRadius={10} resizeMode="cover">
+				<View style={[StyleSheet.absoluteFill, styles.overlay]} />
+				<Text style={{ color: 'red', fontSize: 50 }}>
+					AAAAAAAAAAAAAAAAAAAAAAAAAAA
+				</Text>
+
+				<PlayerProgressBar style={{ marginTop: 32 }} />
+
+				<PlayerControls style={{ marginTop: 40 }} />
+			</ImageBackground>
+		</>
+	);
 	const stopBtnAnim = useRef(new Animated.Value(song?.soundObj?.isPlaying ? 1 : 0.3)).current;
 	const [isFav, setIsFav] = useState(false);
 	const [newList, setNewList] = useState(null);
@@ -310,18 +328,20 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	};
 
 	useEffect(() => {
-		if (song?.soundObj?.isPlaying) {
-			Animated.timing(stopBtnAnim, {
-				toValue: 1,
-				duration: 1000,
-				useNativeDriver: true,
-			}).start();
-		} else {
-			Animated.timing(stopBtnAnim, {
-				toValue: 0.3,
-				duration: 1000,
-				useNativeDriver: true,
-			}).start();
+		if (false) {
+			if (song?.soundObj?.isPlaying) {
+				Animated.timing(stopBtnAnim, {
+					toValue: 1,
+					duration: 1000,
+					useNativeDriver: true,
+				}).start();
+			} else {
+				Animated.timing(stopBtnAnim, {
+					toValue: 0.3,
+					duration: 1000,
+					useNativeDriver: true,
+				}).start();
+			}
 		}
 	}, [song]);
 
@@ -336,28 +356,32 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	}, []);
 
 	useEffect(() => {
-		verifyFav();
+		if (false) {
+			verifyFav();
+		}
 	}, [song?.detail?.id]);
 
 	useEffect(() => {
-		if (params?.forcePlay && params?.song?.uri !== song?.detail?.uri) {
+		if (false) {
+			if (params?.forcePlay && params?.song?.uri !== song?.detail?.uri) {
 
-			handleStop(() => {
-				Audio.play(
-					song?.playback,
-					params?.song?.uri
-				)((soundObj) => {
-					dispatch({
-						type: DISPATCHES.SET_CURRENT_SONG,
-						payload: {
-							soundObj,
-							detail: params?.song,
-						},
-					});
+				handleStop(() => {
+					Audio.play(
+						song?.playback,
+						params?.song?.uri
+					)((soundObj) => {
+						dispatch({
+							type: DISPATCHES.SET_CURRENT_SONG,
+							payload: {
+								soundObj,
+								detail: params?.song,
+							},
+						});
 
-					addToRecentlyPlayed(params?.index);
-				})(onPlaybackStatusUpdate as any);
-			});
+						addToRecentlyPlayed(params?.index);
+					})(onPlaybackStatusUpdate as any);
+				});
+			}
 		}
 	}, [params?.forcePlay, params?.song, params?.index]);
 
@@ -412,10 +436,15 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 							<Icon name="skip-back" color="#C4C4C4" />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={handlePlayAndPause}>
-							<LinearGradient style={[styles.playAndPauseBtn, !song?.soundObj?.isPlaying && { paddingLeft: 4 }]} colors={['#939393', '#000']}>
-								{/*// @ts-ignore */}
-								<Icon name={song?.soundObj?.isPlaying ? `pause` : `play`} color="#C4C4C4" />
-							</LinearGradient>
+							<LinearGradient
+								style={[styles.playAndPauseBtn, !song?.soundObj?.isPlaying && { paddingLeft: 4 }]}
+								colors={['#939393', '#000']}
+								start={{ x: 0, y: 0 }}
+								end={{ x: 1, y: 0 }}
+							/>
+							{/*// @ts-ignore */}
+							<Icon name={song?.soundObj?.isPlaying ? `pause` : `play`} color="#C4C4C4" />
+
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.btn} onPress={() => (song?.soundObj?.isPlaying ? handleStop(() => { }) : () => { })} disabled={actions?.stop}>
 							<Animated.View style={{ opacity: stopBtnAnim }}>

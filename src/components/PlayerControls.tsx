@@ -1,6 +1,5 @@
-import { colors } from '@/src/constants/tokens'
-import { FontAwesome6 } from '@expo/vector-icons'
-import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import TrackPlayer, { useIsPlaying } from 'react-native-track-player'
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -26,38 +25,65 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 }
 
 export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
+	const { playing } = useIsPlaying()
 
-	//const { playing } = useIsPlaying()
-		return (
-			<View style={[{ height: iconSize }, style]}>
-				<TouchableOpacity
-					activeOpacity={0.85}
-					onPress={() => { }}
-				//onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
-				>
-					<FontAwesome6 name={'play'} size={iconSize} color={colors.text} />
-				</TouchableOpacity>
-			</View>
-		)
+	return (
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity
+				activeOpacity={0.85}
+				onPress={async () => {
+					try {
+						console.log('@PLAY ');
+						if (playing) {
+							await TrackPlayer.pause();
+						} else {
+							const queue = await TrackPlayer.getQueue();
+							if (queue.length > 0) {
+								console.log("A fila: ", queue.length);
+								await TrackPlayer.play();
+							} else {
+								console.log("A fila está vazia");
+							}
+						}
+					} catch (error) {
+						console.error("Erro ao controlar a reprodução:", error);
+					}
+				}}
+
+			>
+				<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
+			</TouchableOpacity>
+		</View>
+	)
 }
 
 export const SkipToNextButton = ({ iconSize = 30 }: PlayerButtonProps) => {
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={() => { }}>
-			<FontAwesome6 name="forward" size={iconSize} color={colors.text} />
+		<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+			<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
 		</TouchableOpacity>
 	)
 }
 
 export const SkipToPreviousButton = ({ iconSize = 30 }: PlayerButtonProps) => {
 	return (
-		<TouchableOpacity activeOpacity={0.7} onPress={() => { }}>
-			<FontAwesome6 name={'backward'} size={iconSize} color={colors.text} />
+		<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+			<Image source={require('@/src/assets/icons/play2.png')} style={styles.playBtn} />
 		</TouchableOpacity>
 	)
 }
 
 const styles = StyleSheet.create({
+	playBtn: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: 50,
+		height: 50,
+		paddingLeft: 4,
+		borderRadius: 100,
+		borderWidth: 1.5,
+		borderColor: '#006680',
+	},
 	container: {
 		width: '100%',
 	},

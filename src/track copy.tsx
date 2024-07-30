@@ -1,8 +1,17 @@
-import library from '@/assets/data/library-copy.json'
+//import library from '@/assets/data/library.json'
+import { getLibrary } from '@/assets/data/library'
 import { unknownTrackImageUri } from '@/src/constants/images'
 import { Artist, Playlist, TrackWithPlaylist } from '@/src/helpers/types'
 import { Track } from 'react-native-track-player'
 import { create } from 'zustand'
+var library: any;
+
+(async () => {
+	while (!library) {
+		console.log('@@@@@@@@ library');
+		library = JSON.parse(await getLibrary());
+	}
+})();
 
 interface LibraryState {
 	tracks: TrackWithPlaylist[]

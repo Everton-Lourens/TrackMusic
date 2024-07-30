@@ -6,104 +6,108 @@ import { DISPATCHES, SCREENS } from '@/src/constants';
 import { Storage } from '@/src/helpers';
 import Sound from 'react-native-sound';
 import { getRandomImg } from '@/src/store/config';
+import { useLogTrackPlayerState } from '@/src/hooks/useLogTrackPlayerState'
+import { setupPlayer } from '@/src/hooks/useSetupTrackPlayer'
 
 const { width, height } = Dimensions.get('screen');
 
 const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [mp3Files, setMp3Files] = useState<Array<any>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	useLogTrackPlayerState();
 
 	async function getAllSongs() {
-		await getAllFiles();
+		return new Promise<void>(async (resolve) => {
+			await getAllFiles();
+			resolve(mp3Files as any);
+			async function getAllFiles() {
+				try {
+					const files: Array<any> = await RNFS.readDir(RNFS.ExternalStorageDirectoryPath);
 
-		async function getAllFiles() {
-			try {
-				const files: Array<any> = await RNFS.readDir(RNFS.ExternalStorageDirectoryPath);
+					if (!files || !files?.length) return;
 
-				if (!files || !files?.length) return [];
-
-				for (const file of files) {
-					if (file?.isFile() && file?.name.endsWith('.mp3')) {
-						const alreadyContains = mp3Files.some(obj =>
-							obj.path === file?.path
-						);
-						if (alreadyContains) return;
-						else {
-							const durationMillis = await getDurationMillis(file?.path)
-							if (!durationMillis) return;
-							mp3Files.push({
-								id: mp3Files.length + 1,
-								title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
-								author: '',
-								img: getRandomImg(),
-								uri: file?.path,
-								durationMillis,
-							})
+					for (const file of files) {
+						if (file?.isFile() && file?.name.endsWith('.mp3')) {
+							const alreadyContains = mp3Files.some(obj =>
+								obj.path === file?.path
+							);
+							if (alreadyContains) return;
+							else {
+								//const durationMillis = await getDurationMillis(file?.path)
+								//if (!durationMillis) return;
+								mp3Files.push({
+									id: mp3Files?.length + 1,
+									url: file?.path,
+									title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
+									artist: '',
+									artwork: getRandomImg(),
+								})
+							}
+						}
+						else if (file?.isDirectory()) {
+							// Recurre em diretórios
+							await getMp3Files(file?.path);
 						}
 					}
-					else if (file?.isDirectory()) {
-						// Recurre em diretórios
-						await getMp3Files(file?.path);
-					}
-				}
-			} catch (error) {
-				console.log(error);
+				} catch (error) { }
 			}
-		}
 
-		async function getMp3Files(directoryPath: any) {
-			//directoryPath = '/storage/emulated/0/Music';
-			try {
-				const files: Array<any> = await RNFS.readDir(directoryPath);
+			async function getMp3Files(directoryPath: any) {
+				//directoryPath = '/storage/emulated/0/Music';
+				try {
+					try {
 
-				if (!files || !files?.length) return [];
+					} catch (error) {
+						console.log();
+					}
+					const files: Array<any> = await RNFS.readDir(directoryPath);
 
-				for (const file of files) {
-					if (file?.isFile() && file?.name.endsWith('.mp3')) {
-						const alreadyContains = mp3Files.some(obj =>
-							obj.path === file?.path
-						);
-						if (alreadyContains) return;
-						else {
-							const durationMillis = await getDurationMillis(file?.path)
-							if (!durationMillis) return;
-							mp3Files.push({
-								id: mp3Files.length + 1,
-								title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
-								author: '',
-								img: getRandomImg(),
-								uri: file?.path,
-								durationMillis,
-							})
+					if (!files || !files?.length) return;
+
+					for (const file of files) {
+						if (file?.isFile() && file?.name.endsWith('.mp3')) {
+							const alreadyContains = mp3Files.some(obj =>
+								obj.path === file?.path
+							);
+							if (alreadyContains) return;
+
+							else {
+								//const durationMillis = await getDurationMillis(file?.path)
+								//if (!durationMillis) return;
+								mp3Files.push({
+									id: mp3Files?.length + 1,
+									url: file?.path,
+									title: file?.name.replace(/\.[^/.]+$/, '') || 'Sem Título',
+									artist: '',
+									artwork: getRandomImg(),
+								})
+							}
+						} else if (file?.isDirectory()) {
+							await getMp3Files(file?.path);
 						}
-					} else if (file?.isDirectory()) {
-						await getMp3Files(file?.path);
 					}
-				}
-			} catch (error) {
-				console.error(error);
+				} catch (error) { }
 			}
-		}
 
-		async function getDurationMillis(file: string): Promise<number | false> {
-			return new Promise<number | false>((resolve, reject) => {
-				const sound = new Sound(file, Sound.MAIN_BUNDLE, (error) => {
-					if (error) {
-						console.error('Erro ao carregar o áudio', error);
-						return resolve(false);
-					}
-					const duration = sound.getDuration();
-					if (duration * 1000 < 5000) {
-						return resolve(false);
-					}
-					resolve(duration * 1000);
+			async function getDurationMillis(file: string): Promise<number | false> {
+				return new Promise<number | false>((resolve, reject) => {
+					const sound = new Sound(file, Sound.MAIN_BUNDLE, (error) => {
+						if (error) {
+							console.error('Erro ao carregar o áudio', error, file);
+							return resolve(false);
+						}
+						const duration = sound.getDuration();
+						if (duration * 1000 < 5000) {
+							return resolve(false);
+						}
+						resolve(duration * 1000);
+					});
+				}).catch((error) => {
+					console.error('Erro ao obter a duração do áudio', error);
+					return false;
 				});
-			}).catch((error) => {
-				console.error('Erro ao obter a duração do áudio', error);
-				return false;
-			});
-		}
-
+			}
+		})
 	}
 	const getStorage = () => {
 		return new Promise<void>(async (resolve) => {
@@ -144,14 +148,15 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 
 	useEffect(() => {
 		const getMyMp3 = async () => {
-			if (!mp3Files.length) {
+			if (!mp3Files?.length && loading === true) {
 				const mp3IsStorage = await Storage.get('mp3Files', true);
-
-				if (mp3IsStorage !== null && false) {
+				// @@@@@@@@@ COLOCAR ALGO PARA ATUALIZAR A LISTA MANUALMENTE
+				if (mp3IsStorage !== null) {
 					setMp3Files(mp3IsStorage);
 				} else {
-					await getAllSongs();
-					await Storage.store('mp3Files', mp3Files, true);
+					const allSongs: any = await getAllSongs();
+					await Storage.store('mp3Files', allSongs, true);
+					setMp3Files(allSongs);
 				}
 				setLoading(false);
 			}
@@ -160,15 +165,21 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	});
 
 	const init = async () => {
-		await getStorage();
-		replace(SCREENS.HOME)
+		try {
+			if (mp3Files?.length || !loading) {
+				await setupPlayer(mp3Files)
+				await getStorage();
+				replace(SCREENS.HOME)
+			}
+		} catch (error: any) {
+			console.error('init::::', error);
+			//replace(SCREENS.HOME) // >>>>>>> replace(SCREENS?.ERROR)
+		}
 	};
 
 	useEffect(() => {
-		if (mp3Files.length || !loading) {
-			init();
-		}
-	}, [mp3Files.length, loading]);
+		init();
+	}, [mp3Files?.length, loading]);
 
 	return <Image style={styles.img} source={require('@/src/assets/splash.png')} resizeMode="cover" />;
 };

@@ -5,7 +5,7 @@ function getSongs() {
 			ctime: null,
 			mtime: "2024-07-26T22:05:06.000Z",
 			name: "Fernandinho - Seu Sangue (DVD Uma Nova História).mp3",
-			path: "/storage/emulated/0/Download/Fernandinho - Seu Sangue (DVD Uma Nova História).mp3",
+			path:  "/storage/emulated/0/Music/Eliã Oliveira- Salmos 91.mp3",// "/storage/emulated/0/Download/Fernandinho - Seu Sangue (DVD Uma Nova História).mp3",
 			size: 6935960
 		}
 	];
