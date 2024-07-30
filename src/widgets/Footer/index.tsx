@@ -3,15 +3,17 @@ import { Animated, Dimensions, Image, StyleSheet, Text, TouchableOpacity, Toucha
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import Slider from '@react-native-community/slider';
+import { formatSecondsToMinutes } from '@/src/helpers/miscellaneous'
 
 //import Icon from '@/src/components/Icon';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 //import { Audio } from '@/src/hooks';
 import { Storage } from '@/src/helpers';
-import { getAllSongs, setUriPicture } from '@/src/store/config';
+import { setUriPicture } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
-import { PlayerControls, PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
-import TrackPlayer, { useTrackPlayerEvents, Event, State, usePlaybackState, useIsPlaying, useProgress } from 'react-native-track-player';
+import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
+import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
+import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
 
 //import { PlayerControls } from '@/src/components/PlayerControls';
 
@@ -43,6 +45,7 @@ const Index = ({ song, songs, dispatch }: any) => {
 			setArtist(track?.artist);
 			setImage(track?.artwork);
 			setTMyTitle(track?.title);
+			addToRecentlyPlayed(track?.id - 1);
 		}
 	});
 
@@ -64,20 +67,21 @@ const Index = ({ song, songs, dispatch }: any) => {
 		});
 	};
 
-	const addToRecentlyPlayed = async (index: any) => {
+	async function addToRecentlyPlayed(index: number) {
+		let filtered: any;
 		const recents = await Storage.get('recents', true);
 		if (recents === null) {
 			await Storage.store('recents', [index], true);
 		} else {
-			const filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
+			filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
 			filtered.unshift(index);
 			await Storage.store('recents', filtered, true);
 		}
-
+		console.log('Recents:: ', filtered);
 		dispatch({
 			type: DISPATCHES.STORAGE,
 			payload: {
-				recents: await Storage.get('recents', true),
+				recents: filtered,
 			},
 		});
 	};
@@ -283,6 +287,8 @@ const Index = ({ song, songs, dispatch }: any) => {
 					maximumTrackTintColor="transparent"
 					value={position}
 				/>
+
+				<PlayerProgressBar />
 			</View>
 			<View style={styles.left}>
 				{/*// @ts-ignore*/}

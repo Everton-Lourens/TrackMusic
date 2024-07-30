@@ -177,9 +177,14 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const init = async () => {
 		try {
 			if (mp3Files?.length || !loading) {
-				await setupPlayer(mp3Files)
+				if (__DEV__) {
+					const music = await setupPlayer(mp3Files);
+					setMp3Files(music as any); // local json music to test
+				} else {
+					await setupPlayer(mp3Files);
+				}
 				await getStorage();
-				replace(SCREENS.HOME)
+				replace(SCREENS.HOME);
 			}
 		} catch (error: any) {
 			console.error('init::::', error);

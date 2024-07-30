@@ -160,6 +160,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	};
 
 	const addToRecentlyPlayed = async (index: any) => {
+		let filtered: any;
 		const recents = await Storage.get('recents', true);
 		if (recents === null) {
 			await Storage.store('recents', [index], true);
@@ -172,7 +173,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 		dispatch({
 			type: DISPATCHES.STORAGE,
 			payload: {
-				recents: await Storage.get('recents', true),
+				recents: filtered,
 			},
 		});
 	};

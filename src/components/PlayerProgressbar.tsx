@@ -20,6 +20,19 @@ export const PlayerProgressBar = ({ style }: ViewProps) => {
 		}
 	}, [position, duration, isSliding])
 
+
+	return (
+		<View style={styles.timeRow}>
+			<Text style={[styles.timeText, { left: 53 }]}>
+				{trackElapsedTime}
+			</Text>
+			<Text style={[styles.timeText, { right: 53 }]}>
+				{trackRemainingTime}
+			</Text>
+		</View>
+	);
+
+	/*
 	return (
 		<View style={style}>
 
@@ -28,11 +41,12 @@ export const PlayerProgressBar = ({ style }: ViewProps) => {
 				<Text style={styles.timeText}>{trackElapsedTime}</Text>
 
 				<Text style={styles.timeText}>
-					{'-'} {trackRemainingTime}
+					{' -'} {trackRemainingTime}
 				</Text>
 			</View>
 		</View>
 	)
+	*/
 }
 
 const styles = StyleSheet.create({
@@ -40,9 +54,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'baseline',
-		marginTop: 20,
-		backgroundColor:'red',
-		fontSize: 30,
+		left: 50
 	},
 	timeText: {
 		...defaultStyles.text,
@@ -51,7 +63,7 @@ const styles = StyleSheet.create({
 		//fontSize: fontSize.xs,
 		letterSpacing: 0.7,
 		fontWeight: '500',
-		backgroundColor:'red',
-		fontSize: 30,
+		backgroundColor: 'rgba(0, 0, 0, .2)', // 'gray', // '#FFF',
+		fontSize: 13,
 	},
 })

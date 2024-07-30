@@ -6,13 +6,13 @@ import Container from '../Container';
 import { Card } from '@/src/components';
 import { useNavigation } from '@react-navigation/native';
 import { SCREENS } from '@/src/constants';
+import { getDefaultPicture } from '@/src/store/config';
 
-const Index = ({ recents, songs, style = {} } : any) => {
+const Index = ({ recents, songs, style = {} }: any) => {
 	const { navigate } = useNavigation();
 	const [audios, setAudios] = useState([]);
-
 	const handlePress = (song: any, index: any) => {
-	// @ts-ignore
+		// @ts-ignore
 		navigate(SCREENS.PLAYING, {
 			forcePlay: true,
 			song,
@@ -32,9 +32,9 @@ const Index = ({ recents, songs, style = {} } : any) => {
 					<Card.Recent
 						key={key}
 						style={[key === 0 && { marginLeft: 20 }]}
-						imageURL={songs[index]?.img}
+						imageURL={songs[index]?.artwork || getDefaultPicture()}
 						title={songs[index]?.title}
-						author={songs[index]?.author}
+						author={songs[index]?.artist}
 						onPress={() => handlePress(songs[index], index)}
 					/>
 				))}

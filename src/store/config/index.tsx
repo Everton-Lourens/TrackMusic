@@ -2,6 +2,7 @@ import { allSongs } from './storage';
 import RNFS from 'react-native-fs';
 import { get, store, clear } from '@/src/helpers/storage';
 var uriImgValue: string = '';
+var defaultImage: string = '';
 
 export async function getAllSongs() {
   const mp3Files: Array<any> = [];
@@ -101,3 +102,9 @@ export function getUriPicture() {
   return uriImgValue || getRandomImg();
 }
 
+export function getDefaultPicture() {
+  if (!defaultImage) {
+    defaultImage = getRandomImg();
+  }
+  return defaultImage;
+}

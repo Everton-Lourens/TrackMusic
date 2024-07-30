@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Sound from 'react-native-sound';
-import RNFS from 'react-native-fs';
 
-const filePath = 'https://res.cloudinary.com/jsxclan/video/upload/v1623987046/GitHub/Projects/Musicont/mock/audios/heartless_u7exot.mp3';
 /*
 import Drawer from '@/src/widgets/Drawer';
 import Header from '@/src/widgets/Header';
@@ -50,13 +47,6 @@ const Index = () => {
 						<Section.Recent style={{ marginTop: 30 }} />
 						<Section.Playlist style={{ marginTop: 30 }} />
 
-						<View style={styles.row}>
-							<PlayerProgressBar style={{ marginTop: 32 }} />
-						</View>
-						<View style={styles.row}>
-							<PlayerControls style={{ marginTop: 40 }} />
-						</View>
-
 						<ScrollView>
 							<View style={{
 								flex: 1,
@@ -64,8 +54,8 @@ const Index = () => {
 							}}>
 							</View>
 						</ScrollView>
-
 					</View>
+
 					<Footer />
 				</SafeAreaView>
 
