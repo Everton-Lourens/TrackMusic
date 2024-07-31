@@ -73,7 +73,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 						key={key}
 						imageURL={songs[index]?.img}
 						title={songs[index]?.title}
-						author={songs[index]?.author}
+						artist={songs[index]?.artist}
 						duration={songs[index]?.durationMillis}
 						onPlayPress={() => onPlayPress(songs[index], index)}
 						// @ts-ignore
@@ -108,7 +108,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 							key={key}
 							imageURL={song?.img}
 							title={song?.title}
-							author={song?.artist}
+							artist={song?.artist}
 							duration={song?.durationMillis}
 							onPlayPress={() => onPlayPress(song, index)}
 							moreOptions={[

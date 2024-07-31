@@ -427,7 +427,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					<View style={styles.details}>
 						<View style={{ marginBottom: 25 }}>
 							<Text style={styles.songTitle}>{song?.detail?.title}</Text>
-							<Text style={styles.artistName}>{song?.detail?.author}</Text>
+							<Text style={styles.artistName}>{song?.detail?.artist}</Text>
 						</View>
 						<View style={styles.tracker}>
 							<Slider

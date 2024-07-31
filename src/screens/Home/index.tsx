@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Shuffle } from '@/src/components/shuffle';
 
 /*
 import Drawer from '@/src/widgets/Drawer';
@@ -42,6 +43,11 @@ const Index = () => {
 						}}
 					/>
 					<View style={styles.sections}>
+
+						<Shuffle
+							style={{ alignContent: 'center', marginTop: 30, marginBottom: 30, marginLeft: 'auto', marginRight: 'auto' }}
+							songs={[{songs: 'any'},{songs: 'any'},{songs: 'any'},{songs: 'any'},]}
+						/>
 
 						<Section.Explore />
 						<Section.Recent style={{ marginTop: 30 }} />

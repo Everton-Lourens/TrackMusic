@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import * as Modal from '../../widgets/Modals';
 import { millisToMin } from '../../helpers';
 
-const MusicList = ({ style = {}, imageURL, title = 'Song Title', author = `Author Name`, duration = '03:22', onPlayPress = () => { }, moreOptions = [] }: any) => {
+const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Author Name`, duration = '03:22', onPlayPress = () => { }, moreOptions = [] }: any) => {
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 
 	return (
@@ -34,10 +34,10 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', author = `Autho
 						<Text style={styles.title} numberOfLines={2}>
 							{title}
 						</Text>
-						{author && <Text style={styles.author}>{author}</Text>}
-						{!author && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
+						{artist && <Text style={styles.artist}>{artist}</Text>}
+						{!artist && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
 					</View>
-					{author && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
+					{artist && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
 				</View>
 				<View style={styles.right}>
 					<TouchableOpacity onPress={onPlayPress}>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 		letterSpacing: 1,
 		color: 'white',
 	},
-	author: {
+	artist: {
 		color: '#888',
 	},
 	duration: {

@@ -34,7 +34,7 @@ const Index = ({ recents, songs, style = {} }: any) => {
 						style={[key === 0 && { marginLeft: 20 }]}
 						imageURL={songs[index]?.artwork || getDefaultPicture()}
 						title={songs[index]?.title}
-						author={songs[index]?.artist}
+						artist={songs[index]?.artist}
 						onPress={() => handlePress(songs[index], index)}
 					/>
 				))}

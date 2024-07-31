@@ -30,6 +30,27 @@ const Index = ({ recents, song, songs, dispatch }: any) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
 			const track: any = await TrackPlayer.getTrack(event.nextTrack);
 			addToRecentlyPlayed(track?.id - 1);
+			// ATUAL:::::::::
+			///////////////// console.log(songs[track?.id - 1]);
+			///////////////// ==========================
+			///////////////// PRÓXIMA::::
+			///////////////// console.log(songs[track?.id]);
+			console.log(track);
+			console.log('shuffle::', shuffle);
+			const currentTracks = await TrackPlayer.getQueue();
+			console.log('currentTracks', currentTracks.length);
+			if (currentTracks.length <= 2) {
+				console.log('if (currentTracks.length <= 2) === TRUE');
+				if (!shuffle) {
+					//////////
+					//@@@@@@@@@@@@@@@@@ TALVEZ :await TrackPlayer.setQueue(tracks);
+					/////////
+					const randomIndex = Math.floor(Math.random() * songs.length);
+					await TrackPlayer.add([songs[randomIndex]]);
+				} else {
+					await TrackPlayer.add([songs[currentTracks.length+1]]);
+				}
+			}
 			dispatch({
 				type: DISPATCHES.SET_CURRENT_SONG,
 				payload: {
@@ -54,6 +75,13 @@ NOT WORKING
 	}, [playing])
 	*/
 
+	useEffect(() => {
+		if (shuffle === null) {
+			(async () => {
+				setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false)
+			})();
+		}
+	})
 
 
 	async function addToRecentlyPlayed(index: number) {
@@ -198,8 +226,7 @@ const styles = StyleSheet.create({
 	},
 	songTitle: {
 		color: 'white', // '#555555',
-		fontSize: 15,
-		top: 5,
+		fontSize: 20,
 		fontWeight: 'bold',
 		letterSpacing: 0.7,
 	},

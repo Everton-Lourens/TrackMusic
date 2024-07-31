@@ -34,8 +34,8 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							);
 							if (alreadyContains) return;
 							else {
-								const durationMillis = await getDurationMillis(file?.path)
-								if (!durationMillis) return;
+								//const durationMillis = await getDurationMillis(file?.path)
+								//if (!durationMillis) return;
 								const img = getRandomImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
@@ -56,6 +56,11 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			async function getMp3Files(directoryPath: any) {
 				//directoryPath = '/storage/emulated/0/Music';
 				try {
+					try {
+
+					} catch (error) {
+						console.log();
+					}
 					const files: Array<any> = await RNFS.readDir(directoryPath);
 
 					if (!files || !files?.length) return;
@@ -68,8 +73,8 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							if (alreadyContains) return;
 
 							else {
-								const durationMillis = await getDurationMillis(file?.path)
-								if (!durationMillis) return;
+								//const durationMillis = await getDurationMillis(file?.path)
+								//if (!durationMillis) return;
 								const img = getRandomImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
@@ -120,12 +125,10 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 					playlists,
 				},
 			});
-
-			await TrackPlayer.reset();
 			if (mp3Files?.length > 0) {
+				console.log('@@@@@@@ 11111111');
 				if (recents && recents?.length > 0) {
-					await TrackPlayer.add(mp3Files[recents[0]]);
-					//TrackPlayer.skip(recents[0]); // skip to recent
+					TrackPlayer.skip(recents[0]); // skip to recent
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
@@ -133,16 +136,15 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							songs: mp3Files,
 						},
 					});
-					console.log('init() > getStorage: @@@@@@@ 22222222222');
+					console.log('@@@@@@@ 22222222222');
 				} else {
-					await TrackPlayer.add(mp3Files[0]);
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
 							songs: mp3Files,
 						},
 					});
-					console.log('init() > getStorage: @@@@@@@ 3333333333');
+					console.log('@@@@@@@ 3333333333');
 				}
 			}
 			//await Ads.interstitialAds();
@@ -155,10 +157,9 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			if (!mp3Files?.length && loading === true) {
 				const mp3IsStorage = await Storage.get('mp3Files', true);
 				// @@@@@@@@@ COLOCAR ALGO PARA ATUALIZAR A LISTA MANUALMENTE
-				if (mp3IsStorage !== null && mp3IsStorage?.length > 0) {
+				if (mp3IsStorage !== null) {
 					setMp3Files(mp3IsStorage);
 				} else {
-					console.log('mp3 NO storage');
 					const allSongs: any = await getAllSongs();
 					await Storage.store('mp3Files', allSongs, true);
 					setMp3Files(allSongs);
@@ -172,15 +173,13 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const init = async () => {
 		try {
 			if (mp3Files?.length || !loading) {
-				if (__DEV__ && false) {
-					const music = await setupPlayer();
-					const mp3IsStorage = await Storage.get('mp3Files', true);
-					if (mp3IsStorage === null || !mp3IsStorage?.length) await Storage.store('mp3Files', music, true);
+				await getStorage();
+				if (__DEV__) {
+					const music = await setupPlayer(mp3Files);
 					setMp3Files(music as any); // local json music to test
 				} else {
-					await setupPlayer();
+					await setupPlayer(mp3Files);
 				}
-				await getStorage();
 				replace(SCREENS.HOME);
 			}
 		} catch (error: any) {

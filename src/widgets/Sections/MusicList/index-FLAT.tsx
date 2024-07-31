@@ -75,7 +75,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 						<Card.MusicList
 							imageURL={item?.img}
 							title={item?.title}
-							author={item?.author}
+							artist={item?.artist}
 							duration={item?.durationMillis}
 							onPlayPress={() => onPlayPress(item, songIndex)}
 							moreOptions={[

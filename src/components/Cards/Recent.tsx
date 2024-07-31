@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const Played = ({ style = {}, imageURL, title = 'Song Title', author = `Artist Name`, onPress = () => {} }: any) => (
+const Played = ({ style = {}, imageURL, title = 'Song Title', artist = `Artist Name`, onPress = () => {} }: any) => (
 	<TouchableOpacity style={[styles.container, style]} onPress={onPress}>
 		<View>
 			<Image
@@ -25,8 +25,8 @@ const Played = ({ style = {}, imageURL, title = 'Song Title', author = `Artist N
 			<Text style={styles.title} numberOfLines={1}>
 				{title}
 			</Text>
-			<Text style={styles.author} numberOfLines={1}>
-				{author}
+			<Text style={styles.artist} numberOfLines={1}>
+				{artist}
 			</Text>
 		</View>
 	</TouchableOpacity>
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 		fontWeight: '900',
 		letterSpacing: 1,
 	},
-	author: {
+	artist: {
 		color: 'white', // color: '#555555',
 		fontSize: 10,
 	},

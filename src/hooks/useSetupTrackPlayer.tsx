@@ -7,7 +7,7 @@ const exempleSongs = [
 		url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623987046/GitHub/Projects/Musicont/mock/audios/heartless_u7exot.mp3',
 		title: 'Heartless',
 		artist: 'The Weeknd',
-		artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/heartless_du9yxe.jpg',
+		artwork: 'https://img.freepik.com/fotos-premium/foto-de-foco-de-fones-de-ouvido-em-fundo-desfocado-aconchegante-a-noite_980736-3020.jpg',
 	},
 	{
 		id: 2,
@@ -39,53 +39,55 @@ const exempleSongs = [
 	},
 ];
 
-export const setupPlayer = async (musics: Array<any>) => {
-	const isInitialized = await TrackPlayer.isServiceRunning();
-	if (isInitialized) {
-		console.log('@@@@@@@@@@@@@@ Player já foi inicializado');
-		return;
-	}
-
-	if (__DEV__) {
-		musics = exempleSongs
-	}
-
-	await TrackPlayer.setupPlayer({
-		maxCacheSize: 1024 * 10,
-	});
-
-	await TrackPlayer.updateOptions({
-		ratingType: RatingType.Heart,
-		capabilities: [
-			Capability.Play,
-			Capability.Pause,
-			Capability.SkipToNext,
-			Capability.SkipToPrevious,
-			Capability.Stop,
-		],
-	})
-
-	await TrackPlayer.setVolume(0.3) // not too loud
-	await TrackPlayer.setRepeatMode(RepeatMode.Queue)
-	const currentTracks = await TrackPlayer.getQueue();
-	const currentTrackIds = currentTracks.map(track => track.id);
-	const newTracks = musics.filter(mp3 => !currentTrackIds.includes(mp3.id));
-	if (newTracks.length > 0) {
-		await TrackPlayer.add(newTracks);
-	}
-
-	if (__DEV__) {
-		await test();
-	}
-	async function test() {
-		const queue = await TrackPlayer.getQueue();
-		if (queue.length > 0) {
-			console.log("A fila: ", queue.length);
-		} else {
-			console.log("A fila está vazia");
+export const setupPlayer = async (queue = []) => {
+	try {
+		const isInitialized = await TrackPlayer.isServiceRunning();
+		if (isInitialized) {
+			return;
 		}
-	}
-	return exempleSongs //true
+
+		await TrackPlayer.setupPlayer({
+			maxCacheSize: 1024 * 10,
+		});
+
+		await TrackPlayer.updateOptions({
+			ratingType: RatingType.Heart,
+			capabilities: [
+				Capability.Play,
+				Capability.Pause,
+				Capability.SkipToNext,
+				Capability.SkipToPrevious,
+				Capability.Stop,
+			],
+		})
+
+		await TrackPlayer.setVolume(0.3) // not too loud
+		await TrackPlayer.setRepeatMode(RepeatMode.Queue);
+		if (queue.length > 0) {
+			await TrackPlayer.reset();
+			await TrackPlayer.add(queue);
+			/*
+			const currentTracks = await TrackPlayer.getQueue();
+			const currentTrackIds = currentTracks.map(track => track.id);
+			const newTracks = musics.filter(mp3 => !currentTrackIds.includes(mp3.id));
+			if (newTracks.length > 0) {
+				await TrackPlayer.add(newTracks);
+			}
+			*/
+		}
+		if (__DEV__) {
+			await test();
+		}
+		async function test() {
+			const queue = await TrackPlayer.getQueue();
+			if (queue.length > 0) {
+				console.log("A fila: ", queue.length);
+			} else {
+				console.log("A fila está vazia");
+			}
+		}
+		return exempleSongs //true
+	} catch (error) { }
 }
 
 export const useSetupTrackPlayer = () => {
