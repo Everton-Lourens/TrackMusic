@@ -31,15 +31,15 @@ export const PlayerProgressBar = ({ style }: PlayerProgressNumberProps) => {
 						maximumTrackTintColor="transparent"
 						value={position}
 						onSlidingStart={() => (setIsSliding(true))}
-						onValueChange={async (value) => {
-							await TrackPlayer.seekTo(value)
+						onValueChange={(value) => {
+							TrackPlayer.seekTo(value)
 						}}
-						onSlidingComplete={async (value) => {
+						onSlidingComplete={(value) => {
 							// if the user is not sliding, we should not update the position
 							if (!isSliding) return
 							setIsSliding(false)
 
-							await TrackPlayer.seekTo(value)
+							TrackPlayer.seekTo(value)
 						}}
 					/>
 				</View>
