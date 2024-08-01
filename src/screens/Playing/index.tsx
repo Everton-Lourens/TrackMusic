@@ -21,9 +21,9 @@ import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton, StopOutLineBut
 
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
+	const [isFav, setIsFav] = useState(false);
 	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
-
 	const onPlayPress = (song: any, index: any) => {
 		// @ts-ignore
 		navigate(SCREENS.PLAYING, {
@@ -37,6 +37,50 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			TrackPlayer.skip(params?.index);
 		}
 	})
+
+	const verifyFav = async () => {
+		const favs = await Storage.get('favourites', true);
+		if (favs !== null) {
+			const currentIndex = songs.findIndex((i: any) => i.id === song?.detail?.id);
+			if (favs.includes(currentIndex)) {
+				setIsFav(true);
+			} else {
+				setIsFav(false);
+			}
+		}
+
+		dispatch({
+			type: DISPATCHES.STORAGE,
+			payload: {
+				favourites: favs,
+			},
+		});
+	};
+
+	useEffect(() => {
+		verifyFav();
+	}, [song?.detail?.id]);
+
+
+	const handleFav = async () => {
+		const currentIndex = songs.findIndex((i: any) => i.id === song?.detail?.id);
+		const favs = await Storage.get('favourites', true);
+
+		if (favs === null) {
+			await Storage.store('favourites', [currentIndex], true);
+		} else {
+			if (favs.includes(currentIndex)) {
+				const updatedFavs = favs.filter((i: any) => i !== currentIndex);
+				await Storage.store('favourites', updatedFavs, true);
+			} else {
+				favs.unshift(currentIndex);
+				await Storage.store('favourites', favs, true);
+			}
+		}
+
+		verifyFav();
+	};
+
 	return (
 		<>
 			<StatusBar barStyle="light-content" backgroundColor='black' />
@@ -50,8 +94,8 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 							onPress: goBack,
 						},
 						right: {
-							children: <Image source={require('@/src/assets/icons/stop-outline.png')} />,
-							onPress: () => { },
+							children: <Image style={[styles.headerBtn, isFav ? {  } : { tintColor: 'gray' }]} source={require('@/src/assets/icons/fav.png')} />,
+							onPress: handleFav,
 						},
 					}}
 				/>
@@ -173,7 +217,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 		</>
 	);
 	//const stopBtnAnim = useRef(new Animated.Value(song?.soundObj?.isPlaying ? 1 : 0.3)).current;
-	const [isFav, setIsFav] = useState(false);
 	const [newList, setNewList] = useState(null);
 	const [newRecents] = useState<Array<any>>([]);
 	const [shuffle, setShuffle] = useState<boolean>(false);
@@ -239,43 +282,8 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	}
 
 
-	const verifyFav = async () => {
-		const favs = await Storage.get('favourites', true);
-		if (favs !== null) {
-			const currentIndex = songs.findIndex((i: any) => i.id === song?.detail?.id);
-			if (favs.includes(currentIndex)) {
-				setIsFav(true);
-			} else {
-				setIsFav(false);
-			}
-		}
 
-		dispatch({
-			type: DISPATCHES.STORAGE,
-			payload: {
-				favourites: favs,
-			},
-		});
-	};
 
-	const handleFav = async () => {
-		const currentIndex = songs.findIndex((i: any) => i.id === song?.detail?.id);
-		const favs = await Storage.get('favourites', true);
-
-		if (favs === null) {
-			await Storage.store('favourites', [currentIndex], true);
-		} else {
-			if (favs.includes(currentIndex)) {
-				const updatedFavs = favs.filter((i: any) => i !== currentIndex);
-				await Storage.store('favourites', updatedFavs, true);
-			} else {
-				favs.unshift(currentIndex);
-				await Storage.store('favourites', favs, true);
-			}
-		}
-
-		verifyFav();
-	};
 
 	const _e = (arg = {}) => {
 		setActions({
@@ -626,7 +634,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(255, 255, 255, 0.2)',
 		justifyContent: 'center',
 		//alignItems: 'center',
-		tintColor: 'black',
 		//paddingLeft: 4,
 		borderRadius: 35,
 		//borderWidth: 1.5,
