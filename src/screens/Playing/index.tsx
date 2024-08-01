@@ -24,19 +24,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const [isFav, setIsFav] = useState(false);
 	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
-	const onPlayPress = (song: any, index: any) => {
-		// @ts-ignore
-		navigate(SCREENS.PLAYING, {
-			forcePlay: true,
-			song,
-			index,
-		});
-	};
-	useEffect(() => {
-		if (params?.index) {
-			TrackPlayer.skip(params?.index);
-		}
-	})
+
 
 	const verifyFav = async () => {
 		const favs = await Storage.get('favourites', true);
@@ -57,9 +45,36 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 		});
 	};
 
+	async function addToRecentlyPlayed(index: number) {
+		if (!index) index = 0; // avoiding undefined
+		let filtered: any;
+		const recents = await Storage.get('recents', true);
+		if (recents === null) {
+			await Storage.store('recents', [index], true);
+		} else {
+			filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
+			filtered.unshift(index);
+			await Storage.store('recents', filtered, true);
+		}
+		dispatch({
+			type: DISPATCHES.STORAGE,
+			payload: {
+				recents: filtered,
+			},
+		});
+	};
+
 	useEffect(() => {
 		verifyFav();
 	}, [song?.detail?.id]);
+
+	useEffect(() => {
+		if (params?.forcePlay && params?.song?.uri !== song?.detail?.url && params?.song?.id !== song?.detail?.id) {
+			TrackPlayer.skip(params?.index);
+			TrackPlayer.play();
+			addToRecentlyPlayed(params?.index);
+		}
+	}, [params?.forcePlay, params?.song, params?.index]);
 
 
 	const handleFav = async () => {
@@ -77,7 +92,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				await Storage.store('favourites', favs, true);
 			}
 		}
-
 		verifyFav();
 	};
 
@@ -94,7 +108,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 							onPress: goBack,
 						},
 						right: {
-							children: <Image style={[styles.headerBtn, isFav ? {  } : { tintColor: 'gray' }]} source={require('@/src/assets/icons/fav.png')} />,
+							children: <Image style={[styles.headerBtn, isFav ? {} : { tintColor: 'gray' }]} source={require('@/src/assets/icons/fav.png')} />,
 							onPress: handleFav,
 						},
 					}}
@@ -292,24 +306,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 		});
 	};
 
-	const addToRecentlyPlayed = async (index: any) => {
-		let filtered: any;
-		const recents = await Storage.get('recents', true);
-		if (recents === null) {
-			await Storage.store('recents', [index], true);
-		} else {
-			const filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
-			filtered.unshift(index);
-			await Storage.store('recents', filtered, true);
-		}
-
-		dispatch({
-			type: DISPATCHES.STORAGE,
-			payload: {
-				recents: filtered,
-			},
-		});
-	};
 
 	const onPlaybackStatusUpdate = (playbackStatus: any) => {
 		dispatch({

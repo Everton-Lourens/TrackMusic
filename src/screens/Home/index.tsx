@@ -39,6 +39,7 @@ const Index = () => {
 
 						<Section.Explore />
 						<Section.Recent style={{ marginTop: 30 }} />
+						<Section.Favourites style={{ marginTop: 30 }} />
 						<Section.Playlist style={{ marginTop: 30 }} />
 
 						<ScrollView>
