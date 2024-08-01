@@ -3,13 +3,11 @@ import { Animated, Dimensions, Image, StyleSheet, Text, TouchableOpacity, Toucha
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import Slider from '@react-native-community/slider';
-import { formatSecondsToMinutes } from '@/src/helpers/miscellaneous'
 
 //import Icon from '@/src/components/Icon';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 //import { Audio } from '@/src/hooks';
 import { Storage } from '@/src/helpers';
-import { getDefaultPicture } from '@/src/store/config';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
 import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';

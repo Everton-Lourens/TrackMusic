@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Shuffle } from '@/src/components/shuffle';
+import { ShuffleButton } from '@/src/components/PlayerControls';
 
-/*
-import Drawer from '@/src/widgets/Drawer';
-import Header from '@/src/widgets/Header';
-import { Section } from '@/src/widgets';
-*/
 import { Drawer, Footer, Header, Section } from '@/src/widgets';
-import { getUriPicture } from '@/src/store/config';
-import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
-import { PlayerControls } from '@/src/components/PlayerControls';
 
 const Index = () => {
 	const [drawer, setDrawer] = useState(false);
@@ -44,9 +36,8 @@ const Index = () => {
 					/>
 					<View style={styles.sections}>
 
-						<Shuffle
+						<ShuffleButton
 							style={{ alignContent: 'center', marginTop: 30, marginBottom: 30, marginLeft: 'auto', marginRight: 'auto' }}
-							songs={[{songs: 'any'},{songs: 'any'},{songs: 'any'},{songs: 'any'},]}
 						/>
 
 						<Section.Explore />

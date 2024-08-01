@@ -111,6 +111,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
+			await TrackPlayer.reset();
 
 			dispatch({
 				type: DISPATCHES.STORAGE,
@@ -121,11 +122,11 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 				},
 			});
 
-			await TrackPlayer.reset();
 			if (mp3Files?.length > 0) {
+				await TrackPlayer.add(mp3Files);
 				if (recents && recents?.length > 0) {
-					await TrackPlayer.add(mp3Files[recents[0]]);
-					//TrackPlayer.skip(recents[0]); // skip to recent
+					TrackPlayer.skip(recents[0]); // skip to recent
+
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
@@ -133,16 +134,13 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							songs: mp3Files,
 						},
 					});
-					console.log('init() > getStorage: @@@@@@@ 22222222222');
 				} else {
-					await TrackPlayer.add(mp3Files[0]);
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
 							songs: mp3Files,
 						},
 					});
-					console.log('init() > getStorage: @@@@@@@ 3333333333');
 				}
 			}
 			//await Ads.interstitialAds();

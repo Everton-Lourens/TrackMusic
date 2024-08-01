@@ -1,5 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import TrackPlayer, { useIsPlaying } from 'react-native-track-player'
+import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying } from 'react-native-track-player';
+import { Storage } from '@/src/helpers';
+import { useEffect, useState } from 'react';
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -76,6 +78,60 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 			</TouchableOpacity>
 		</View>
 	)
+}
+
+export const ShuffleButton = ({ style }: any) => {
+	const [oldShuffle, setOldShuffle] = useState<any>(null);
+	const [shuffle, setShuffle] = useState<any>(null);
+
+	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
+		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
+			try {
+				if (shuffle !== null && shuffle !== oldShuffle) {
+					const currenTrack: any = await TrackPlayer.getTrack(event.nextTrack);
+					(async () => {
+						const mp3Files: any = await Storage.get('mp3Files', true);
+						if (shuffle) {
+							mp3Files.sort(() => Math.random() - 0.5);
+						}
+						mp3Files.unshift(currenTrack);
+						await TrackPlayer.setQueue(mp3Files);
+					})();
+					setOldShuffle(shuffle);
+				}
+			} catch (error) {
+				console.error("Shuffle: Erro ao controlar a reprodução:", error);
+			}
+		}
+	});
+
+	const onPress = async () => {
+		setOldShuffle(shuffle)
+		const newShuffle = !shuffle;
+		setShuffle(newShuffle);
+		await Storage.store('shuffle', String(newShuffle), false);
+	}
+
+	useEffect(() => {
+		if (shuffle === null) {
+			(async () => {
+				const storageShuffle = await Storage.get('shuffle', false) == 'true' ? true : false
+				setShuffle(storageShuffle);
+				setOldShuffle(storageShuffle);
+			})();
+		}
+	}, [shuffle])
+
+
+
+	return (
+		<TouchableOpacity style={style} onPress={async () => await onPress()}>
+			{shuffle ?
+				<Image style={{ width: 40, height: 40, backgroundColor: 'red' }} source={require('@/src/assets/icons/shuffled.png')} resizeMode="contain" /> :
+				<Image style={{ width: 40, height: 40, backgroundColor: 'red' }} source={require('@/src/assets/icons/shuffle.png')} resizeMode="contain" />
+			}
+		</TouchableOpacity>
+	);
 }
 
 const styles = StyleSheet.create({
