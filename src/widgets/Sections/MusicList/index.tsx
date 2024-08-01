@@ -82,7 +82,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 
 						return (
 							<Card.MusicList
-								imageURL={item?.img || item?.artwork}
+								imageURL={item?.artwork || item?.artwork}
 								title={item?.title}
 								artist={item?.artist || item?.artist}
 								duration={item?.durationMillis || 0}
@@ -130,7 +130,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 				{audios.map((index: any, key: any) => (
 					<Card.MusicList
 						key={key}
-						imageURL={songs[index]?.img}
+						imageURL={songs[index]?.artwork}
 						title={songs[index]?.title}
 						artist={songs[index]?.artist}
 						duration={songs[index]?.durationMillis}

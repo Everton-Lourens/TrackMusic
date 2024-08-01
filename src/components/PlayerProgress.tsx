@@ -12,7 +12,7 @@ interface PlayerProgressNumberProps extends ViewProps {
 	right?: number;
 }
 
-export const PlayerProgressBar = ({ style }: PlayerProgressNumberProps) => {
+export const PlayerProgressBar = ({ style, left = -30, right = 65 }: PlayerProgressNumberProps) => {
 	const { duration, position } = useProgress(250)
 
 	const trackElapsedTime = formatSecondsToMinutes(position)
@@ -44,7 +44,10 @@ export const PlayerProgressBar = ({ style }: PlayerProgressNumberProps) => {
 					/>
 				</View>
 			</View>
-			<PlayerProgressNumber />
+			<PlayerProgressNumber
+				left={left}
+				right={right}
+			/>
 		</View>
 	);
 }
@@ -61,7 +64,7 @@ export const PlayerProgressNumber = ({ style, left = -30, right = 65 }: PlayerPr
 				{trackElapsedTime}
 			</Text>
 			<Text style={[styles.timeText, { right }]}>
-				{trackRemainingTime}
+				{trackRemainingTime || '00:00'}
 			</Text>
 		</View>
 	);
@@ -72,17 +75,18 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'baseline',
-		left: 50
+		left: 50,
+		marginTop: 5
 	},
 	timeText: {
 		...defaultStyles.text,
-		color: colors.text,
+		color: '#FFF', //color: colors.text,
 		opacity: 0.75,
 		//fontSize: fontSize.xs,
 		letterSpacing: 0.7,
-		fontWeight: '500',
 		backgroundColor: 'rgba(0, 0, 0, .2)', // 'gray', // '#FFF',
 		fontSize: 13,
+		fontWeight: 'bold',
 	},
 	container: {
 		flex: 1,

@@ -12,18 +12,12 @@ import { millisToMin, Storage } from '../../helpers';
 import { getAllSongs, getRandomImg } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
 import { PlayerProgressBar } from '@/src/components/PlayerProgress';
-import { PlayerControls, RepeatButton, ShuffleButton } from '@/src/components/PlayerControls';
-import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
-import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton, StopOutLineButton } from '@/src/components/PlayerControls';
-
+import { PlayerControls } from '@/src/components/PlayerControls';
+import TrackPlayer from 'react-native-track-player';
 
 //CONTINUE CODE HERE
 
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
-	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
-	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
-	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
-
 	const onPlayPress = (song: any, index: any) => {
 		// @ts-ignore
 		navigate(SCREENS.PLAYING, {
@@ -41,138 +35,19 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 		<>
 			<StatusBar barStyle="light-content" backgroundColor='black' />
 
-			<ImageBackground style={styles.container} source={{ uri: song?.detail?.artwork || urlImg }} blurRadius={10} resizeMode="cover">
+			<ImageBackground style={styles.container} source={{ uri: song?.detail?.artwork }} blurRadius={10} resizeMode="cover">
 				<View style={[StyleSheet.absoluteFill, styles.overlay]} />
-				<Header
-					options={{
-						left: {
-							children: <Image source={require('@/src/assets/icons/stop-outline.png')} />,
-							onPress: goBack,
-						},
-						right: {
-							children: <Image source={require('@/src/assets/icons/stop-outline.png')} />,
-							onPress: () => { },
-						},
-					}}
-				/>
+				<Text style={{ color: 'red', fontSize: 50 }}>
+					AAAAAAAAAAAAAAAAAAAAAAAAAAA
+				</Text>
 
-				{/*<View style={styles.frame}>
-					<View>
-						<Image style={styles.clipart} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={20} />
-					</View>
-					<View style={styles.details}>
-						<View style={{ marginBottom: 25 }}>
-							<Text style={styles.songTitle}>{song?.detail?.title}</Text>
-							<Text style={styles.artistName}>{song?.detail?.artist}</Text>
-						</View>
-						<View style={styles.tracker}>
-							<Slider
-								minimumValue={0}
-								maximumValue={song?.detail?.durationMillis}
-								minimumTrackTintColor="#C07037"
-								thumbTintColor="transparent"
-								maximumTrackTintColor="transparent"
-								value={song?.playbackStatus?.positionMillis || 0}
-								onSlidingComplete={handleSeek}
-							/>
-						</View>
-						<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
-							<Text style={styles.minMin}>{millisToMin(song?.playbackStatus?.positionMillis || 0)}</Text>
-							<Text style={styles.maxMin}>{millisToMin(song?.detail?.durationMillis)}</Text>
-						</View>
-					</View>
-					<View style={styles.actionsContainer}>
-						<TouchableOpacity onPress={handlePrev}>
-							<Icon name="skip-back" color="#C4C4C4" />
-						</TouchableOpacity>
-						<View>
-							<LinearGradient
-								style={[styles.playAndPauseBtn, !song?.soundObj?.isPlaying && { paddingLeft: 4 }]}
-								colors={['#939393', '#000']}
-								start={{ x: 0, y: 0 }}
-								end={{ x: 1, y: 0 }}
-							/>
-							<PlayPauseButton />
+				<PlayerProgressBar style={{ marginTop: 32 }} />
 
-						</View>
-
-						<TouchableOpacity style={styles.btn} onPress={() => (song?.soundObj?.isPlaying ? handleStop(() => { }) : () => { })} disabled={actions?.stop}>
-							<Animated.View style={{ opacity: stopBtnAnim }}>
-								<Icon family="Ionicons" name="stop-outline" color="#C4C4C4" />
-							</Animated.View>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={handleNext}>
-							<Icon name="skip-forward" color="#C4C4C4" />
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={configShuffle} style={styles.shuffleBtn}>
-							<Icon
-								name={"shuffle"}
-								color={shuffle ? "#00e1ff" : "#C4C4C4"}
-							/>
-						</TouchableOpacity>
-					</View>
-				</View>*/}
-
-				<View style={styles.frame}>
-					<View>
-						<Image style={styles.clipart} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={20} />
-					</View>
-					<View style={styles.details}>
-						<View style={{ marginBottom: 25 }}>
-							<Text style={styles.songTitle}>{song?.detail?.title}</Text>
-							<Text style={styles.artistName}>{song?.detail?.artist}</Text>
-						</View>
-						<View>
-							<PlayerProgressBar
-								right={49}
-								left={-49}
-							/>
-						</View>
-
-					</View>
-					<View style={styles.actionsContainer}>
-
-						<RepeatButton
-							iconSize={30}
-							style={{ marginRight: -30 }}
-						/>
-
-						<View style={[styles.containerBtn]}>
-							<View style={styles.row}>
-
-								<SkipToPreviousButton
-									iconSize={55}
-								/>
-
-								<PlayPauseButton
-									iconSize={70}
-								/>
-
-								{/*<Animated.View style={{ opacity: stopBtnAnim }}>
-									<StopOutLineButton iconSize={30} />
-								</Animated.View>*/}
-
-								<SkipToNextButton
-									iconSize={55}
-								/>
-
-							</View>
-						</View>
-
-						<ShuffleButton
-							iconSize={30}
-							style={{ marginLeft: -30 }}
-						/>
-
-					</View>
-				</View>
-
+				<PlayerControls style={{ marginTop: 40 }} />
 			</ImageBackground>
 		</>
 	);
-	//const stopBtnAnim = useRef(new Animated.Value(song?.soundObj?.isPlaying ? 1 : 0.3)).current;
+	const stopBtnAnim = useRef(new Animated.Value(song?.soundObj?.isPlaying ? 1 : 0.3)).current;
 	const [isFav, setIsFav] = useState(false);
 	const [newList, setNewList] = useState(null);
 	const [newRecents] = useState<Array<any>>([]);
@@ -319,7 +194,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const configAndPlay = (shouldPlay = false) => {
 		if (!song?.soundObj?.isLoaded) {
 			return Audio.configAndPlay(
-				song?.detail?.url, // URI FAIL
+				song?.detail?.uri, // URI FAIL
 				shouldPlay
 			)((playback, soundObj) => {
 				dispatch({
@@ -503,7 +378,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 	useEffect(() => {
 		if (false) {
-			if (params?.forcePlay && params?.song?.uri !== song?.detail?.url) {
+			if (params?.forcePlay && params?.song?.uri !== song?.detail?.uri) {
 
 				handleStop(() => {
 					Audio.play(
@@ -575,24 +450,23 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 							{/*// @ts-ignore */}
 							<Icon name="skip-back" color="#C4C4C4" />
 						</TouchableOpacity>
-						<View>
+						<TouchableOpacity onPress={handlePlayAndPause}>
 							<LinearGradient
 								style={[styles.playAndPauseBtn, !song?.soundObj?.isPlaying && { paddingLeft: 4 }]}
 								colors={['#939393', '#000']}
 								start={{ x: 0, y: 0 }}
 								end={{ x: 1, y: 0 }}
 							/>
-							<PlayPauseButton />
+							{/*// @ts-ignore */}
+							<Icon name={song?.soundObj?.isPlaying ? `pause` : `play`} color="#C4C4C4" />
 
-						</View>
-
+						</TouchableOpacity>
 						<TouchableOpacity style={styles.btn} onPress={() => (song?.soundObj?.isPlaying ? handleStop(() => { }) : () => { })} disabled={actions?.stop}>
 							<Animated.View style={{ opacity: stopBtnAnim }}>
 								{/*// @ts-ignore */}
 								<Icon family="Ionicons" name="stop-outline" color="#C4C4C4" />
 							</Animated.View>
 						</TouchableOpacity>
-
 						<TouchableOpacity onPress={handleNext}>
 							{/*// @ts-ignore */}
 							<Icon name="skip-forward" color="#C4C4C4" />
@@ -670,7 +544,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 400, // CORRIGIR
+		width: 200,
 	},
 	playAndPauseBtn: {
 		justifyContent: 'center',
@@ -690,21 +564,4 @@ const styles = StyleSheet.create({
 		borderWidth: 1.5,
 		borderColor: '#FFF',
 	},
-	controlBtn: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingLeft: 4,
-		borderRadius: 10,
-		borderWidth: 1.5,
-		marginHorizontal: 5,
-	},
-	containerBtn: {
-		width: '100%',
-	},
-	row: {
-		flexDirection: 'row',
-		justifyContent: 'space-evenly',
-		alignItems: 'center',
-	},
 });
-

@@ -42,7 +42,7 @@ const Index = ({ songs, playlists, navigation }: any) => {
 									key={key}
 									style={styles.item}
 									overlayStyle={{ height: 200 }}
-									imageURL={songs[playlist?.songs[0]]?.img}
+									imageURL={songs[playlist?.songs[0]]?.artwork}
 									title={playlist?.name}
 									subtitle={`${playlist?.songs.length} Songs`}
 									onPress={() => {

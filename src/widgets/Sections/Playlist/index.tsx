@@ -18,7 +18,7 @@ const Index = ({ songs, playlists, style = {} }: any) => {
 					<Card.Playlist
 						key={key}
 						style={[key === 0 && { marginLeft: 20 }]}
-						imageURL={songs[playlist?.songs[0]]?.img}
+						imageURL={songs[playlist?.songs[0]]?.artwork}
 						title={playlist?.name}
 						subtitle={`${playlist?.songs.length} Songs`}
 						onPress={() => {

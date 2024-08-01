@@ -73,7 +73,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 
 					return (
 						<Card.MusicList
-							imageURL={item?.img}
+							imageURL={item?.artwork}
 							title={item?.title}
 							artist={item?.artist}
 							duration={item?.durationMillis}
