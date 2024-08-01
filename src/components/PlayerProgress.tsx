@@ -10,6 +10,7 @@ import { useState } from 'react';
 interface PlayerProgressNumberProps extends ViewProps {
 	left?: number;
 	right?: number;
+	fontSize?: number;
 }
 
 export const PlayerProgressBar = ({ style, left = -30, right = 65 }: PlayerProgressNumberProps) => {
@@ -52,19 +53,19 @@ export const PlayerProgressBar = ({ style, left = -30, right = 65 }: PlayerProgr
 	);
 }
 
-export const PlayerProgressNumber = ({ style, left = -30, right = 65 }: PlayerProgressNumberProps) => {
+export const PlayerProgressNumber = ({ style, left = -30, right = 65, fontSize = 13 }: PlayerProgressNumberProps) => {
 	const { duration, position } = useProgress(250)
 
 	const trackElapsedTime = formatSecondsToMinutes(position)
 	const trackRemainingTime = formatSecondsToMinutes(duration - position)
 
 	return (
-		<View style={styles.timeRow}>
-			<Text style={[styles.timeText, { left }]}>
+		<View style={[styles.timeRow, style]}>
+			<Text style={[styles.timeText, { left, fontSize }]}>
 				{trackElapsedTime}
 			</Text>
-			<Text style={[styles.timeText, { right }]}>
-				{trackRemainingTime || '00:00'}
+			<Text style={[styles.timeText, { right, fontSize }]}>
+				{trackRemainingTime}
 			</Text>
 		</View>
 	);
@@ -75,8 +76,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'baseline',
-		left: 50,
-		marginTop: 5
+		left: 40,
 	},
 	timeText: {
 		...defaultStyles.text,
@@ -84,8 +84,6 @@ const styles = StyleSheet.create({
 		opacity: 0.75,
 		//fontSize: fontSize.xs,
 		letterSpacing: 0.7,
-		backgroundColor: 'rgba(0, 0, 0, .2)', // 'gray', // '#FFF',
-		fontSize: 13,
 		fontWeight: 'bold',
 	},
 	container: {

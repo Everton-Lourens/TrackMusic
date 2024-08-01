@@ -37,11 +37,6 @@ const Index = () => {
 					/>
 					<View style={styles.sections}>
 
-						<ShuffleButton
-							style={{ alignContent: 'center', marginTop: 30, marginBottom: 30, marginLeft: 'auto', marginRight: 'auto' }}
-						/>
-						<PlayerProgressBar />
-
 						<Section.Explore />
 						<Section.Recent style={{ marginTop: 30 }} />
 						<Section.Playlist style={{ marginTop: 30 }} />

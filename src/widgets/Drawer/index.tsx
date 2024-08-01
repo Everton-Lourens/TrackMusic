@@ -12,7 +12,7 @@ const menus = [
 	{ name: 'home', title: 'Início', screen: SCREENS.HOME },
 	{ name: 'songs', title: 'Músicas', screen: SCREENS.SONGS },
 	{ name: 'favourite', title: 'Favoritos', screen: SCREENS.FAVOURITE },
-	{ name: 'recent', title: 'Recente', screen: SCREENS.RECENT },
+	{ name: 'recent', title: 'Recentes', screen: SCREENS.RECENT },
 	{ name: 'playlist', title: 'Playlist', screen: SCREENS.PLAYLISTS },
 ];
 

@@ -46,7 +46,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				<Header
 					options={{
 						left: {
-							children: <Image source={require('@/src/assets/icons/stop-outline.png')} />,
+							children: <Image style={styles.headerBtn} source={require('@/src/assets/icons/go-back.png')} />,
 							onPress: goBack,
 						},
 						right: {
@@ -126,8 +126,8 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 						</View>
 						<View>
 							<PlayerProgressBar
-								right={49}
-								left={-49}
+								right={45}
+								left={-35}
 							/>
 						</View>
 
@@ -621,6 +621,17 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: 'black',
 		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.2)',
+		justifyContent: 'center',
+		//alignItems: 'center',
+		tintColor: 'black',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 	shuffleBtn: {
 		position: 'absolute',

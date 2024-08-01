@@ -109,8 +109,10 @@ NOT WORKING
 				/>
 
 				<PlayerProgressNumber
-					left={53}
-					right={53}
+					left={60}
+					right={50}
+					fontSize={10}
+					style={{ marginTop: -7 }}
 				/>
 			</View>
 			<View style={styles.left}>
@@ -145,11 +147,11 @@ NOT WORKING
 					</Text> : null}
 			</View>
 			<View style={styles.actions}>
-				<SkipToPreviousButton iconSize={30} />
+				<SkipToPreviousButton iconSize={35} />
 
-				<PlayPauseButton iconSize={30} />
+				<PlayPauseButton iconSize={45} />
 
-				<SkipToNextButton iconSize={30} />
+				<SkipToNextButton iconSize={35} />
 			</View>
 		</View>
 	);
@@ -199,7 +201,7 @@ const styles = StyleSheet.create({
 	songTitle: {
 		color: 'white', // '#555555',
 		fontSize: 15,
-		top: 5,
+		//top: 5,
 		fontWeight: 'bold',
 		letterSpacing: 0.7,
 	},
@@ -212,6 +214,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 5,
+		marginRight: 15,
 	},
 	btn: {
 		padding: 5,
