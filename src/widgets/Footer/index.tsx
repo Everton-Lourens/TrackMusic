@@ -10,18 +10,17 @@ import { DISPATCHES, SCREENS } from '@/src/constants';
 import { Storage } from '@/src/helpers';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
-import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
+import { PlayerProgressNumber } from '@/src/components/PlayerProgress';
 
 //import { PlayerControls } from '@/src/components/PlayerControls';
 
 const { width } = Dimensions.get('screen');
 
-const Index = ({ recents, song, songs, dispatch }: any) => {
+const Index = ({ song, dispatch }: any) => {
 	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	const { navigate } = useNavigation();
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const { duration, position } = useProgress(250);
-	const [shuffle, setShuffle] = useState<any>(null);
 
 	// Evento para atualizar o estado quando a música em reprodução mudar
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
@@ -109,7 +108,10 @@ NOT WORKING
 					value={position}
 				/>
 
-				<PlayerProgressBar />
+				<PlayerProgressNumber
+					left={53}
+					right={53}
+				/>
 			</View>
 			<View style={styles.left}>
 				{/*// @ts-ignore*/}
@@ -153,7 +155,7 @@ NOT WORKING
 	);
 };
 
-const mapStateToProps = (state: any) => ({ song: state?.player?.currentSong, songs: state?.player?.songs, recents: state?.storage?.recents });
+const mapStateToProps = (state: any) => ({ song: state?.player?.currentSong });
 const mapDispatchToProps = (dispatch: any) => ({ dispatch });
 export default connect(mapStateToProps, mapDispatchToProps)(memo(Index));
 

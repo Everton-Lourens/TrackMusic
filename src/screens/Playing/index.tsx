@@ -11,7 +11,7 @@ import { DISPATCHES } from '@/src/constants';
 import { millisToMin, Storage } from '../../helpers';
 import { getAllSongs, getRandomImg } from '@/src/store/config';
 import songDetail from '@/src/store/states/player';
-import { PlayerProgressBar } from '@/src/components/PlayerProgressbar';
+import { PlayerProgressBar } from '@/src/components/PlayerProgress';
 import { PlayerControls } from '@/src/components/PlayerControls';
 import TrackPlayer from 'react-native-track-player';
 

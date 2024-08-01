@@ -170,10 +170,11 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const init = async () => {
 		try {
 			if (mp3Files?.length || !loading) {
-				if (__DEV__ && false) {
+				if (__DEV__) {
 					const music = await setupPlayer();
 					const mp3IsStorage = await Storage.get('mp3Files', true);
-					if (mp3IsStorage === null || !mp3IsStorage?.length) await Storage.store('mp3Files', music, true);
+					if (mp3IsStorage === null || !mp3IsStorage?.length)
+						await Storage.store('mp3Files', music, true);
 					setMp3Files(music as any); // local json music to test
 				} else {
 					await setupPlayer();
