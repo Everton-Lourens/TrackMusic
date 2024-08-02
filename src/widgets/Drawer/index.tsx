@@ -82,7 +82,7 @@ const Index = ({
 					<Animatable.View style={styles.bottom} animation={active ? 'slideInUp' : 'slideOutDown'} duration={2000}>
 						<Animatable.View animation="pulse" easing="ease-out" iterationCount="infinite">
 							<TouchableOpacity style={styles.bottomBtn} activeOpacity={0.7} onPress={() => Linking.openURL('https://www.instagram.com/everton_lourens/')}>
-								<Text style={styles.bottomBtnTxt}>Meu instagram</Text>
+								<Text style={styles.bottomBtnTxt}>instagram</Text>
 							</TouchableOpacity>
 						</Animatable.View>
 						<TouchableOpacity style={styles.bottomBtn} activeOpacity={0.7} onPress={bottomBtn?.onPress}>

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
-
+import Marquee from 'react-native-marquee';
 import { Header } from '../../widgets';
 import { Audio } from '../../hooks';
 import { DISPATCHES } from '@/src/constants';
@@ -179,8 +179,18 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					</View>
 					<View style={styles.details}>
 						<View style={{ marginBottom: 25 }}>
-							<Text style={styles.songTitle}>{song?.detail?.title}</Text>
-							<Text style={styles.artistName}>{song?.detail?.artist}</Text>
+							<Marquee
+								style={styles.songTitle}
+								speed={0.17}
+								marqueeOnStart={true}
+								loop={true}
+							>
+								{song?.detail?.title}
+							</Marquee>
+							{song?.detail?.artist ?
+								<Text style={styles.artistName} numberOfLines={1}>
+									{song?.detail?.artist}
+								</Text> : null}
 						</View>
 						<View>
 							<PlayerProgressBar

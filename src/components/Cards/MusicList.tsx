@@ -41,10 +41,13 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Autho
 				</View>
 				<View style={styles.right}>
 					<TouchableOpacity onPress={onPlayPress}>
-						<LinearGradient style={styles.playBtn} colors={['#939393', '#000']}>
-							{/*// @ts-ignore*/}
-							{/*<Icon name="play" color="#C4C4C4" />*/}
-							<Image source={require('@/src/assets/icons/play.png')} style={styles.playBtn} />
+						<LinearGradient
+							style={styles.playBtn}
+							colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
+							start={{ x: 0, y: 0 }}
+							end={{ x: 0, y: 0.7 }}
+						>
+							<Image source={require('@/src/assets/icons/play.png')} />
 						</LinearGradient>
 					</TouchableOpacity>
 				</View>
@@ -90,13 +93,8 @@ const styles = StyleSheet.create({
 		color: '#A4A4A4', // '#A4A4A4',
 	},
 	playBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.2)',
 		justifyContent: 'center',
-		alignItems: 'center',
-		width: 50,
-		height: 50,
-		paddingLeft: 4,
-		borderRadius: 100,
-		borderWidth: 1.5,
-		borderColor: '#006680',
+		borderRadius: 35,
 	},
 });

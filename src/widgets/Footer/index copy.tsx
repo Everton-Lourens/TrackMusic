@@ -90,77 +90,80 @@ NOT WORKING
 
 
 	return (
+		<View style={styles.container}>
 
-			<View style={styles.container}>
+			<View style={styles.tracker}>
+				<View
+					style={{
+						...StyleSheet.absoluteFill as any,
+						zIndex: 99,
+					}}
+				/>
+				<Slider
+					minimumValue={0}
+					maximumValue={duration}
+					minimumTrackTintColor="red"
+					thumbTintColor="transparent"
+					maximumTrackTintColor="transparent"
+					value={position}
+				/>
 
-				<View style={styles.tracker}>
-					<View
-						style={{
-							...StyleSheet.absoluteFill as any,
-							zIndex: 99,
-						}}
-					/>
-					<Slider
-						minimumValue={0}
-						maximumValue={duration}
-						minimumTrackTintColor="red"
-						thumbTintColor="transparent"
-						maximumTrackTintColor="transparent"
-						value={position}
-					/>
-
-					<PlayerProgressNumber
-						left={60}
-						right={50}
-						fontSize={10}
-						style={{ marginTop: -7 }}
-					/>
-				</View>
-				<View style={styles.left}>
-					{/*// @ts-ignore*/}
-					<TouchableWithoutFeedback onPress={() => navigate(SCREENS.PLAYING)}>
-						<View style={styles.coverArtContainer}>
-							<Image
-								style={{
-									width: 130,
-									height: 130,
-									position: 'absolute',
-									right: -6,
-									opacity: 0.5,
-									alignSelf: 'center',
-								}}
-								source={{ uri: song?.detail?.artwork }}
-								resizeMode="cover"
-								borderRadius={150}
-								blurRadius={100}
-							/>
-							<Image style={styles.coverArt} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={150} />
-						</View>
-					</TouchableWithoutFeedback>
-				</View>
-				<View style={styles.content}>
-					<Marquee
-						style={styles.songTitle}
-						speed={0.08}
-						marqueeOnStart={true}
-						loop={true}
-					>
-						{song?.detail?.title}
-					</Marquee>
-
-					{song?.detail?.artist ?
-						<Text style={styles.songArtist} numberOfLines={1}>
-							{song?.detail?.artist}
-						</Text> : null}
-				</View>
-				<View style={styles.actions}>
-					<SkipToPreviousButton iconSize={35} />
-
-					<PlayPauseButton iconSize={45} />
-
-					<SkipToNextButton iconSize={35} />
-				</View>
+				<PlayerProgressNumber
+					left={60}
+					right={50}
+					fontSize={10}
+					style={{ marginTop: -7 }}
+				/>
 			</View>
+			<View style={styles.left}>
+				{/*// @ts-ignore*/}
+				<TouchableWithoutFeedback onPress={() => navigate(SCREENS.PLAYING)}>
+					<View style={styles.coverArtContainer}>
+						<Image
+							style={{
+								width: 130,
+								height: 130,
+								position: 'absolute',
+								right: -6,
+								opacity: 0.5,
+								alignSelf: 'center',
+							}}
+							source={{ uri: song?.detail?.artwork }}
+							resizeMode="cover"
+							borderRadius={150}
+							blurRadius={100}
+						/>
+						<Image style={styles.coverArt} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={150} />
+					</View>
+				</TouchableWithoutFeedback>
+			</View>
+			<View style={styles.content}>
+				{song?.detail?.artist ?
+					<Text style={styles.songArtist} numberOfLines={1}>
+						{song?.detail?.artist}
+					</Text> : null}
+			</View>
+
+				<View style={[styles.actions, { position: 'absolute' }]}>
+					<SkipToPreviousButton iconSize={45} />
+
+					<PlayPauseButton iconSize={60} />
+
+					<SkipToNextButton iconSize={45} />
+				</View>
+
+			<View style={{ justifyContent: 'center',  marginRight: 155, marginTop: 70 }}>
+				<Marquee
+					style={styles.songTitle}
+					speed={0.10}
+					marqueeOnStart={true}
+					loop={true}
+				>
+					{song?.detail?.title}
+				</Marquee>
+			</View>
+			
+		</View>
 
 	);
 };
@@ -222,7 +225,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		paddingHorizontal: 5,
-		marginRight: 15,
+		marginLeft: 45,
 	},
 	btn: {
 		padding: 5,
