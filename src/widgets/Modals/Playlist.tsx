@@ -8,7 +8,7 @@ import { Storage } from '../../helpers';
 
 const { width, height } = Dimensions.get('screen');
 
-const Playlist = ({ storedPlaylists, dispatch, visible = false, onClose = () => {}, songIndex = 0 } : any) => {
+const Playlist = ({ storedPlaylists, dispatch, visible = false, onClose = () => { }, songIndex = 0 }: any) => {
 	const [playlists, setPlaylists] = useState([]);
 	const [newPlaylist, setNewPlaylist] = useState(false);
 	const [input, setInput] = useState('');
@@ -30,66 +30,75 @@ const Playlist = ({ storedPlaylists, dispatch, visible = false, onClose = () => 
 	};
 
 	const addToPlaylist = async (name: any) => {
-		let lists = await Storage.get('playlists', true);
+		try {
+			let lists = await Storage.get('playlists', true);
 
-		for (let i = 0; i < lists.length; i++) {
-			if (lists[i]?.name.toLowerCase() === name.toLowerCase()) {
-				if (lists[i]?.songs.includes(songIndex)) {
-					const updatedLists = lists[i]?.songs.filter((i: any) => i !== songIndex);
-					lists[i].songs = updatedLists;
+			for (let i = 0; i < lists.length; i++) {
+				if (lists[i]?.name.toLowerCase() === name.toLowerCase()) {
+					if (lists[i]?.songs.includes(songIndex)) {
+						const updatedLists = lists[i]?.songs.filter((i: any) => i !== songIndex);
+						lists[i].songs = updatedLists;
 
-					if (updatedLists?.length < 1) {
-						lists = lists.filter((i: any) => i?.name.toLowerCase() !== name.toLowerCase());
+						if (updatedLists?.length < 1) {
+							lists = lists.filter((i: any) => i?.name.toLowerCase() !== name.toLowerCase());
+						}
+					} else {
+						lists[i]?.songs.unshift(songIndex);
 					}
-				} else {
-					lists[i]?.songs.unshift(songIndex);
 				}
 			}
-		}
 
-		await Storage.store('playlists', lists, true);
-		dispatch({
-			type: DISPATCHES.STORAGE,
-			payload: {
-				playlists: await Storage.get('playlists', true),
-			},
-		});
+			await Storage.store('playlists', lists, true);
+			dispatch({
+				type: DISPATCHES.STORAGE,
+				payload: {
+					playlists: await Storage.get('playlists', true),
+				},
+			});
+		} catch (error) {
+			console.error(error);
+			console.log(name);
+		}
 	};
 
 	const createPlaylist = async () => {
-		const playlist = {
-			name: input || 'Default',
-			songs: [songIndex],
-		};
+		try {
+			const playlist = {
+				name: input || 'Default',
+				songs: [songIndex],
+			};
 
-		if (playlists.filter((i: any) => i?.name.toLowerCase() === playlist?.name.toLowerCase()).length >= 1) {
-			return Alert.alert('Playlist', 'Playlist já existe!', [
-				{
-					text: 'Fechar',
-					style: 'cancel',
-				},
-				{
-					text: 'Adicionar à playlist',
-					onPress: () => {
-						addToPlaylist(playlist?.name);
-						setNewPlaylist(false);
-						setInput('');
+			if (playlists.filter((i: any) => i?.name.toLowerCase() === playlist?.name.toLowerCase()).length >= 1) {
+				return Alert.alert('Playlist', 'Playlist já existe!', [
+					{
+						text: 'Fechar',
+						style: 'cancel',
 					},
-				},
-			]);
-		}
+					{
+						text: 'Adicionar à playlist',
+						onPress: () => {
+							addToPlaylist(playlist?.name);
+							setNewPlaylist(false);
+							setInput('');
+						},
+					},
+				]);
+			}
 
-		// @ts-ignore
-		playlists.unshift(playlist);
-		await Storage.store('playlists', playlists, true);
-		dispatch({
-			type: DISPATCHES.STORAGE,
-			payload: {
-				playlists: await Storage.get('playlists', true),
-			},
-		});
-		setNewPlaylist(false);
-		setInput('');
+			// @ts-ignore
+			playlists.unshift(playlist);
+			await Storage.store('playlists', playlists, true);
+			dispatch({
+				type: DISPATCHES.STORAGE,
+				payload: {
+					playlists: await Storage.get('playlists', true),
+				},
+			});
+			setNewPlaylist(false);
+			setInput('');
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	useEffect(() => {
@@ -114,7 +123,7 @@ const Playlist = ({ storedPlaylists, dispatch, visible = false, onClose = () => 
 			<Animatable.View style={styles.modal} animation={animation} duration={300}>
 				<Text style={{ color: 'rgba(0, 0, 0, .5)', fontSize: 24, fontWeight: 'bold', letterSpacing: 1, marginBottom: 20 }}>Playlists</Text>
 				{playlists.map(({ name, songs }, key) => (
-					<TouchableOpacity key={key} style={styles.item} onPress={() => addToPlaylist(name)} activeOpacity={0.6}>
+					<TouchableOpacity key={key} style={styles.item} onPress={async () => await addToPlaylist(name)} activeOpacity={0.6}>
 						{/*// @ts-ignore */}
 						<Text style={{ color: 'rgba(0, 0, 0, .5)', fontSize: 16, letterSpacing: 1 }}>{`${name} (${songs.length || 0})`}</Text>
 					</TouchableOpacity>
@@ -131,7 +140,7 @@ const Playlist = ({ storedPlaylists, dispatch, visible = false, onClose = () => 
 						<View style={styles.input}>
 							<TextInput style={styles.textInput} onChangeText={handleInput} value={input} placeholder="Nome da Playlist : " maxLength={25} />
 						</View>
-						<TouchableOpacity style={styles.btn} onPress={input.length >= 3 ? createPlaylist : () => {}}>
+						<TouchableOpacity style={styles.btn} onPress={input.length >= 3 ? createPlaylist : () => { }}>
 							<Text style={[styles.btnTxt, { color: '#C07037' }, input.length < 3 && { opacity: 0.5 }]}>Criar</Text>
 						</TouchableOpacity>
 						<TouchableOpacity

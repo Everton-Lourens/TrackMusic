@@ -133,7 +133,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 						imageURL={songs[index]?.artwork}
 						title={songs[index]?.title}
 						artist={songs[index]?.artist}
-						duration={songs[index]?.durationMillis}
+						duration={songs[index]?.durationMillis || 0}
 						onPlayPress={() => onPlayPress(songs[index], index)}
 						// @ts-ignore
 						moreOptions={[

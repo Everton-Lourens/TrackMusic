@@ -162,7 +162,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 						setMp3Files(allSongs);
 						await Storage.store('mp3Files', allSongs, true);
 					}
-					console.log('mp3Files?.length kkkkkkkkkkkkkkkkk', allSongs?.length);
 				}
 				setLoading(false);
 			}
@@ -173,7 +172,12 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const init = async () => {
 		try {
 			if (mp3Files?.length || !loading) {
-				if (__DEV__ && false) {
+				if (__DEV__) {
+					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
+					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
+					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
+					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
+					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
 					const music = await setupPlayer();
 					const mp3IsStorage = await Storage.get('mp3Files', true);
 					if (mp3IsStorage === null || !mp3IsStorage?.length)

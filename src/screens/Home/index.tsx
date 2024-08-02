@@ -20,37 +20,39 @@ const Index = () => {
 
 	return (
 		<Drawer active={drawer} current="home" onItemPressed={() => setDrawer(false)}>
+			<StatusBar barStyle="light-content" backgroundColor='black' />
+
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
-				<StatusBar barStyle="light-content" backgroundColor='black' />
+				<ScrollView>
+					<SafeAreaView style={styles.container}>
+						<Header
+							options={{
+								left: {
+									// @ts-ignore
+									children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+									onPress: () => setDrawer(!drawer),
+								},
+							}}
+						/>
+						<View style={styles.sections}>
 
-				<SafeAreaView style={styles.container}>
-					<Header
-						options={{
-							left: {
-								// @ts-ignore
-								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
-								onPress: () => setDrawer(!drawer),
-							},
-						}}
-					/>
-					<View style={styles.sections}>
+							<Section.Explore />
+							<Section.Recent style={{ marginTop: 30 }} />
+							<Section.Favourites style={{ marginTop: 30 }} />
+							<Section.Playlist style={{ marginTop: 30 }} />
 
-						<Section.Explore />
-						<Section.Recent style={{ marginTop: 30 }} />
-						<Section.Favourites style={{ marginTop: 30 }} />
-						<Section.Playlist style={{ marginTop: 30 }} />
+							<ScrollView>
+								<View style={{
+									flex: 1,
+									marginTop: Dimensions.get('screen').height * 0.025,
+								}}>
+								</View>
+							</ScrollView>
+						</View>
 
-						<ScrollView>
-							<View style={{
-								flex: 1,
-								marginTop: Dimensions.get('screen').height * 0.025,
-							}}>
-							</View>
-						</ScrollView>
-					</View>
-
-					<Footer />
-				</SafeAreaView>
+						<Footer />
+					</SafeAreaView>
+				</ ScrollView>
 
 			</ImageBackground>
 		</Drawer>

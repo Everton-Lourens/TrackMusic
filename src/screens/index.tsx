@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Loading, Home, Songs, Playing, Search } from '@/src/screens/screens';
+import { Loading, Home, Songs, Playing, Search, Favourite, Recent, Playlists, Playlist } from '@/src/screens/screens';
 import { SCREENS } from '@/src/constants';
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +23,10 @@ const StackNavigation = () => {
       <Stack.Screen name={SCREENS.SONGS} component={Songs} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.PLAYING} component={Playing} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.SEARCH} component={Search} options={{ headerShown: false }} />
+      <Stack.Screen name={SCREENS.FAVOURITE} component={Favourite} options={{ headerShown: false }} />
+      <Stack.Screen name={SCREENS.RECENT} component={Recent} options={{ headerShown: false }} />
+      <Stack.Screen name={SCREENS.PLAYLISTS} component={Playlists} options={{ headerShown: false }} />
+      <Stack.Screen name={SCREENS.PLAYLIST} component={Playlist} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 };

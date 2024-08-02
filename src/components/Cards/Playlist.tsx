@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		width: null,
-		height: 150,
+		height: 200,
 		borderRadius: 10,
 	},
 	content: {

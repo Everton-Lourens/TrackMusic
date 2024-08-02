@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, Image, View, ImageBackgroundBase } from 'react-native';
 import { connect } from 'react-redux';
-import { LinearGradient } from 'expo-linear-gradient';
-import Constants from 'expo-constants';
-
-import { Icon } from '../../components';
 import { Header, Section } from '../../widgets';
 import { Storage } from '../../helpers';
 import { DISPATCHES } from '@/src/constants';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { goBack } } : any) => {
+const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { goBack } }: any) => {
 	const [playlist, setPlaylist] = useState<any>({});
 
 	const deletePlaylist = () => {
@@ -50,21 +47,26 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 
 	return playlist && Object.keys(playlist).length > 0 ? (
 		<>
-<StatusBar barStyle="light-content" backgroundColor='black' />
+			<StatusBar barStyle="light-content" backgroundColor='black' />
 
 			<View style={{ flex: 1 }}>
-				<ImageBackground style={styles.header} source={{ uri: songs[playlist?.songs[0]].img }}>
-					<LinearGradient style={styles.overlay} colors={['rgba(0, 0, 0, 1)', 'transparent']} start={[0, 1]} end={[0, 0]} />
+				<ImageBackground style={styles.header} source={{ uri: songs[playlist?.songs[2]].artwork }}>
+					<LinearGradient
+						style={styles.overlay}
+						colors={['rgba(0, 0, 0, 1)', 'transparent']}
+						start={{ x: 0, y: 1 }}
+						end={{ x: 0, y: 0 }}
+					/>
 					<Header
 						options={{
 							left: {
 								// @ts-ignore
-								children: <Icon name="chevron-left" color="#FFF" />,
+								children: <Image source={require('@/src/assets/icons/go-back.png')} resizeMode="contain" />,
 								onPress: goBack,
 							},
 							right: {
 								// @ts-ignore
-								children: <Icon name="trash" color="#FFF" />,
+								children: <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" />,
 								onPress: handleDelete,
 							},
 						}}
@@ -80,13 +82,21 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 				</ImageBackground>
 			</View>
 			<ScrollView style={styles.itemContainer} contentContainerStyle={{ flex: 1 }}>
-				{playlist?.songs && playlist?.songs.length > 0 ? (
-					<Section.MusicList audios={playlist?.songs} indicator={false} useIndex={true} />
-				) : (
-					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-						<Text style={{ fontSize: 24, fontWeight: 'bold', color: '#C4C4C4' }}>Sem músicas</Text>
-					</View>
-				)}
+				<ImageBackground style={styles.item} blurRadius={10} source={{ uri: songs[playlist?.songs[2]].artwork }}>
+				<LinearGradient
+						style={styles.imageBackground}
+						colors={['rgba(0, 0, 0, 1)', 'transparent']}
+						start={{ x: 1, y: 0 }}
+						end={{ x: 0, y: 1 }}
+					/>
+					{playlist?.songs && playlist?.songs.length > 0 ? (
+						<Section.MusicList audios={playlist?.songs} indicator={false} useIndex={true} />
+					) : (
+						<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+							<Text style={{ fontSize: 24, fontWeight: 'bold', color: '#C4C4C4' }}>Sem músicas</Text>
+						</View>
+					)}
+				</ImageBackground>
 			</ScrollView>
 		</>
 	) : (
@@ -103,6 +113,22 @@ const styles = StyleSheet.create({
 		width: Dimensions.get('screen').width,
 		height: Dimensions.get('screen').height / 3.2,
 		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+	},
+	item: {
+		width: Dimensions.get('screen').width,
+		height: Dimensions.get('screen').height*0.7,
+	},
+	imageBackground: {
+		backgroundColor: 'rgba(0, 0, 0, 0.1)',
+		justifyContent: 'center',
+		alignItems: 'center',
+		position: 'absolute',
+		top: 0,
+		right: 0,
+		bottom: 0,
+		left: 0,
+		width: null,
+		height: Dimensions.get('screen').height*0.7,
 	},
 	overlay: {
 		justifyContent: 'center',
@@ -130,6 +156,6 @@ const styles = StyleSheet.create({
 		height: Dimensions.get('screen').height / 2.5,
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
-		backgroundColor: '#FFF',
+		backgroundColor: 'black',
 	},
 });

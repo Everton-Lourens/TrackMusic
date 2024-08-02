@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAssets } from 'expo-asset';
 import { connect } from 'react-redux';
 
 import { Header, Drawer } from '../../widgets';
-import { Card, Icon } from '../../components';
+import { Card} from '../../components';
 import { SCREENS } from '@/src/constants';
-import Constants from 'expo-constants';
 
 const Index = ({ songs, playlists, navigation }: any) => {
-	const [assets] = useAssets([require('@/src/assets/icons/hamburger.png'), require('@/src/assets/icons/search.png')]);
 	const [drawer, setDrawer] = useState(false);
 
 	return (
@@ -23,7 +20,7 @@ const Index = ({ songs, playlists, navigation }: any) => {
 						options={{
 							left: {
 								// @ts-ignore
-								children: drawer ? <Icon name="x" color="red" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
 							middle: {
@@ -44,7 +41,7 @@ const Index = ({ songs, playlists, navigation }: any) => {
 									overlayStyle={{ height: 200 }}
 									imageURL={songs[playlist?.songs[0]]?.artwork}
 									title={playlist?.name}
-									subtitle={`${playlist?.songs.length} Songs`}
+									subtitle={`${playlist?.songs.length ===1 ? '1 Música' : playlist?.songs.length} Músicas`}
 									onPress={() => {
 										const playlistIndex = playlists.findIndex((i: any) => i?.name.toLowerCase() === playlist?.name.toLowerCase());
 										navigation.push(SCREENS.PLAYLIST, { playlistIndex });

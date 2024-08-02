@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import * as Modal from '../../widgets/Modals';
 import { millisToMin } from '../../helpers';
 
-const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Author Name`, duration = '03:22', onPlayPress = () => { }, moreOptions = [] }: any) => {
+const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Author Name`, duration = '', onPlayPress = () => { }, moreOptions = [] }: any) => {
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 
 	return (
@@ -35,9 +35,9 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Autho
 							{title}
 						</Text>
 						{artist && <Text style={styles.artist}>{artist}</Text>}
-						{!artist && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
+						{!artist && <Text style={styles.duration}>{duration ? millisToMin(duration) : ''}</Text>}
 					</View>
-					{artist && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
+					{artist && <Text style={styles.duration}>{duration ? millisToMin(duration) : ''}</Text>}
 				</View>
 
 			</TouchableOpacity>
