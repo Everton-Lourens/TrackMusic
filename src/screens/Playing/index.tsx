@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
 		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	headerBtn: {
+		tintColor: 'gray', 
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
 		//justifyContent: 'center',

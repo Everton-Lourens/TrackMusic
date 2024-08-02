@@ -50,7 +50,7 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 			<StatusBar barStyle="light-content" backgroundColor='black' />
 
 			<View style={{ flex: 1 }}>
-				<ImageBackground style={styles.header} source={{ uri: songs[playlist?.songs[2]].artwork }}>
+				<ImageBackground style={styles.header} source={{ uri: songs[playlist?.songs[0]].artwork }}>
 					<LinearGradient
 						style={styles.overlay}
 						colors={['rgba(0, 0, 0, 1)', 'transparent']}
@@ -61,12 +61,12 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 						options={{
 							left: {
 								// @ts-ignore
-								children: <Image source={require('@/src/assets/icons/go-back.png')} resizeMode="contain" />,
+								children: <Image style={styles.headerBtn} source={require('@/src/assets/icons/go-back.png')} resizeMode="contain" />,
 								onPress: goBack,
 							},
 							right: {
 								// @ts-ignore
-								children: <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" />,
+								children: <Image style={styles.headerBtn} source={require('@/src/assets/icons/trash.png')} resizeMode="contain" />,
 								onPress: handleDelete,
 							},
 						}}
@@ -82,7 +82,7 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 				</ImageBackground>
 			</View>
 			<ScrollView style={styles.itemContainer} contentContainerStyle={{ flex: 1 }}>
-				<ImageBackground style={styles.item} blurRadius={10} source={{ uri: songs[playlist?.songs[2]].artwork }}>
+				<ImageBackground style={styles.item} blurRadius={10} source={{ uri: songs[playlist?.songs[0]].artwork }}>
 				<LinearGradient
 						style={styles.imageBackground}
 						colors={['rgba(0, 0, 0, 1)', 'transparent']}
@@ -117,6 +117,18 @@ const styles = StyleSheet.create({
 	item: {
 		width: Dimensions.get('screen').width,
 		height: Dimensions.get('screen').height*0.7,
+	},
+	headerBtn: {
+		tintColor: 'gray', 
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 	imageBackground: {
 		backgroundColor: 'rgba(0, 0, 0, 0.1)',
