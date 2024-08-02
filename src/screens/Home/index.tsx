@@ -23,7 +23,6 @@ const Index = () => {
 			<StatusBar barStyle="light-content" backgroundColor='black' />
 
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
-				<ScrollView>
 					<SafeAreaView style={styles.container}>
 						<Header
 							options={{
@@ -34,6 +33,8 @@ const Index = () => {
 								},
 							}}
 						/>
+				<ScrollView>
+
 						<View style={styles.sections}>
 
 							<Section.Explore />
@@ -49,11 +50,9 @@ const Index = () => {
 								</View>
 							</ScrollView>
 						</View>
-
+				</ ScrollView>
 						<Footer />
 					</SafeAreaView>
-				</ ScrollView>
-
 			</ImageBackground>
 		</Drawer>
 	);

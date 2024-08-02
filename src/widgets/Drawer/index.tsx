@@ -23,8 +23,8 @@ const Index = ({
 	current = '',
 	onItemPressed = () => { },
 	bottomBtn = {
-		text: 'Source Code',
-		onPress: () => Linking.openURL('https://github.com/jsxclan/musicont'),
+		text: 'Segredo',
+		onPress: () => Linking.openURL('https://www.bibliaon.com/versiculo/apocalipse_3_20/'),
 	},
 	// @ts-ignore
 	children,
