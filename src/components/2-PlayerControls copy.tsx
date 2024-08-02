@@ -97,54 +97,56 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 }
 
 export const ShuffleButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
-	const [configQueue, setConfigQueue] = useState<boolean>(false);
+	const [oldShuffle, setOldShuffle] = useState<any>(null);
 	const [shuffle, setShuffle] = useState<any>(null);
-
-	const checkMusicList = async () => {
-		if (configQueue === true) { // It only starts if the user clicks and not when rendering
-			try {
-				TrackPlayer.pause().then(async () => {
-					const thisWillBeNext: any = await TrackPlayer.getCurrentTrack();
-					const nextTrack: any = await TrackPlayer.getTrack(thisWillBeNext);
-					const mp3Files: any = await Storage.get('mp3Files', true);
-					if (shuffle) {
-						mp3Files.sort(() => Math.random() - 0.5);
-					}
-					mp3Files.unshift(nextTrack);
-					await TrackPlayer.setQueue(mp3Files);
-					await TrackPlayer.play();
-					setConfigQueue(false);  // null to not shuffle or organize
-				}).catch(async (e) => await TrackPlayer.play());
-			} catch (error) {
-				console.error("check-MusicList: Erro ao controlar a reprodução:", error);
-			}
-		}
-	}
-
-	const changeShuffle = async () => {
-		const newShuffle = !shuffle;
-		setShuffle(newShuffle);
-		setConfigQueue(true);
-		await Storage.store('shuffle', String(newShuffle), false);
-	}
-
 
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
 			try {
-				await checkMusicList();
+				if (shuffle !== oldShuffle && shuffle !== null) { // It only starts if the user clicks and not when rendering
+					await checkMusicList();
+				}
 			} catch (error) {
 				console.error("Shuffle: Erro ao controlar a reprodução:", error);
 			}
 		}
 	});
 
+
+	const checkMusicList = async () => {
+		try {
+			const thisWillBeNext: any = await TrackPlayer.getCurrentTrack();
+			const nextTrack: any = await TrackPlayer.getTrack(thisWillBeNext);
+			const mp3Files: any = await Storage.get('mp3Files', true);
+			if (shuffle) {
+				mp3Files.sort(() => Math.random() - 0.5);
+			}
+			mp3Files.unshift(nextTrack);
+			await TrackPlayer.setQueue(mp3Files);
+			setOldShuffle(shuffle);
+		} catch (error) {
+			console.error("checkMusicList: Erro ao controlar a reprodução:", error);
+		}
+	}
+
+	const changeShuffle = async () => {
+		setOldShuffle(!!shuffle) // avoid null or undefined
+		const newShuffle = !shuffle;
+		setShuffle(newShuffle);
+		await Storage.store('shuffle', String(newShuffle), false);
+	}
+
+
 	useEffect(() => {
 		(async () => {
-			if (shuffle === null) {
+			if (shuffle === null && oldShuffle === null) {
 				const storageShuffle = await Storage.get('shuffle', false) == 'true' ? true : false
 				setShuffle(storageShuffle);
-				if (storageShuffle) setConfigQueue(true);
+				if (storageShuffle) {
+					setOldShuffle(!storageShuffle); // on the next track it will shuffle the song list
+				} else {
+					setOldShuffle(storageShuffle); // on the next track it will NOT shuffle the song list
+				}
 			}
 		})();
 	}, [])

@@ -22,7 +22,6 @@ const Index = ({ song, dispatch }: any) => {
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const { duration, position } = useProgress(250);
 
-	// Evento para atualizar o estado quando a música em reprodução mudar
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
 			const track: any = await TrackPlayer.getTrack(event.nextTrack);
@@ -52,25 +51,28 @@ NOT WORKING
 	*/
 
 
-
 	async function addToRecentlyPlayed(index: number) {
-		if (!index) index = 0; // avoiding undefined
-		let filtered: any;
-		const recents = await Storage.get('recents', true);
-		if (recents === null) {
-			await Storage.store('recents', [index], true);
-		} else {
-			filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
-			filtered.unshift(index);
-			await Storage.store('recents', filtered, true);
+		try {
+			if (!index) index = 0; // avoiding undefined
+			let filtered: any;
+			const recents = await Storage.get('recents', true);
+			if (recents === null) {
+				await Storage.store('recents', [index], true);
+			} else {
+				filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
+				filtered.unshift(index);
+				await Storage.store('recents', filtered, true);
+			}
+			dispatch({
+				type: DISPATCHES.STORAGE,
+				payload: {
+					recents: filtered,
+				},
+			});
+		} catch (error) {
+			console.log(error);
 		}
-		dispatch({
-			type: DISPATCHES.STORAGE,
-			payload: {
-				recents: filtered,
-			},
-		});
-	};
+	}
 
 	useEffect(() => {
 		if (playing) {
@@ -91,77 +93,77 @@ NOT WORKING
 
 	return (
 
-			<View style={styles.container}>
+		<View style={styles.container}>
 
-				<View style={styles.tracker}>
-					<View
-						style={{
-							...StyleSheet.absoluteFill as any,
-							zIndex: 99,
-						}}
-					/>
-					<Slider
-						minimumValue={0}
-						maximumValue={duration}
-						minimumTrackTintColor="red"
-						thumbTintColor="transparent"
-						maximumTrackTintColor="transparent"
-						value={position}
-					/>
+			<View style={styles.tracker}>
+				<View
+					style={{
+						...StyleSheet.absoluteFill as any,
+						zIndex: 99,
+					}}
+				/>
+				<Slider
+					minimumValue={0}
+					maximumValue={duration}
+					minimumTrackTintColor="red"
+					thumbTintColor="transparent"
+					maximumTrackTintColor="transparent"
+					value={position}
+				/>
 
-					<PlayerProgressNumber
-						left={60}
-						right={50}
-						fontSize={10}
-						style={{ marginTop: -7 }}
-					/>
-				</View>
-				<View style={styles.left}>
-					{/*// @ts-ignore*/}
-					<TouchableWithoutFeedback onPress={() => navigate(SCREENS.PLAYING)}>
-						<View style={styles.coverArtContainer}>
-							<Image
-								style={{
-									width: 130,
-									height: 130,
-									position: 'absolute',
-									right: -6,
-									opacity: 0.5,
-									alignSelf: 'center',
-								}}
-								source={{ uri: song?.detail?.artwork }}
-								resizeMode="cover"
-								borderRadius={150}
-								blurRadius={100}
-							/>
-							<Image style={styles.coverArt} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={150} />
-						</View>
-					</TouchableWithoutFeedback>
-				</View>
-				<View style={styles.content}>
-					<Marquee
-						style={styles.songTitle}
-						speed={0.08}
-						marqueeOnStart={true}
-						delay={0}
-						loop={true}
-					>
-						{song?.detail?.title}
-					</Marquee>
-
-					{song?.detail?.artist ?
-						<Text style={styles.songArtist} numberOfLines={1}>
-							{song?.detail?.artist}
-						</Text> : null}
-				</View>
-				<View style={styles.actions}>
-					<SkipToPreviousButton iconSize={35} />
-
-					<PlayPauseButton iconSize={45} />
-
-					<SkipToNextButton iconSize={35} />
-				</View>
+				<PlayerProgressNumber
+					left={60}
+					right={50}
+					fontSize={10}
+					style={{ marginTop: -7 }}
+				/>
 			</View>
+			<View style={styles.left}>
+				{/*// @ts-ignore*/}
+				<TouchableWithoutFeedback onPress={() => navigate(SCREENS.PLAYING)}>
+					<View style={styles.coverArtContainer}>
+						<Image
+							style={{
+								width: 130,
+								height: 130,
+								position: 'absolute',
+								right: -6,
+								opacity: 0.5,
+								alignSelf: 'center',
+							}}
+							source={{ uri: song?.detail?.artwork }}
+							resizeMode="cover"
+							borderRadius={150}
+							blurRadius={100}
+						/>
+						<Image style={styles.coverArt} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={150} />
+					</View>
+				</TouchableWithoutFeedback>
+			</View>
+			<View style={styles.content}>
+				<Marquee
+					style={styles.songTitle}
+					speed={0.08}
+					marqueeOnStart={true}
+					delay={0}
+					loop={true}
+				>
+					{song?.detail?.title}
+				</Marquee>
+
+				{song?.detail?.artist ?
+					<Text style={styles.songArtist} numberOfLines={1}>
+						{song?.detail?.artist}
+					</Text> : null}
+			</View>
+			<View style={styles.actions}>
+				<SkipToPreviousButton iconSize={35} />
+
+				<PlayPauseButton iconSize={45} />
+
+				<SkipToNextButton iconSize={35} />
+			</View>
+		</View>
 
 	);
 };

@@ -143,7 +143,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 				},
 			});
 			if (mp3Files?.length > 0) {
-				console.log('@@@@@@@ 11111111');
 				if (recents && recents?.length > 0) {
 					await TrackPlayer.skip(recents[0]); // skip to recent
 					await dispatch({
@@ -153,7 +152,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							songs: mp3Files,
 						},
 					});
-					console.log('@@@@@@@ 22222222222');
 				} else {
 					await dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
@@ -161,7 +159,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							songs: mp3Files,
 						},
 					});
-					console.log('@@@@@@@ 3333333333');
 				}
 			}
 			//await Ads.interstitialAds();

@@ -34,8 +34,8 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							);
 							if (alreadyContains) return;
 							else {
-								const durationMillis = await getDurationMillis(file?.path)
-								if (!durationMillis) return;
+								//const durationMillis = await getDurationMillis(file?.path)
+								//if (!durationMillis) return;
 								const img = getRandomImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
@@ -68,8 +68,8 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							if (alreadyContains) return;
 
 							else {
-								const durationMillis = await getDurationMillis(file?.path)
-								if (!durationMillis) return;
+								//const durationMillis = await getDurationMillis(file?.path)
+								//if (!durationMillis) return;
 								const img = getRandomImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
@@ -158,8 +158,11 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 				} else {
 					console.log('mp3 NO storage');
 					const allSongs: any = await getAllSongs();
-					await Storage.store('mp3Files', allSongs, true);
-					setMp3Files(allSongs);
+					if (allSongs?.length > 0) {
+						setMp3Files(allSongs);
+						await Storage.store('mp3Files', allSongs, true);
+					}
+					console.log('mp3Files?.length kkkkkkkkkkkkkkkkk', allSongs?.length);
 				}
 				setLoading(false);
 			}

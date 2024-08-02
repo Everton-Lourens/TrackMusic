@@ -47,23 +47,27 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	};
 
 	async function addToRecentlyPlayed(index: number) {
-		if (!index) index = 0; // avoiding undefined
-		let filtered: any;
-		const recents = await Storage.get('recents', true);
-		if (recents === null) {
-			await Storage.store('recents', [index], true);
-		} else {
-			filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
-			filtered.unshift(index);
-			await Storage.store('recents', filtered, true);
+		try {
+			if (!index) index = 0; // avoiding undefined
+			let filtered: any;
+			const recents = await Storage.get('recents', true);
+			if (recents === null) {
+				await Storage.store('recents', [index], true);
+			} else {
+				filtered = recents.filter((i: any) => i !== index).filter((i: any) => recents.indexOf(i) < 9);
+				filtered.unshift(index);
+				await Storage.store('recents', filtered, true);
+			}
+			dispatch({
+				type: DISPATCHES.STORAGE,
+				payload: {
+					recents: filtered,
+				},
+			});
+		} catch (error) {
+			console.log(error);
 		}
-		dispatch({
-			type: DISPATCHES.STORAGE,
-			payload: {
-				recents: filtered,
-			},
-		});
-	};
+	}
 
 	useEffect(() => {
 		verifyFav();
@@ -74,7 +78,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			TrackPlayer.add(params?.song, 0);
 			TrackPlayer.skip(0);
 			playing ? null : TrackPlayer.play();
-			addToRecentlyPlayed(params?.song?.id);
+			addToRecentlyPlayed(params?.song);
 		}
 	}, [params?.forcePlay, params?.song, params?.index]);
 

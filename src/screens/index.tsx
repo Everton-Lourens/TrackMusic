@@ -23,7 +23,6 @@ const StackNavigation = () => {
       <Stack.Screen name={SCREENS.SONGS} component={Songs} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.PLAYING} component={Playing} options={{ headerShown: false }} />
       <Stack.Screen name={SCREENS.SEARCH} component={Search} options={{ headerShown: false }} />
-      <Stack.Screen name={SCREENS.DETAILS} component={DetailsScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 };

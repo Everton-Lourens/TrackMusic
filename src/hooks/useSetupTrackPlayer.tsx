@@ -62,7 +62,7 @@ export const setupPlayer = async (queue = []) => {
 		})
 
 		await TrackPlayer.setVolume(0.3) // not too loud
-		await TrackPlayer.setRepeatMode(RepeatMode.Queue);
+		//await TrackPlayer.setRepeatMode(RepeatMode.Queue);
 		if (queue.length > 0) {
 			await TrackPlayer.reset();
 			await TrackPlayer.add(queue);
