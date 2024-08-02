@@ -10,6 +10,7 @@ type PlayerControlsProps = {
 type PlayerButtonProps = {
 	style?: ViewStyle
 	iconSize?: number
+	visible?: boolean
 }
 
 export const PlayerControls = ({ style }: PlayerControlsProps) => {
@@ -96,7 +97,7 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 	)
 }
 
-export const ShuffleButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
+export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerButtonProps) => {
 	const [configQueue, setConfigQueue] = useState<boolean>(false);
 	const [shuffle, setShuffle] = useState<any>(null);
 
@@ -151,22 +152,22 @@ export const ShuffleButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 
 
 	return (
+		visible ? (
+			<View style={[{ height: iconSize }, style]}>
+				{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
+				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeShuffle()}>
+					{shuffle ?
+						<Image source={require('@/src/assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+						: <Image source={require('@/src/assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+					}
+				</TouchableOpacity>
 
-		<View style={[{ height: iconSize }, style]}>
-			{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
-			<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeShuffle()}>
-				{shuffle ?
-					<Image source={require('@/src/assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
-					: <Image source={require('@/src/assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
-				}
-
-			</TouchableOpacity>
-		</View>
+			</View>) : null
 	);
 }
 
 
-export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
+export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerButtonProps) => {
 	const [repeat, setRepeat] = useState<number>(999);
 	const changeRepeat = async () => {
 		try {
@@ -241,14 +242,14 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	};
 
 	return (
+		visible ? (
+			<View style={[{ height: iconSize }, style]}>
+				{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
+				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeRepeat()}>
+					{getIcon()}
 
-		<View style={[{ height: iconSize }, style]}>
-			{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
-			<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeRepeat()}>
-				{getIcon()}
-
-			</TouchableOpacity>
-		</View>
+				</TouchableOpacity>
+			</View>) : null
 	);
 }
 

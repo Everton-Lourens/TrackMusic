@@ -8,7 +8,7 @@ import Marquee from "react-native-marquee";
 import { DISPATCHES, SCREENS } from '@/src/constants';
 //import { Audio } from '@/src/hooks';
 import { Storage } from '@/src/helpers';
-import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
+import { PlayPauseButton, RepeatButton, ShuffleButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
 import { PlayerProgressNumber } from '@/src/components/PlayerProgress';
 
@@ -157,11 +157,17 @@ NOT WORKING
 					</Text> : null}
 			</View>
 			<View style={styles.actions}>
+
+				<RepeatButton visible={false} />
+
 				<SkipToPreviousButton iconSize={35} />
 
 				<PlayPauseButton iconSize={45} />
 
 				<SkipToNextButton iconSize={35} />
+
+				<ShuffleButton visible={false} />
+
 			</View>
 		</View>
 

@@ -75,10 +75,13 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 	useEffect(() => {
 		if (params?.forcePlay && params?.song?.uri !== song?.detail?.url && params?.song?.id !== song?.detail?.id) {
-			TrackPlayer.add(params?.song, 0);
-			TrackPlayer.skip(0);
-			playing ? null : TrackPlayer.play();
-			addToRecentlyPlayed(params?.song?.id);
+			TrackPlayer.pause().then(async () => {
+				const currentTrack: number = await TrackPlayer.getCurrentTrack() || 0;
+				await TrackPlayer.add(params?.song, currentTrack+1);
+				await TrackPlayer.skipToNext();
+				await TrackPlayer.play();
+				addToRecentlyPlayed(params?.song?.id);
+			}).catch((e) => TrackPlayer.play());
 		}
 	}, [params?.forcePlay, params?.song, params?.index]);
 
