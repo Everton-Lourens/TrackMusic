@@ -3,7 +3,7 @@ import { Animated, Dimensions, Image, StyleSheet, Text, TouchableOpacity, Toucha
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import Slider from '@react-native-community/slider';
-import Marquee from 'react-native-marquee';
+import Marquee from "react-native-marquee";
 //import Icon from '@/src/components/Icon';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 //import { Audio } from '@/src/hooks';
@@ -143,6 +143,7 @@ NOT WORKING
 						style={styles.songTitle}
 						speed={0.08}
 						marqueeOnStart={true}
+						delay={0}
 						loop={true}
 					>
 						{song?.detail?.title}

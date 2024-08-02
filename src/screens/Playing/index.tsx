@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,6 +15,7 @@ import { PlayerProgressBar } from '@/src/components/PlayerProgress';
 import { PlayerControls, RepeatButton, ShuffleButton } from '@/src/components/PlayerControls';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton, StopOutLineButton } from '@/src/components/PlayerControls';
+import * as Modal from '@/src/widgets/Modals';
 
 
 //CONTINUE CODE HERE
@@ -24,7 +25,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const [isFav, setIsFav] = useState(false);
 	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
-
+	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 
 	const verifyFav = async () => {
 		const favs = await Storage.get('favourites', true);
@@ -70,9 +71,10 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 	useEffect(() => {
 		if (params?.forcePlay && params?.song?.uri !== song?.detail?.url && params?.song?.id !== song?.detail?.id) {
-			TrackPlayer.skip(params?.index);
-			TrackPlayer.play();
-			addToRecentlyPlayed(params?.index);
+			TrackPlayer.add(params?.song, 0);
+			TrackPlayer.skip(0);
+			playing ? null : TrackPlayer.play();
+			addToRecentlyPlayed(params?.song?.id);
 		}
 	}, [params?.forcePlay, params?.song, params?.index]);
 
@@ -104,84 +106,29 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				<Header
 					options={{
 						left: {
-							children: <Image style={styles.headerBtn} source={require('@/src/assets/icons/go-back.png')} />,
+							children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('@/src/assets/icons/go-back.png')} />,
 							onPress: goBack,
 						},
 						right: {
-							children: <Image style={[styles.headerBtn, isFav ? {} : { tintColor: 'gray' }]} source={require('@/src/assets/icons/fav.png')} />,
-							onPress: handleFav,
+							children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('@/src/assets/icons/option.png')} />,
+							onPress: () => setMoreOptionsModal(true),
 						},
 					}}
 				/>
 
-				{/*<View style={styles.frame}>
-					<View>
-						<Image style={styles.clipart} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={20} />
-					</View>
-					<View style={styles.details}>
-						<View style={{ marginBottom: 25 }}>
-							<Text style={styles.songTitle}>{song?.detail?.title}</Text>
-							<Text style={styles.artistName}>{song?.detail?.artist}</Text>
-						</View>
-						<View style={styles.tracker}>
-							<Slider
-								minimumValue={0}
-								maximumValue={song?.detail?.durationMillis}
-								minimumTrackTintColor="#C07037"
-								thumbTintColor="transparent"
-								maximumTrackTintColor="transparent"
-								value={song?.playbackStatus?.positionMillis || 0}
-								onSlidingComplete={handleSeek}
-							/>
-						</View>
-						<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
-							<Text style={styles.minMin}>{millisToMin(song?.playbackStatus?.positionMillis || 0)}</Text>
-							<Text style={styles.maxMin}>{millisToMin(song?.detail?.durationMillis)}</Text>
-						</View>
-					</View>
-					<View style={styles.actionsContainer}>
-						<TouchableOpacity onPress={handlePrev}>
-							<Icon name="skip-back" color="#C4C4C4" />
-						</TouchableOpacity>
-						<View>
-							<LinearGradient
-								style={[styles.playAndPauseBtn, !song?.soundObj?.isPlaying && { paddingLeft: 4 }]}
-								colors={['#939393', '#000']}
-								start={{ x: 0, y: 0 }}
-								end={{ x: 1, y: 0 }}
-							/>
-							<PlayPauseButton />
-
-						</View>
-
-						<TouchableOpacity style={styles.btn} onPress={() => (song?.soundObj?.isPlaying ? handleStop(() => { }) : () => { })} disabled={actions?.stop}>
-							<Animated.View style={{ opacity: stopBtnAnim }}>
-								<Icon family="Ionicons" name="stop-outline" color="#C4C4C4" />
-							</Animated.View>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={handleNext}>
-							<Icon name="skip-forward" color="#C4C4C4" />
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={configShuffle} style={styles.shuffleBtn}>
-							<Icon
-								name={"shuffle"}
-								color={shuffle ? "#00e1ff" : "#C4C4C4"}
-							/>
-						</TouchableOpacity>
-					</View>
-				</View>*/}
-
 				<View style={styles.frame}>
-					<View>
+					<View style={{ top: 40 }}>
 						<Image style={styles.clipart} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={20} />
 					</View>
 					<View style={styles.details}>
 						<View style={{ marginBottom: 25 }}>
+							<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
+								<Image style={[styles.headerBtn, isFav ? {} : { tintColor: '#919191' }]} source={require('@/src/assets/icons/fav.png')} />
+							</TouchableOpacity>
+
 							<Marquee
 								style={styles.songTitle}
-								speed={0.17}
+								speed={0.12}
 								marqueeOnStart={true}
 								loop={true}
 							>
@@ -192,12 +139,10 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 									{song?.detail?.artist}
 								</Text> : null}
 						</View>
-						<View>
-							<PlayerProgressBar
-								right={45}
-								left={-35}
-							/>
-						</View>
+						<PlayerProgressBar
+							right={45}
+							left={-35}
+						/>
 
 					</View>
 					<View style={styles.actionsContainer}>
@@ -215,7 +160,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 								/>
 
 								<PlayPauseButton
-									iconSize={70}
+									iconSize={80}
 								/>
 
 								{/*<Animated.View style={{ opacity: stopBtnAnim }}>
@@ -238,390 +183,22 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				</View>
 
 			</ImageBackground>
-		</>
-	);
-	//const stopBtnAnim = useRef(new Animated.Value(song?.soundObj?.isPlaying ? 1 : 0.3)).current;
-	const [newList, setNewList] = useState(null);
-	const [newRecents] = useState<Array<any>>([]);
-	const [shuffle, setShuffle] = useState<boolean>(false);
-	const [actions, setActions] = useState({
-		prev: false,
-		play: false,
-		stop: false,
-		next: false,
-	});
-	const configShuffle = async () => {
-		await Storage.store('shuffle', String(!shuffle), false);
-		setShuffle(!shuffle);
-	}
-
-	const soundDetailRecovery = async () => {
-		if (!song?.detail) {
-			song.detail = await Storage.get('detail', true) || songDetail?.currentSong?.detail;
-		}
-	}
-
-	const newListOfSongs_OLD = async () => {
-		try {
-			if (!newList) {
-				const allSongs: any = await getAllSongs();
-				songs = allSongs;
-				setNewList(allSongs);
-				setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false);
-			}
-			if (shuffle) {
-				// @ts-ignore
-				const listLength = newList.length;
-				// Cria uma lista de IDs únicos
-				const uniqueIDs = Array.from({ length: listLength }, (_, index) => index);
-				// Embaralha a lista de IDs únicos
-				uniqueIDs.sort(() => Math.random() - 0.5);
-				// Atribui os IDs embaralhados aos itens da lista
-				// @ts-ignore
-				return songs = [...newList].map((song: any, index) => ({ ...song, id: uniqueIDs[index] })); // shueffled list
-			}
-			return songs = newList ? newList : songs; // original list
-		} catch (error: any) {
-			console.error(error);
-		}
-	}
-
-	const newListOfSongs = async () => {
-		/*
-		try {
-			setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false); 
-			if (shuffle) {
-				// @ts-ignore
-				const listLength = songs.length;
-				const uniqueIDs = Array.from({ length: listLength }, (_, index) => index);
-				uniqueIDs.sort(() => Math.random() - 0.5);
-				// @ts-ignore
-				return songs = [...songs].map((song: any, index) => ({ ...song, id: uniqueIDs[index] })); // shueffled list
-			}
-			return songs = songs ? songs : songs; // original list
-		} catch (error: any) {
-			console.error(error);
-		}
-			*/
-	}
-
-
-
-
-
-	const _e = (arg = {}) => {
-		setActions({
-			...actions,
-			...arg,
-		});
-	};
-
-
-	const onPlaybackStatusUpdate = (playbackStatus: any) => {
-		dispatch({
-			type: DISPATCHES.SET_CURRENT_SONG,
-			payload: {
-				playbackStatus,
-			},
-		});
-
-		if (playbackStatus?.didJustFinish) {
-			handleNext();
-		}
-	};
-
-	const configAndPlay = (shouldPlay = false) => {
-		if (!song?.soundObj?.isLoaded) {
-			return Audio.configAndPlay(
-				song?.detail?.url, // URI FAIL
-				shouldPlay
-			)((playback, soundObj) => {
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						playback,
-						soundObj,
+			<Modal.MoreOptions visible={moreOptionsModal} onClose={setMoreOptionsModal} title={song?.detail?.title}
+				moreOptions={[
+					{
+						text: 'Iniciar',
+						onPress: () => Alert.alert('Iniciar música'),
 					},
-				});
-
-				addToRecentlyPlayed(songs.findIndex((i: any) => i.id === song?.detail?.id));
-			})(onPlaybackStatusUpdate as any);
-		}
-	};
-
-	const handlePlayAndPause = async () => {
-		_e({ play: true });
-
-		if (!song?.soundObj?.isLoaded) {
-			configAndPlay(true);
-			_e({ play: true });
-		}
-
-		if (song?.soundObj?.isLoaded && song?.soundObj?.isPlaying) {
-			return Audio.pause(song?.playback)((soundObj) => {
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						soundObj,
+					{
+						text: 'Adicionar aos favoritos',
+						onPress: () => Alert.alert('Adicionar música aos favoritos'),
 					},
-				});
-
-				_e({ play: false });
-			});
-		}
-
-		if (song?.soundObj?.isLoaded && !song?.soundObj?.isPlaying) {
-			return Audio.resume(song?.playback)((soundObj: any) => {
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						soundObj,
+					{
+						text: 'Adicionar à playlist',
+						onPress: () => Alert.alert('Adicionar música à playlist'),
 					},
-				});
-
-				_e({ play: false });
-			});
-		}
-	};
-
-	const handleStop = async (after = () => { }) => {
-		_e({ stop: true });
-
-		if (song?.soundObj?.isLoaded) {
-			return Audio.stop(song?.playback)(() => {
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						soundObj: {},
-					},
-				});
-
-				after();
-				_e({ stop: false });
-			});
-		}
-
-		after();
-		_e({ stop: false });
-	};
-
-	const handlePrev = async () => {
-		_e({ prev: true });
-		if (!newRecents.length) {
-			newRecents.push(...await Storage.get('recents', true));
-		}
-		newRecents.shift();// currently playing
-		const currentIndex = songs.findIndex((i: any) => i.id === song?.detail?.id);
-		//const prevIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1; // OLD
-		const prevIndex = currentIndex === 0 ? songs.length - 1 : (newRecents.length ? newRecents.shift() : currentIndex - 1);
-		const prevSong = songs[prevIndex];
-
-		return handleStop(() => {
-			Audio.play(
-				song?.playback,
-				prevSong?.uri
-			)((soundObj) => {
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						soundObj,
-						detail: prevSong,
-					},
-				});
-				(async () => {
-					setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false);
-				})();
-				addToRecentlyPlayed(prevIndex);
-				_e({ prev: false });
-			})(onPlaybackStatusUpdate as any);
-		});
-	};
-
-	async function handleNext() {
-		_e({ next: true });
-		const currentIndex = songs.findIndex((i: any) => i.id === song?.detail?.id);
-		const randomIndex = Math.floor(Math.random() * songs.length);
-		const nextIndex = shuffle ? randomIndex : (currentIndex === songs.length - 1 ? 0 : currentIndex + 1);
-		newRecents.unshift(nextIndex);
-		const nextSong = songs[nextIndex];
-
-		return handleStop(() => {
-			Audio.play(
-				song?.playback,
-				nextSong?.uri
-			)((soundObj) => {
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						soundObj,
-						detail: nextSong,
-					},
-				});
-				addToRecentlyPlayed(nextIndex);
-				(async () => {
-					setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false);
-					await Storage.store('detail', (song?.detail || songDetail?.currentSong?.detail), true);
-				})();
-				_e({ next: false });
-			})(onPlaybackStatusUpdate as any);
-		});
-	}
-
-	const handleSeek = (millis: any) => {
-		return Audio.seek(
-			song?.playback,
-			Math.floor(millis)
-		)((soundObj) => {
-			dispatch({
-				type: DISPATCHES.SET_CURRENT_SONG,
-				payload: {
-					soundObj,
-				},
-			});
-		})(onPlaybackStatusUpdate as any);
-	};
-
-	useEffect(() => {
-		if (false) {
-			if (song?.soundObj?.isPlaying) {
-				Animated.timing(stopBtnAnim, {
-					toValue: 1,
-					duration: 1000,
-					useNativeDriver: true,
-				}).start();
-			} else {
-				Animated.timing(stopBtnAnim, {
-					toValue: 0.3,
-					duration: 1000,
-					useNativeDriver: true,
-				}).start();
-			}
-		}
-	}, [song]);
-
-	useEffect(() => {
-		(async () => {
-			setShuffle(await Storage.get('shuffle', false) == 'true' ? true : false);
-			await soundDetailRecovery();
-			//await newListOfSongs();
-			await Audio.init();
-			configAndPlay();
-		})();
-	}, []);
-
-	useEffect(() => {
-		if (false) {
-			verifyFav();
-		}
-	}, [song?.detail?.id]);
-
-	useEffect(() => {
-		if (false) {
-			if (params?.forcePlay && params?.song?.uri !== song?.detail?.url) {
-
-				handleStop(() => {
-					Audio.play(
-						song?.playback,
-						params?.song?.uri
-					)((soundObj) => {
-						dispatch({
-							type: DISPATCHES.SET_CURRENT_SONG,
-							payload: {
-								soundObj,
-								detail: params?.song,
-							},
-						});
-
-						addToRecentlyPlayed(params?.index);
-					})(onPlaybackStatusUpdate as any);
-				});
-			}
-		}
-	}, [params?.forcePlay, params?.song, params?.index]);
-
-	return (
-		<>
-			<StatusBar barStyle="light-content" backgroundColor='black' />
-
-			<ImageBackground style={styles.container} source={{ uri: song?.detail?.artwork }} blurRadius={10} resizeMode="cover">
-				<View style={[StyleSheet.absoluteFill, styles.overlay]} />
-				<Header
-					options={{
-						left: {
-							// @ts-ignore
-							children: <Icon name="chevron-left" color="#FFF" />,
-							onPress: goBack,
-						},
-						right: {
-							// @ts-ignore
-							children: <Icon name="heart" color={isFav ? '#C07037' : '#FFF'} />,
-							onPress: handleFav,
-						},
-					}}
-				/>
-				<View style={styles.frame}>
-					<View>
-						<Image style={styles.clipart} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={20} />
-					</View>
-					<View style={styles.details}>
-						<View style={{ marginBottom: 25 }}>
-							<Text style={styles.songTitle}>{song?.detail?.title}</Text>
-							<Text style={styles.artistName}>{song?.detail?.artist}</Text>
-						</View>
-						<View style={styles.tracker}>
-							<Slider
-								minimumValue={0}
-								maximumValue={song?.detail?.durationMillis}
-								minimumTrackTintColor="#C07037"
-								thumbTintColor="transparent"
-								maximumTrackTintColor="transparent"
-								value={song?.playbackStatus?.positionMillis || 0}
-								onSlidingComplete={handleSeek}
-							/>
-						</View>
-						<View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
-							<Text style={styles.minMin}>{millisToMin(song?.playbackStatus?.positionMillis || 0)}</Text>
-							<Text style={styles.maxMin}>{millisToMin(song?.detail?.durationMillis)}</Text>
-						</View>
-					</View>
-					<View style={styles.actionsContainer}>
-						<TouchableOpacity onPress={handlePrev}>
-							{/*// @ts-ignore */}
-							<Icon name="skip-back" color="#C4C4C4" />
-						</TouchableOpacity>
-						<View>
-							<LinearGradient
-								style={[styles.playAndPauseBtn, !song?.soundObj?.isPlaying && { paddingLeft: 4 }]}
-								colors={['#939393', '#000']}
-								start={{ x: 0, y: 0 }}
-								end={{ x: 1, y: 0 }}
-							/>
-							<PlayPauseButton />
-
-						</View>
-
-						<TouchableOpacity style={styles.btn} onPress={() => (song?.soundObj?.isPlaying ? handleStop(() => { }) : () => { })} disabled={actions?.stop}>
-							<Animated.View style={{ opacity: stopBtnAnim }}>
-								{/*// @ts-ignore */}
-								<Icon family="Ionicons" name="stop-outline" color="#C4C4C4" />
-							</Animated.View>
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={handleNext}>
-							{/*// @ts-ignore */}
-							<Icon name="skip-forward" color="#C4C4C4" />
-						</TouchableOpacity>
-
-						<TouchableOpacity onPress={configShuffle} style={styles.shuffleBtn}>
-							{/*// @ts-ignore */}
-							<Icon
-								name={"shuffle"}
-								color={shuffle ? "#00e1ff" : "#C4C4C4"}
-							/>
-						</TouchableOpacity>
-					</View>
-				</View>
-			</ImageBackground>
+				]}
+			/>
 		</>
 	);
 };
@@ -637,8 +214,9 @@ const styles = StyleSheet.create({
 		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	headerBtn: {
-		backgroundColor: 'rgba(255, 255, 255, 0.2)',
-		justifyContent: 'center',
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
 		//alignItems: 'center',
 		//paddingLeft: 4,
 		borderRadius: 35,
@@ -670,6 +248,7 @@ const styles = StyleSheet.create({
 	},
 	details: {
 		width: '85%',
+		top: 90,
 	},
 	songTitle: {
 		color: '#FFF',
@@ -694,7 +273,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 400, // CORRIGIR
+		width: 370, // Distância player
 	},
 	playAndPauseBtn: {
 		justifyContent: 'center',

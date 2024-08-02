@@ -11,7 +11,7 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Autho
 
 	return (
 		<>
-			<TouchableOpacity style={[styles.container, style]} onLongPress={() => setMoreOptionsModal(true)} activeOpacity={0.8}>
+			<TouchableOpacity style={[styles.container, style]} onPress={onPlayPress} onLongPress={() => setMoreOptionsModal(true)} activeOpacity={0.8}>
 				<View style={styles.left}>
 					<Image
 						style={{
@@ -39,18 +39,7 @@ const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Autho
 					</View>
 					{artist && <Text style={styles.duration}>{millisToMin(duration)}</Text>}
 				</View>
-				<View style={styles.right}>
-					<TouchableOpacity onPress={onPlayPress}>
-						<LinearGradient
-							style={styles.playBtn}
-							colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-							start={{ x: 0, y: 0 }}
-							end={{ x: 0, y: 0.7 }}
-						>
-							<Image source={require('@/src/assets/icons/play.png')} />
-						</LinearGradient>
-					</TouchableOpacity>
-				</View>
+
 			</TouchableOpacity>
 
 			<Modal.MoreOptions visible={moreOptionsModal} onClose={setMoreOptionsModal} title={title} moreOptions={moreOptions} />

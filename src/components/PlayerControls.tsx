@@ -2,7 +2,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'reac
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, RepeatMode } from 'react-native-track-player';
 import { Storage } from '@/src/helpers';
 import { useEffect, useState } from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -31,95 +30,69 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 	const { playing } = useIsPlaying()
 
 	return (
-		<LinearGradient
-			style={styles.playBtn}
-			colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-			start={{ x: 0, y: 0 }}
-			end={{ x: 0, y: 0.7 }}
-		>
 
-			<View style={[{ height: iconSize }, style]}>
-				{/*
+		<View style={[{ height: iconSize }, style]}>
+			{/*
 				<View style={[{ height: iconSize }, style]}>*/}
-				<TouchableOpacity
-					activeOpacity={0.85}
-					onPress={async () => {
-						try {
-							if (playing) await TrackPlayer.pause();
-							else await TrackPlayer.play();
+			<TouchableOpacity
+				activeOpacity={0.85}
+				onPress={async () => {
+					try {
+						if (playing) await TrackPlayer.pause();
+						else await TrackPlayer.play();
 
-							if (__DEV__) {
-								if (playing) console.log('@PAUSE ');
-								else console.log('@PLAY ');
-							}
-						} catch (error) {
-							console.error("Erro ao controlar a reprodução:", error);
+						if (__DEV__) {
+							if (playing) console.log('@PAUSE ');
+							else console.log('@PLAY ');
 						}
-					}}
+					} catch (error) {
+						console.error("Erro ao controlar a reprodução:", error);
+					}
+				}}
 
-				>
-					{playing ? (
-						<Image source={require('@/src/assets/icons/pause.png')} style={[{ height: iconSize, width: iconSize }]} />
-					) : (
+			>
+				{playing ? (
+					<Image source={require('@/src/assets/icons/pause.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+				) : (
+					<Image source={require('@/src/assets/icons/play.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+				)}
 
-						<Image source={require('@/src/assets/icons/play.png')} style={[{ height: iconSize, width: iconSize }]} />
+			</TouchableOpacity>
+		</View>
 
-					)}
-
-				</TouchableOpacity>
-			</View>
-		</LinearGradient>
 	)
 }
 
 export const StopOutLineButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
-		<LinearGradient
-			style={styles.playBtn}
-			colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-			start={{ x: 0, y: 0 }}
-			end={{ x: 0, y: 0.7 }}
-		>
-			<View style={[{ height: iconSize }, style]}>
-				<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.stop()}>
-					<Image source={require('@/src/assets/icons/stop-outline.png')} style={[{ height: iconSize, width: iconSize }]} />
-				</TouchableOpacity>
-			</View>
-		</LinearGradient>
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.stop()}>
+				<Image source={require('@/src/assets/icons/stop-outline.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+			</TouchableOpacity>
+		</View>
+
 	)
 }
 
 export const SkipToNextButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
-		<LinearGradient
-			style={styles.playBtn}
-			colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-			start={{ x: 0, y: 0 }}
-			end={{ x: 0, y: 0.7 }}
-		>
-			<View style={[{ height: iconSize }, style]}>
-				<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
-					<Image source={require('@/src/assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }]} />
-				</TouchableOpacity>
-			</View>
-		</LinearGradient>
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+				<Image source={require('@/src/assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+			</TouchableOpacity>
+		</View>
+
 	)
 }
 
 export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
-		<LinearGradient
-			style={styles.playBtn}
-			colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-			start={{ x: 0, y: 0 }}
-			end={{ x: 0, y: 0.7 }}
-		>
-			<View style={[{ height: iconSize }, style]}>
-				<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
-					<Image source={require('@/src/assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }]} />
-				</TouchableOpacity>
-			</View>
-		</LinearGradient>
+		<View style={[{ height: iconSize }, style]}>
+			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+				<Image source={require('@/src/assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+			</TouchableOpacity>
+		</View>
+
 	)
 }
 
@@ -130,6 +103,14 @@ export const ShuffleButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
 			try {
+				if (shuffle === null) {
+					const storageShuffle = await Storage.get('shuffle', false) == 'true' ? true : false
+					setShuffle(storageShuffle);
+					if (!storageShuffle) { // if shuffle is false, it does not allow changing the music list
+						setOldShuffle(storageShuffle);
+					}
+				}
+
 				if (shuffle !== null && shuffle !== oldShuffle) {
 					const currenTrack: any = await TrackPlayer.getTrack(event.nextTrack);
 					(async () => {
@@ -170,17 +151,11 @@ export const ShuffleButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 		<View style={[{ height: iconSize }, style]}>
 			{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
 			<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeShuffle()}>
-				<LinearGradient
-					style={styles.playBtn}
-					colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 0, y: 0.7 }}
-				>
-					{shuffle ?
-						<Image source={require('@/src/assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn, { backgroundColor: 'rgba(255, 255, 255, 0.0)', }]} />
-						: <Image source={require('@/src/assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn, { backgroundColor: 'rgba(255, 255, 255, 0.0)', }]} />
-					}
-				</LinearGradient>
+				{shuffle ?
+					<Image source={require('@/src/assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+					: <Image source={require('@/src/assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+				}
+
 			</TouchableOpacity>
 		</View>
 	);
@@ -231,7 +206,7 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 				return (
 					<Image
 						source={require('@/src/assets/icons/dont-repeat.png')}
-						style={[{ height: iconSize, width: iconSize }, styles.controlBtn, { backgroundColor: 'rgba(255, 255, 255, 0.0)' }]}
+						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
 
@@ -239,7 +214,7 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 				return (
 					<Image
 						source={require('@/src/assets/icons/repeat.png')}
-						style={[{ height: iconSize, width: iconSize }, styles.controlBtn, { backgroundColor: 'rgba(255, 255, 255, 0.0)' }]}
+						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
 
@@ -247,7 +222,7 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 				return (
 					<Image
 						source={require('@/src/assets/icons/repeated.png')}
-						style={[{ height: iconSize, width: iconSize }, styles.controlBtn, { backgroundColor: 'rgba(255, 255, 255, 0.0)' }]}
+						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
 
@@ -255,7 +230,7 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 				return (
 					<Image
 						source={require('@/src/assets/icons/shuffle.png')}
-						style={[{ height: iconSize, width: iconSize }, styles.controlBtn, { backgroundColor: 'rgba(255, 255, 255, 0.0)' }]}
+						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
 		}
@@ -266,14 +241,8 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 		<View style={[{ height: iconSize }, style]}>
 			{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
 			<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeRepeat()}>
-				<LinearGradient
-					style={styles.playBtn}
-					colors={['#b8b8b8', 'rgba(0, 0, 0, 0)']}
-					start={{ x: 0, y: 0 }}
-					end={{ x: 0, y: 0.7 }}
-				>
-					{getIcon()}
-				</LinearGradient>
+				{getIcon()}
+
 			</TouchableOpacity>
 		</View>
 	);
@@ -282,19 +251,14 @@ export const RepeatButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 
 const styles = StyleSheet.create({
 	controlBtn: {
-		backgroundColor: 'rgba(255, 255, 255, 0.2)',
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
 		justifyContent: 'center',
 		//alignItems: 'center',
 		//paddingLeft: 4,
-		borderRadius: 35,
+		borderRadius: 40,
 		//borderWidth: 1.5,
 		//marginHorizontal: 5,
 		//marginVertical: 50, // position
-	},
-	playBtn: {
-		backgroundColor: 'rgba(255, 255, 255, 0.2)',
-		justifyContent: 'center',
-		borderRadius: 35,
 	},
 	container: {
 		width: '100%',

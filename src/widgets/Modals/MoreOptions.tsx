@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 
 const { width, height } = Dimensions.get('screen');
@@ -11,15 +11,15 @@ const MoreOptions = ({
 	moreOptions = [
 		{
 			text: 'Iniciar',
-			onPress: () => alert('Iniciar música'),
+			onPress: () => Alert.alert('Iniciar música'),
 		},
 		{
 			text: 'Adicionar aos favoritos',
-			onPress: () => alert('Adicionar música aos favoritos'),
+			onPress: () => Alert.alert('Adicionar música aos favoritos'),
 		},
 		{
 			text: 'Adicionar à playlist',
-			onPress: () => alert('Adicionar música à playlist'),
+			onPress: () => Alert.alert('Adicionar música à playlist'),
 		},
 	],
 }) => {

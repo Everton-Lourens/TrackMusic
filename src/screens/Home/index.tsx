@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ShuffleButton } from '@/src/components/PlayerControls';
-import { PlayerProgressBar } from '@/src/components/PlayerProgress';
 
 import { Drawer, Footer, Header, Section } from '@/src/widgets';
 
