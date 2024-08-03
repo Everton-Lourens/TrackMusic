@@ -13,15 +13,21 @@ const Index = ({ style = {} }) => {
 		<Container style={style} title="For you">
 			<Card.Explore
 				style={{ marginLeft: 20 }}
-				title="Suas Músicas"
+				title="Músicas"
 				subtitle="Lista de músicas"
 				onPress={() => navigation.navigate(SCREENS.SONGS)}
 			/>
 
-			<Card.Explore />
+			<Card.Explore
+				style={{ marginLeft: 20 }}
+				title="Playlists"
+				subtitle="Lista de playlists"
+				onPress={() => navigation.navigate(SCREENS.PLAYLISTS)}
+			/>
 
 			<Card.Explore
 				style={{ marginRight: 20 }}
+				onClick={false}
 			/>
 		</Container>
 	);

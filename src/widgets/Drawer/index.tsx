@@ -24,7 +24,7 @@ const Index = ({
 	onItemPressed = () => { },
 	bottomBtn = {
 		text: 'Segredo',
-		onPress: () => Linking.openURL('https://www.bibliaon.com/versiculo/apocalipse_3_20/'),
+		onPress: () => Linking.openURL('https://www.bibliaonline.com.br/acf/ap/3/20'),
 	},
 	// @ts-ignore
 	children,

@@ -172,7 +172,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const init = async () => {
 		try {
 			if (mp3Files?.length || !loading) {
-				if (__DEV__) {
+				if (__DEV__ && false) {
 					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
 					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
 					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');

@@ -49,7 +49,7 @@ const Index = ({ songs }: any) => {
 						<View style={styles.header}>
 							<View style={styles.input}>
 								{/*// @ts-ignore */}
-								<Image source={require('@/src/assets/icons/search.png')} />
+								<Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/search.png')} />
 								<TextInput style={styles.textInput} onChangeText={handleInput} value={search} returnKeyType="search" ref={textInputRef} placeholder="Pesquisar..." />
 							</View>
 							<TouchableOpacity style={styles.btn} onPress={() => goBack()}>
@@ -120,5 +120,16 @@ const styles = StyleSheet.create({
 	},
 	result: {
 		flex: 1,
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 });

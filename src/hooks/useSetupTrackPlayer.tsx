@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { Platform } from 'react-native';
 import TrackPlayer, { Capability, RatingType, RepeatMode } from 'react-native-track-player'
+const playIcon = require('@/src/assets/icons/close-icon.png'); // Substitua com o caminho correto do seu ícone
 
 const exempleSongs = [
 	{
@@ -52,6 +54,7 @@ export const setupPlayer = async (queue = []) => {
 
 		await TrackPlayer.updateOptions({
 			ratingType: RatingType.Heart,
+			alwaysPauseOnInterruption: true,
 			capabilities: [
 				Capability.Play,
 				Capability.Pause,
@@ -59,7 +62,20 @@ export const setupPlayer = async (queue = []) => {
 				Capability.SkipToPrevious,
 				Capability.Stop,
 			],
-		})
+			notificationCapabilities: [
+				Capability.Play,
+				Capability.Pause,
+				Capability.SkipToNext,
+				Capability.SkipToPrevious,
+				Capability.Stop,
+			],
+			compactCapabilities: [
+				Capability.Play,
+				Capability.Pause,
+				Capability.SkipToNext,
+				Capability.SkipToPrevious,
+			],
+		});
 
 		await TrackPlayer.setVolume(0.3) // not too loud
 		//await TrackPlayer.setRepeatMode(RepeatMode.Queue);

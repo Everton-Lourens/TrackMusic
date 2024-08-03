@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
-
+import * as Animatable from 'react-native-animatable';
 import LinearGradient from 'react-native-linear-gradient';
 import Slider from '@react-native-community/slider';
 import Marquee from 'react-native-marquee';
@@ -26,6 +26,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
+	const [animation, setAnimation] = useState('');
 
 	const verifyFav = async () => {
 		const favs = await Storage.get('favourites', true);
@@ -74,10 +75,21 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	}, [song?.detail?.id]);
 
 	useEffect(() => {
+		if (isFav) {
+			setAnimation('rubberBand');
+			setTimeout(() => {
+				setAnimation('tada');
+			}, 1000);
+		} else {
+			setAnimation('rubberBand');
+		}
+	}, [isFav]);
+
+	useEffect(() => {
 		if (params?.forcePlay && params?.song?.uri !== song?.detail?.url && params?.song?.id !== song?.detail?.id) {
 			TrackPlayer.pause().then(async () => {
 				const currentTrack: number = await TrackPlayer.getCurrentTrack() || 0;
-				await TrackPlayer.add(params?.song, currentTrack+1);
+				await TrackPlayer.add(params?.song, currentTrack + 1);
 				await TrackPlayer.skipToNext();
 				await TrackPlayer.play();
 				addToRecentlyPlayed(params?.song?.id);
@@ -129,9 +141,11 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					</View>
 					<View style={styles.details}>
 						<View style={{ marginBottom: 25 }}>
-							<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
-								<Image style={[styles.headerBtn, isFav ? {} : { tintColor: '#919191' }]} source={require('@/src/assets/icons/fav.png')} />
-							</TouchableOpacity>
+							<Animatable.View style={styles.headerBtn} animation={isFav ? animation : "swing"} easing="linear" iterationCount="infinite">
+								<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
+									<Image style={isFav ? {} : { tintColor: '#919191' }} source={require('@/src/assets/icons/fav.png')} />
+								</TouchableOpacity>
+							</Animatable.View>
 
 							<Marquee
 								style={styles.songTitle}
@@ -189,7 +203,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					</View>
 				</View>
 
-			</ImageBackground>
+			</ImageBackground >
 			<Modal.MoreOptions visible={moreOptionsModal} onClose={setMoreOptionsModal} title={song?.detail?.title}
 				moreOptions={[
 					{
@@ -221,7 +235,6 @@ const styles = StyleSheet.create({
 		paddingTop: StatusBar.currentHeight, // or: paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 	},
 	headerBtn: {
-		tintColor: 'gray', 
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
 		//justifyContent: 'center',

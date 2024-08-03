@@ -16,7 +16,8 @@ const MiddleChildren = ({ text }: any) => (
 	</Text>
 );
 
-const RightChildren = () => <Image source={require('@/src/assets/icons/search.png')} resizeMode="contain" />;
+const RightChildren = () => <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/search.png')} resizeMode="contain" />;
+
 
 const Index = ({ style = { marginTop: 10, marginHorizontal: 10 }, options = {} }) => {
 	const { navigate } = useNavigation();
@@ -97,5 +98,16 @@ const styles = StyleSheet.create({
 	},
 	btn: {
 		padding: 10,
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 });

@@ -7,7 +7,6 @@ import { Header, Section, Drawer } from '../../widgets';
 import { getRandomImg } from '@/src/store/config';
 
 const Index = ({ songs }: any) => {
-	/////////////////// @@@@@@@@@@@@@ const [assets] = useAssets([require('@/src/assets/icons/hamburger.png'), require('@/src/assets/icons/search.png')]);
 	const [drawer, setDrawer] = useState(false);
 
 	return (

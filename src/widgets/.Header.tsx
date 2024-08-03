@@ -1,7 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import { useAssets } from 'expo-asset';
 import { SCREENS } from '../constants';
 
 const LeftChildren = () => <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />;
@@ -17,12 +16,11 @@ const MiddleChildren = ({ text }) => (
 	</Text>
 );
 
-const RightChildren = () => <Image source={require('@/src/assets/icons/search.png')} resizeMode="contain" />;
+const RightChildren = () => <Image	style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/search.png')} resizeMode="contain" />;
 
 const Header = ({ style = { marginTop: 10, marginHorizontal: 10 }, options = {} }) => {
 	const { navigate } = useNavigation();
-	const [assets] = useAssets([require('@/src/assets/icons/hamburger.png'), require('@/src/assets/icons/search.png')]);
-	const config = {
+const config = {
 		left: {
 			style: {},
 			show: true,
@@ -98,5 +96,17 @@ const styles = StyleSheet.create({
 	},
 	btn: {
 		padding: 10,
+	},
+
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 });

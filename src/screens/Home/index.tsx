@@ -28,7 +28,7 @@ const Index = () => {
 							options={{
 								left: {
 									// @ts-ignore
-									children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+									children: drawer ? <Image style={[styles.headerBtn]} source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
 									onPress: () => setDrawer(!drawer),
 								},
 							}}
@@ -77,5 +77,16 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-evenly',
 		alignItems: 'center',
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 });
