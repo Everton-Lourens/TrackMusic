@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { DISPATCHES, SCREENS } from '@/src/constants';
 import { Storage } from '@/src/helpers';
-import Sound from 'react-native-sound';
+//import Sound from 'react-native-sound';
 import { getRandomImg } from '@/src/store/config';
 import { useLogTrackPlayerState } from '@/src/hooks/useLogTrackPlayerState'
 import { setupPlayer } from '@/src/hooks/useSetupTrackPlayer'
@@ -20,6 +20,45 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	async function getAllSongs() {
 		return new Promise<void>(async (resolve) => {
 			await getAllFiles();
+			if (__DEV__ && !mp3Files?.length) {
+				setMp3Files([
+					{
+						id: 1,
+						url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623987046/GitHub/Projects/Musicont/mock/audios/heartless_u7exot.mp3',
+						title: 'Heartless',
+						artist: 'The Weeknd',
+						artwork: 'https://img.freepik.com/fotos-premium/foto-de-foco-de-fones-de-ouvido-em-fundo-desfocado-aconchegante-a-noite_980736-3020.jpg',
+					},
+					{
+						id: 2,
+						url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986838/GitHub/Projects/Musicont/mock/audios/peaches_dzluia.mp3',
+						title: 'Peaches',
+						artist: 'Justin Bieber',
+						artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623987767/GitHub/Projects/Musicont/mock/images/peaches_sm4qvm.jpg',
+					},
+					{
+						id: 3,
+						url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623988277/GitHub/Projects/Musicont/mock/audios/therefore-i-am_sea49g.mp3',
+						title: 'Therefore I Am',
+						artist: 'Billie Eilish',
+						artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623987985/GitHub/Projects/Musicont/mock/images/therefore-i-am_t9xxfs.jpg',
+					},
+					{
+						id: 4,
+						url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986820/GitHub/Projects/Musicont/mock/audios/kungs-vs-cookin_gbvmhs.mp3',
+						title: 'This Girl',
+						artist: "Kungs vs Cookin' on 3 Burners",
+						artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/kungs-vs-cookin_yhuqv3.jpg',
+					},
+					{
+						id: 5,
+						url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986803/GitHub/Projects/Musicont/mock/audios/dance-monkey_disxa8.mp3',
+						title: 'Dance Monkey',
+						artist: "Tones and I",
+						artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/dance-monkey_dht1uv.jpg',
+					},
+				]);
+			}
 			resolve(mp3Files as any);
 			async function getAllFiles() {
 				try {
@@ -84,25 +123,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 						}
 					}
 				} catch (error) { }
-			}
-
-			async function getDurationMillis(file: string): Promise<number | false> {
-				return new Promise<number | false>((resolve, reject) => {
-					const sound = new Sound(file, Sound.MAIN_BUNDLE, (error) => {
-						if (error) {
-							console.error('Erro ao carregar o áudio', error, file);
-							return resolve(false);
-						}
-						const duration = sound.getDuration();
-						if (duration * 1000 < 5000) {
-							return resolve(false);
-						}
-						resolve(duration * 1000);
-					});
-				}).catch((error) => {
-					console.error('Erro ao obter a duração do áudio', error);
-					return false;
-				});
 			}
 		})
 	}
@@ -172,20 +192,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const init = async () => {
 		try {
 			if (mp3Files?.length || !loading) {
-				if (__DEV__ && false) {
-					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
-					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
-					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
-					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
-					console.log('@@@@@@@@@@@@@@@@@@@______DEV______@@@@@@@@@@@@@@@@@@@');
-					const music = await setupPlayer();
-					const mp3IsStorage = await Storage.get('mp3Files', true);
-					if (mp3IsStorage === null || !mp3IsStorage?.length)
-						await Storage.store('mp3Files', music, true);
-					setMp3Files(music as any); // local json music to test
-				} else {
-					await setupPlayer();
-				}
+				await setupPlayer();
 				await getStorage();
 				replace(SCREENS.HOME);
 			}

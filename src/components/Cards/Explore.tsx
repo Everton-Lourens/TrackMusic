@@ -28,7 +28,7 @@ const Explore = ({ style = {}, imageURL, onClick = true, title = 'Explore', subt
 					<Text style={styles.subtitle}>{subtitle}</Text>
 				</View>
 				<TouchableOpacity style={styles.btn} onPress={onPress}>
-					<Image style={{ width: 40, height: 40 }} source={require('@/src/assets/icons/play.png')} resizeMode="contain" />
+					<Image style={[styles.headerBtn, { width: 40, height: 40 }]} source={require('@/src/assets/icons/play.png')} resizeMode="contain" />
 				</TouchableOpacity>
 			</ImageBackground>
 		</View >
@@ -81,5 +81,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		width: 40,
 		height: 40,
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.3)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 });

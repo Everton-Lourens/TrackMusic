@@ -144,7 +144,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 		(async () => {
 			if (shuffle === null) {
 				const storageShuffle = await Storage.get('shuffle', false) == 'true' ? true : false
-				setShuffle(storageShuffle);
+				setShuffle(!!storageShuffle);
 				if (storageShuffle) setConfigQueue(true);
 			}
 		})();
