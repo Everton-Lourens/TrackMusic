@@ -1,118 +1,73 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import * as React from 'react';
+import { Platform, Linking, Alert } from 'react-native';
+import { check, request, requestMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { Provider as RRProvider } from 'react-redux';
+import store from './src/store';
+import Screens from './src/screens';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+export default function App() {
+  const [permissionGranted, setPermissionGranted] = React.useState(false);
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  React.useEffect(() => {
+    const requestPermissions = async () => {
+      if (Platform.OS === 'android') {
+        const result = await requestMultiple([
+          PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+          PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+        ]);
+        handlePermissionResult(result);
+      } else if (Platform.OS === 'ios') {
+        // Para o iOS, use permissões de biblioteca de mídia
+        const readPermission = await check(PERMISSIONS.IOS.MEDIA_LIBRARY);
+        const writePermission = await check(PERMISSIONS.IOS.MEDIA_LIBRARY);
+
+        if (readPermission === RESULTS.BLOCKED || writePermission === RESULTS.BLOCKED) {
+          showPermissionAlert();
+        } else if (readPermission !== RESULTS.GRANTED || writePermission !== RESULTS.GRANTED) {
+          const requestRead = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+          const requestWrite = await request(PERMISSIONS.IOS.MEDIA_LIBRARY);
+          if (requestRead === RESULTS.GRANTED && requestWrite === RESULTS.GRANTED) {
+            setPermissionGranted(true);
+          } else {
+            showPermissionAlert();
+          }
+        } else {
+          setPermissionGranted(true);
+        }
+      }
+    };
+
+    const handlePermissionResult = (result: any) => {
+      if (
+        result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.GRANTED &&
+        result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.GRANTED
+      ) {
+        setPermissionGranted(true);
+      } else if (
+        result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.BLOCKED || result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.BLOCKED) {
+        showPermissionAlert();
+      }
+    };
+
+    const showPermissionAlert = () => {
+      Alert.alert(
+        'Permissão Necessária',
+        'Para acessar arquivos de música, você precisa habilitar as permissões nas configurações do dispositivo.',
+        [
+          { text: 'Cancelar', style: 'cancel', onPress: () => showPermissionAlert() },
+          { text: 'Abrir Configurações', onPress: () => Linking.openSettings() }
+        ]
+      );
+    };
+
+    requestPermissions();
+  }, []);
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <RRProvider store={store}>
+      <Screens />
+    </RRProvider>
   );
-}
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+};
