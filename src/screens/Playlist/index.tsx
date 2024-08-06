@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, Image, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Header, Section } from '../../widgets';
 import { Storage } from '../../helpers';
 import { DISPATCHES } from '../../constants';
-=======
-import { Alert, Dimensions, ImageBackground, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, Image, View, ImageBackgroundBase } from 'react-native';
-import { connect } from 'react-redux';
-import { Header, Section } from '../../widgets';
-import { Storage } from '../../helpers';
-import { DISPATCHES } from '@/src/constants';
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import LinearGradient from 'react-native-linear-gradient';
 
 const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { goBack } }: any) => {
@@ -69,20 +61,12 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 						options={{
 							left: {
 								// @ts-ignore
-<<<<<<< HEAD
 								children: <Image style={styles.headerBtn} source={require('../../assets/icons/go-back.png')} resizeMode="contain" />,
-=======
-								children: <Image style={styles.headerBtn} source={require('@/src/assets/icons/go-back.png')} resizeMode="contain" />,
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 								onPress: goBack,
 							},
 							right: {
 								// @ts-ignore
-<<<<<<< HEAD
 								children: <Image style={styles.headerBtn} source={require('../../assets/icons/trash.png')} resizeMode="contain" />,
-=======
-								children: <Image style={styles.headerBtn} source={require('@/src/assets/icons/trash.png')} resizeMode="contain" />,
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 								onPress: handleDelete,
 							},
 						}}
@@ -99,11 +83,7 @@ const Index = ({ songs, playlists, dispatch, route: { params }, navigation: { go
 			</View>
 			<ScrollView style={styles.itemContainer} contentContainerStyle={{ flex: 1 }}>
 				<ImageBackground style={styles.item} blurRadius={10} source={{ uri: songs[playlist?.songs[0]].artwork }}>
-<<<<<<< HEAD
 					<LinearGradient
-=======
-				<LinearGradient
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 						style={styles.imageBackground}
 						colors={['rgba(0, 0, 0, 1)', 'transparent']}
 						start={{ x: 1, y: 0 }}
@@ -136,17 +116,10 @@ const styles = StyleSheet.create({
 	},
 	item: {
 		width: Dimensions.get('screen').width,
-<<<<<<< HEAD
 		height: Dimensions.get('screen').height * 0.7,
 	},
 	headerBtn: {
 		tintColor: 'gray',
-=======
-		height: Dimensions.get('screen').height*0.7,
-	},
-	headerBtn: {
-		tintColor: 'gray', 
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
 		//justifyContent: 'center',
@@ -167,11 +140,7 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		left: 0,
 		width: null,
-<<<<<<< HEAD
 		height: Dimensions.get('screen').height * 0.7,
-=======
-		height: Dimensions.get('screen').height*0.7,
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 	},
 	overlay: {
 		justifyContent: 'center',

@@ -6,11 +6,7 @@ import { Linking } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
-<<<<<<< HEAD
 import { SCREENS } from '../../constants';
-=======
-import { SCREENS } from '@/src/constants';
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const menus = [
 	{ name: 'home', title: 'Início', screen: SCREENS.HOME },
@@ -60,11 +56,7 @@ const Index = ({
 			<LinearGradient style={styles.container} colors={['#C07037', '#C55234']}>
 				<View style={styles.menuContainer}>
 					<Animatable.View style={styles.header} animation={active ? 'slideInDown' : 'slideOutUp'} duration={2000}>
-<<<<<<< HEAD
 						<Image style={styles.logo} source={require('../../assets/logo.png')} />
-=======
-						<Image style={styles.logo} source={require('@/src/assets/logo.png')} />
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 						<Text style={styles.appName}>{appName}</Text>
 					</Animatable.View>
 					<View style={styles.middle}>

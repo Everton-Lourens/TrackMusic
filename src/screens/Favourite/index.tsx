@@ -18,11 +18,7 @@ const [drawer, setDrawer] = useState(false);
 						options={{
 							left: {
 								// @ts-ignore
-<<<<<<< HEAD
 								children: drawer ? <Image source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
-=======
-								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 								onPress: () => setDrawer(!drawer),
 							},
 							middle: {

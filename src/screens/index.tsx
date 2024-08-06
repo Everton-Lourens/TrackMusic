@@ -1,18 +1,10 @@
 import * as React from 'react';
-<<<<<<< HEAD
 import { View, Text } from 'react-native';
 import { Loading, Home, Songs, Playing, Search, Favourite, Recent, Playlists, Playlist } from '../screens/screens';
 import { SCREENS } from '../constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-=======
-import { View, Text, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Loading, Home, Songs, Playing, Search, Favourite, Recent, Playlists, Playlist } from '@/src/screens/screens';
-import { SCREENS } from '@/src/constants';
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +32,6 @@ const StackNavigation = () => {
   )
 };
 
-<<<<<<< HEAD
 export default function Index() {
   return (
     <SafeAreaProvider>
@@ -52,14 +43,3 @@ export default function Index() {
 };
 //const Index = () => {
 //export default Index;
-=======
-const Index = () => {
-  return (
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
-  );
-};
-
-export default Index;
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee

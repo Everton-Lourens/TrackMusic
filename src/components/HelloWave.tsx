@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 /*
-=======
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import { StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -11,11 +8,7 @@ import Animated, {
   withSequence,
 } from 'react-native-reanimated';
 
-<<<<<<< HEAD
 import { ThemedText } from './ThemedText';
-=======
-import { ThemedText } from '@/src/components/ThemedText';
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 export function HelloWave() {
   const rotationAnimation = useSharedValue(0);
@@ -43,8 +36,5 @@ const styles = StyleSheet.create({
     marginTop: -6,
   },
 });
-<<<<<<< HEAD
 
 */
-=======
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee

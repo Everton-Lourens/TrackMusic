@@ -2,21 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import RNFS from 'react-native-fs';
-<<<<<<< HEAD
 import { DISPATCHES, SCREENS } from '../constants';
 import { Storage } from '../helpers';
 //import Sound from 'react-native-sound';
 import { getRandomImg } from '../store/config';
 import { useLogTrackPlayerState } from '../hooks/useLogTrackPlayerState'
 import { setupPlayer } from '../hooks/useSetupTrackPlayer'
-=======
-import { DISPATCHES, SCREENS } from '@/src/constants';
-import { Storage } from '@/src/helpers';
-//import Sound from 'react-native-sound';
-import { getRandomImg } from '@/src/store/config';
-import { useLogTrackPlayerState } from '@/src/hooks/useLogTrackPlayerState'
-import { setupPlayer } from '@/src/hooks/useSetupTrackPlayer'
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import TrackPlayer from 'react-native-track-player';
 
 const { width, height } = Dimensions.get('screen');
@@ -215,11 +206,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 		init();
 	}, [mp3Files?.length, loading]);
 
-<<<<<<< HEAD
 	return <Image style={styles.img} source={require('../assets/splash.png')} resizeMode="cover" />;
-=======
-	return <Image style={styles.img} source={require('@/src/assets/splash.png')} resizeMode="cover" />;
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 };
 
 const mapStateToProps = (state: any) => ({ songs: state?.player?.songs });

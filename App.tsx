@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import * as React from 'react';
 import { Platform, Linking, Alert } from 'react-native';
 import { check, request, requestMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
@@ -12,19 +11,6 @@ export default function App() {
   const [permissionGranted, setPermissionGranted] = React.useState(false);
 
   React.useEffect(() => {
-=======
-import React, { useEffect, useState } from 'react';
-import { Alert, Linking, Platform } from 'react-native';
-import { Provider as RRProvider } from 'react-redux';
-import { check, request, requestMultiple, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import store from '@/src/store';
-import Screens from '@/src/screens';
-
-export default function App() {
-  const [permissionGranted, setPermissionGranted] = useState(false);
-
-  useEffect(() => {
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
     const requestPermissions = async () => {
       if (Platform.OS === 'android') {
         const result = await requestMultiple([
@@ -60,13 +46,7 @@ export default function App() {
       ) {
         setPermissionGranted(true);
       } else if (
-<<<<<<< HEAD
         result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.BLOCKED || result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.BLOCKED) {
-=======
-        result[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE] === RESULTS.BLOCKED ||
-        result[PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE] === RESULTS.BLOCKED
-      ) {
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
         showPermissionAlert();
       }
     };
@@ -85,18 +65,9 @@ export default function App() {
     requestPermissions();
   }, []);
 
-<<<<<<< HEAD
   return (
     <RRProvider store={store}>
       <Screens />
     </RRProvider>
   );
 };
-=======
-  return permissionGranted ? (
-    <RRProvider store={store}>
-      <Screens />
-    </RRProvider>
-  ) : null;
-}
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee

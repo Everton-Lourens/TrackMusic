@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-<<<<<<< HEAD
 //import LinearGradient from 'react-native-linear-gradient';
-=======
-import LinearGradient from 'react-native-linear-gradient';
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 //import Icon from '../Icon';
 import * as Modal from '../../widgets/Modals';

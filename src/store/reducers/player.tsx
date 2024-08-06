@@ -1,9 +1,5 @@
 import { player as playerState } from '../states';
-<<<<<<< HEAD
 import { DISPATCHES } from '../../constants';
-=======
-import { DISPATCHES } from '@/src/constants';
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const player = (state = playerState, { type = '' as string, payload = {} }: any) => {
 	switch (type) {

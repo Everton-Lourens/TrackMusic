@@ -8,7 +8,6 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-<<<<<<< HEAD
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
 #
@@ -20,15 +19,12 @@ prepare_react_native_project!
 # ```
 flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
-=======
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
   use_frameworks! :linkage => linkage.to_sym
 end
 
-<<<<<<< HEAD
 target 'TrackMusic' do
   config = use_native_modules!
 
@@ -45,22 +41,11 @@ target 'TrackMusic' do
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
     :flipper_configuration => flipper_config,
-=======
-target 'MusicTrack' do
-  config = use_native_modules!
-
-  use_react_native!(
-    :path => config[:reactNativePath],
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-<<<<<<< HEAD
   target 'TrackMusicTests' do
-=======
-  target 'MusicTrackTests' do
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
     inherit! :complete
     # Pods for testing
   end
@@ -70,14 +55,8 @@ target 'MusicTrack' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-<<<<<<< HEAD
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
-=======
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
-    )
->>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
   end
 end
