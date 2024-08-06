@@ -65,9 +65,9 @@ export default function App() {
     requestPermissions();
   }, []);
 
-  return (
+  return permissionGranted ? (
     <RRProvider store={store}>
       <Screens />
     </RRProvider>
-  );
+  ) : null;
 };
