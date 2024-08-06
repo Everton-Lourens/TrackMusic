@@ -1,4 +1,3 @@
-/*
 import TrackPlayer, { Event } from 'react-native-track-player'
 
 export const playbackService = async () => {
@@ -22,5 +21,3 @@ export const playbackService = async () => {
 		TrackPlayer.skipToPrevious()
 	})
 }
-
-*/

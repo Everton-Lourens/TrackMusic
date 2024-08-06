@@ -142,7 +142,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 						<View style={{ marginBottom: 25 }}>
 							<Animatable.View style={styles.headerBtn} animation={isFav ? animation : "swing"} easing="linear" iterationCount="infinite">
 								<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
-									<Image style={isFav ? {} : { tintColor: '#919191' }} source={require('../../assets/icons/fav.png')} />
+									{isFav ? <Image source={require('../../assets/icons/fav.png')} /> : <Image source={require('../../assets/icons/no-fav.png')} />}
 								</TouchableOpacity>
 							</Animatable.View>
 
