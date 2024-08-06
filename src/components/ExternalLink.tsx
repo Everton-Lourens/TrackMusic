@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import { Link } from 'expo-router';
 import { openBrowserAsync } from 'expo-web-browser';
 import { type ComponentProps } from 'react';
@@ -23,5 +26,8 @@ export function ExternalLink({ href, ...rest }: Props) {
     />
   );
 }
+<<<<<<< HEAD
 
 */
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee

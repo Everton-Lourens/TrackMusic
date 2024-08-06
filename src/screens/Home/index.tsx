@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+<<<<<<< HEAD
 import { Drawer, Footer, Header, Section } from '../../widgets';
+=======
+import { Drawer, Footer, Header, Section } from '@/src/widgets';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const Index = () => {
 	const [drawer, setDrawer] = useState(false);
@@ -28,7 +32,11 @@ const Index = () => {
 							options={{
 								left: {
 									// @ts-ignore
+<<<<<<< HEAD
 									children: drawer ? <Image style={[styles.headerBtn]} source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
+=======
+									children: drawer ? <Image style={[styles.headerBtn]} source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 									onPress: () => setDrawer(!drawer),
 								},
 							}}

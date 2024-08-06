@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import type { PropsWithChildren, ReactElement } from 'react';
 import { StyleSheet, useColorScheme } from 'react-native';
 import Animated, {
@@ -8,7 +11,11 @@ import Animated, {
   useScrollViewOffset,
 } from 'react-native-reanimated';
 
+<<<<<<< HEAD
 import { ThemedView } from './ThemedView';
+=======
+import { ThemedView } from '@/src/components/ThemedView';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const HEADER_HEIGHT = 250;
 
@@ -75,5 +82,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
 });
+<<<<<<< HEAD
 
 */
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee

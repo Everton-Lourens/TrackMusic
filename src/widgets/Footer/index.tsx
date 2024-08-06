@@ -1,16 +1,30 @@
+<<<<<<< HEAD
 import React, { useEffect, useRef, memo } from 'react';
 import { Animated, Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+=======
+import React, { useEffect, useRef, useState, memo } from 'react';
+import { Animated, Dimensions, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import Slider from '@react-native-community/slider';
 import Marquee from "react-native-marquee";
 //import Icon from '@/src/components/Icon';
+<<<<<<< HEAD
 import { DISPATCHES, SCREENS } from '../../constants';
 //import { Audio } from '@/src/hooks';
 import { Storage } from '../../helpers';
 import { PlayPauseButton, RepeatButton, ShuffleButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
 import { PlayerProgressNumber } from '../../components/PlayerProgress';
+=======
+import { DISPATCHES, SCREENS } from '@/src/constants';
+//import { Audio } from '@/src/hooks';
+import { Storage } from '@/src/helpers';
+import { PlayPauseButton, RepeatButton, ShuffleButton, SkipToNextButton, SkipToPreviousButton } from '@/src/components/PlayerControls';
+import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
+import { PlayerProgressNumber } from '@/src/components/PlayerProgress';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 //import { PlayerControls } from '@/src/components/PlayerControls';
 

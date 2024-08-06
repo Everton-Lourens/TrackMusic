@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /*-
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { PropsWithChildren, useState } from 'react';
 import { StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
@@ -40,5 +43,8 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
 });
+<<<<<<< HEAD
 
 */
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee

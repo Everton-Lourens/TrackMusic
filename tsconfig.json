@@ -1,3 +1,37 @@
+<<<<<<< HEAD
 {
   "extends": "@tsconfig/react-native/tsconfig.json"
+=======
+/*
+{
+  "extends": "@react-native/typescript-config/tsconfig.json"
+}
+*/
+{
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",  // Adiciona baseUrl para resolver módulos relativos
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "typeRoots": [
+      "node_modules/@types",  // Inclui tipos de node_modules
+      "node_modules/react-native/third-party"  // Inclui tipos específicos para react-native
+    ]
+  },
+  "include": [
+    "**/*.js",
+    "**/*.ts",
+    "**/*.tsx",
+    "node_modules/**/*"  // Inclui todos os módulos para garantir que o TypeScript encontre tipos
+  ],
+  "exclude": [
+    "node_modules",  // Pode ser excluído se você enfrentar problemas de inclusão de tipos
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ]
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 }

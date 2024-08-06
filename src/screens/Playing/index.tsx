@@ -2,6 +2,7 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+<<<<<<< HEAD
 //import LinearGradient from 'react-native-linear-gradient';
 //import Slider from '@react-native-community/slider';
 import Marquee from 'react-native-marquee';
@@ -15,6 +16,22 @@ import { RepeatButton, ShuffleButton } from '../../components/PlayerControls';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import * as Modal from '../../widgets/Modals';
+=======
+import LinearGradient from 'react-native-linear-gradient';
+import Slider from '@react-native-community/slider';
+import Marquee from 'react-native-marquee';
+import { Header } from '../../widgets';
+import { Audio } from '../../hooks';
+import { DISPATCHES } from '@/src/constants';
+import { millisToMin, Storage } from '../../helpers';
+import { getAllSongs, getRandomImg } from '@/src/store/config';
+import songDetail from '@/src/store/states/player';
+import { PlayerProgressBar } from '@/src/components/PlayerProgress';
+import { PlayerControls, RepeatButton, ShuffleButton } from '@/src/components/PlayerControls';
+import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
+import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton, StopOutLineButton } from '@/src/components/PlayerControls';
+import * as Modal from '@/src/widgets/Modals';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 
 //CONTINUE CODE HERE
@@ -124,11 +141,19 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				<Header
 					options={{
 						left: {
+<<<<<<< HEAD
 							children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/go-back.png')} />,
 							onPress: goBack,
 						},
 						right: {
 							children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/option.png')} />,
+=======
+							children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('@/src/assets/icons/go-back.png')} />,
+							onPress: goBack,
+						},
+						right: {
+							children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('@/src/assets/icons/option.png')} />,
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 							onPress: () => setMoreOptionsModal(true),
 						},
 					}}
@@ -142,7 +167,11 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 						<View style={{ marginBottom: 25 }}>
 							<Animatable.View style={styles.headerBtn} animation={isFav ? animation : "swing"} easing="linear" iterationCount="infinite">
 								<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
+<<<<<<< HEAD
 									<Image style={isFav ? {} : { tintColor: '#919191' }} source={require('../../assets/icons/fav.png')} />
+=======
+									<Image style={isFav ? {} : { tintColor: '#919191' }} source={require('@/src/assets/icons/fav.png')} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 								</TouchableOpacity>
 							</Animatable.View>
 

@@ -1,4 +1,8 @@
 apply plugin: "com.android.application"
+<<<<<<< HEAD
+=======
+apply plugin: "org.jetbrains.kotlin.android"
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 apply plugin: "com.facebook.react"
 
 /**
@@ -70,17 +74,37 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
+<<<<<<< HEAD
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     namespace "com.trackmusic"
     defaultConfig {
         applicationId "com.trackmusic"
+=======
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdk rootProject.ext.compileSdkVersion
+
+    namespace "com.musictrack"
+    defaultConfig {
+        applicationId "com.musictrack"
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
     }
+<<<<<<< HEAD
+=======
+    splits {
+        abi {
+            reset()
+            enable true
+            universalApk false
+            include "arm64-v8a"
+        }
+    }
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -115,12 +139,15 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
 
+<<<<<<< HEAD
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
 
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}")
+=======
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

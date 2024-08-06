@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react'
 import TrackPlayer, { Capability, RatingType } from 'react-native-track-player'
+=======
+import { useEffect, useRef, useState } from 'react'
+import TrackPlayer, { Capability, RatingType, RepeatMode } from 'react-native-track-player'
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 export const setupPlayer = async (queue = []) => {
 	try {

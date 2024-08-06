@@ -3,7 +3,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { SCREENS } from '../constants';
 
+<<<<<<< HEAD
 const LeftChildren = () => <Image source={require('../assets/icons/hamburger.png')} resizeMode="contain" />;
+=======
+const LeftChildren = () => <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />;
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const MiddleChildren = ({ text }) => (
 	<Text
@@ -16,7 +20,11 @@ const MiddleChildren = ({ text }) => (
 	</Text>
 );
 
+<<<<<<< HEAD
 const RightChildren = () => <Image	style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('../assets/icons/search.png')} resizeMode="contain" />;
+=======
+const RightChildren = () => <Image	style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/search.png')} resizeMode="contain" />;
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 const Header = ({ style = { marginTop: 10, marginHorizontal: 10 }, options = {} }) => {
 	const { navigate } = useNavigation();

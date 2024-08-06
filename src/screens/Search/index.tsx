@@ -4,7 +4,11 @@ import { useNavigation } from '@react-navigation/core';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
+<<<<<<< HEAD
 import { Section } from '../../widgets';
+=======
+import { Section } from '@/src/widgets';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 //import { Icon } from '../../components';
 
 const Index = ({ songs }: any) => {
@@ -49,7 +53,11 @@ const Index = ({ songs }: any) => {
 						<View style={styles.header}>
 							<View style={styles.input}>
 								{/*// @ts-ignore */}
+<<<<<<< HEAD
 								<Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('../../assets/icons/search.png')} />
+=======
+								<Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/search.png')} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 								<TextInput style={styles.textInput} onChangeText={handleInput} value={search} returnKeyType="search" ref={textInputRef} placeholder="Pesquisar..." />
 							</View>
 							<TouchableOpacity style={styles.btn} onPress={() => goBack()}>

@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 import { colors, fontSize } from '../constants/tokens'
 import { formatSecondsToMinutes } from '../helpers/miscellaneous'
 import { defaultStyles, utilsStyles } from '../styles'
+=======
+import { colors, fontSize } from '@/src/constants/tokens'
+import { formatSecondsToMinutes } from '@/src/helpers/miscellaneous'
+import { defaultStyles, utilsStyles } from '@/src/styles'
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import { SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps } from 'react-native'
 //import { Slider } from 'react-native-awesome-slider'
 import Slider from '@react-native-community/slider';

@@ -4,24 +4,39 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { Header, Section, Drawer } from '../../widgets';
+<<<<<<< HEAD
 //import { getRandomImg } from '../../store/config';
 
 const Index = ({ songs }: any) => {
 	const [drawer, setDrawer] = useState(false);
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
+=======
+import { getRandomImg } from '@/src/store/config';
+
+const Index = ({ songs }: any) => {
+	const [drawer, setDrawer] = useState(false);
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 	return (
 		<Drawer active={drawer} current="recent" onItemPressed={() => setDrawer(false)}>
 
 			<StatusBar barStyle="light-content" backgroundColor='black' />
 
+<<<<<<< HEAD
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
+=======
+			<ImageBackground style={styles.backgroundcontainer} source={{ uri: getRandomImg() }} blurRadius={20} resizeMode="cover">
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 				<SafeAreaView style={styles.container}>
 					<Header
 						options={{
 							left: {
 								// @ts-ignore
+<<<<<<< HEAD
 								children: drawer ? <Image source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
+=======
+								children: drawer ? <Image source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 								onPress: () => setDrawer(!drawer),
 							},
 							middle: {
@@ -44,7 +59,11 @@ const Index = ({ songs }: any) => {
 					</View>
 				</SafeAreaView>
 			</ImageBackground>
+<<<<<<< HEAD
 		</Drawer>
+=======
+			</Drawer>
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 	);
 };
 

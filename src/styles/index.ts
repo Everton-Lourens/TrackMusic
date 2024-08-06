@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { colors, fontSize } from '../constants/tokens'
+=======
+import { colors, fontSize } from '@/src/constants/tokens'
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import { StyleSheet } from 'react-native'
 
 export const defaultStyles = StyleSheet.create({

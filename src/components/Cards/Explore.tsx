@@ -6,7 +6,11 @@ const Explore = ({ style = {}, imageURL, onClick = true, title = 'Explore', subt
 
 	return (
 		<View style={[styles.container, style]}>
+<<<<<<< HEAD
 			<ImageBackground style={styles.card} imageStyle={styles.imageStyle} source={imageURL ? { uri: imageURL } : require('../../assets/explore/default.png')} resizeMode="cover">
+=======
+			<ImageBackground style={styles.card} imageStyle={styles.imageStyle} source={imageURL ? { uri: imageURL } : require('@/src/assets/explore/default.png')} resizeMode="cover">
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 
 				{onClick ?
 					(<LinearGradient
@@ -28,7 +32,11 @@ const Explore = ({ style = {}, imageURL, onClick = true, title = 'Explore', subt
 					<Text style={styles.subtitle}>{subtitle}</Text>
 				</View>
 				<TouchableOpacity style={styles.btn} onPress={onPress}>
+<<<<<<< HEAD
 					<Image style={[styles.headerBtn, { width: 40, height: 40 }]} source={require('../../assets/icons/play.png')} resizeMode="contain" />
+=======
+					<Image style={[styles.headerBtn, { width: 40, height: 40 }]} source={require('@/src/assets/icons/play.png')} resizeMode="contain" />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 				</TouchableOpacity>
 			</ImageBackground>
 		</View >

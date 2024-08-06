@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 rootProject.name = 'TrackMusic'
+=======
+rootProject.name = 'MusicTrack'
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')

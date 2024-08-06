@@ -1,6 +1,10 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, RepeatMode } from 'react-native-track-player';
+<<<<<<< HEAD
 import { Storage } from '../helpers';
+=======
+import { Storage } from '@/src/helpers';
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 import { useEffect, useState } from 'react';
 
 type PlayerControlsProps = {
@@ -53,9 +57,15 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 
 			>
 				{playing ? (
+<<<<<<< HEAD
 					<Image source={require('../assets/icons/pause.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
 				) : (
 					<Image source={require('../assets/icons/play.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+=======
+					<Image source={require('@/src/assets/icons/pause.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+				) : (
+					<Image source={require('@/src/assets/icons/play.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 				)}
 
 			</TouchableOpacity>
@@ -68,7 +78,11 @@ export const StopOutLineButton = ({ style, iconSize = 40 }: PlayerButtonProps) =
 	return (
 		<View style={[{ height: iconSize }, style]}>
 			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.stop()}>
+<<<<<<< HEAD
 				<Image source={require('../assets/icons/stop-outline.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+=======
+				<Image source={require('@/src/assets/icons/stop-outline.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 			</TouchableOpacity>
 		</View>
 
@@ -79,7 +93,11 @@ export const SkipToNextButton = ({ style, iconSize = 40 }: PlayerButtonProps) =>
 	return (
 		<View style={[{ height: iconSize }, style]}>
 			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+<<<<<<< HEAD
 				<Image source={require('../assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+=======
+				<Image source={require('@/src/assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 			</TouchableOpacity>
 		</View>
 
@@ -90,7 +108,11 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 	return (
 		<View style={[{ height: iconSize }, style]}>
 			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+<<<<<<< HEAD
 				<Image source={require('../assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+=======
+				<Image source={require('@/src/assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 			</TouchableOpacity>
 		</View>
 
@@ -157,8 +179,13 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 				{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
 				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeShuffle()}>
 					{shuffle ?
+<<<<<<< HEAD
 						<Image source={require('../assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
 						: <Image source={require('../assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+=======
+						<Image source={require('@/src/assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+						: <Image source={require('@/src/assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 					}
 				</TouchableOpacity>
 
@@ -210,7 +237,11 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 			case RepeatMode?.Off:
 				return (
 					<Image
+<<<<<<< HEAD
 						source={require('../assets/icons/dont-repeat.png')}
+=======
+						source={require('@/src/assets/icons/dont-repeat.png')}
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
@@ -218,7 +249,11 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 			case RepeatMode?.Queue:
 				return (
 					<Image
+<<<<<<< HEAD
 						source={require('../assets/icons/repeat.png')}
+=======
+						source={require('@/src/assets/icons/repeat.png')}
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
@@ -226,7 +261,11 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 			case RepeatMode?.Track:
 				return (
 					<Image
+<<<<<<< HEAD
 						source={require('../assets/icons/repeated.png')}
+=======
+						source={require('@/src/assets/icons/repeated.png')}
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
@@ -234,7 +273,11 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 			default:
 				return (
 					<Image
+<<<<<<< HEAD
 						source={require('../assets/icons/shuffle.png')}
+=======
+						source={require('@/src/assets/icons/shuffle.png')}
+>>>>>>> 73d8a8ed2e7dbe33a533724e6ce6b4cfe88565ee
 						style={[{ height: iconSize, width: iconSize }, styles.controlBtn]}
 					/>
 				);
