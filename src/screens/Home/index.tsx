@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, ImageBackground, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, ImageBackground, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-//import { Drawer, Footer, Header, Section } from '@/src/widgets';
+import { Drawer, Footer, Header, Section } from '../../widgets';
 
 const Index = () => {
 	const [drawer, setDrawer] = useState(false);
@@ -19,28 +19,28 @@ const Index = () => {
 	}, []);
 
 	return (
-		<>
+		<Drawer active={drawer} current="home" onItemPressed={() => setDrawer(false)}>
 			<StatusBar barStyle="light-content" backgroundColor='black' />
 
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
-				<SafeAreaView style={styles.container}>
-					{/*<Header
-						options={{
-							left: {
-								// @ts-ignore
-								children: drawer ? <Image style={[styles.headerBtn]} source={require('@/src/assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('@/src/assets/icons/hamburger.png')} resizeMode="contain" />,
-								onPress: () => setDrawer(!drawer),
-							},
-						}}
-					/>*/}
-					<ScrollView>
+					<SafeAreaView style={styles.container}>
+						<Header
+							options={{
+								left: {
+									// @ts-ignore
+									children: drawer ? <Image style={[styles.headerBtn]} source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
+									onPress: () => setDrawer(!drawer),
+								},
+							}}
+						/>
+				<ScrollView>
 
 						<View style={styles.sections}>
 
-							{/*<Section.Explore />*/}
-							{/*<Section.Recent style={{ marginTop: 30 }} />*/}
-							{/*<Section.Favourites style={{ marginTop: 30 }} />*/}
-							{/*<Section.Playlist style={{ marginTop: 30 }} />*/}
+							<Section.Explore />
+							<Section.Recent style={{ marginTop: 30 }} />
+							<Section.Favourites style={{ marginTop: 30 }} />
+							<Section.Playlist style={{ marginTop: 30 }} />
 
 							<ScrollView>
 								<View style={{
@@ -50,11 +50,11 @@ const Index = () => {
 								</View>
 							</ScrollView>
 						</View>
-					</ ScrollView>
-					{/*<Footer />*/}
-				</SafeAreaView>
+				</ ScrollView>
+						<Footer />
+					</SafeAreaView>
 			</ImageBackground>
-		</>
+		</Drawer>
 	);
 };
 

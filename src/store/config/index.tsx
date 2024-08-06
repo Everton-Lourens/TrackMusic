@@ -1,11 +1,10 @@
-/*
-import { allSongs } from './storage';
-import RNFS from 'react-native-fs';
-import { get, store, clear } from '@/src/helpers/storage';
+//import { allSongs } from './storage';
+//import RNFS from 'react-native-fs';
 var uriImgValue: string = '';
 var defaultImage: string = '';
 
 export async function getAllSongs() {
+  /*
   const mp3Files: Array<any> = [];
   try {
     const mp3IsStorage: Array<any> = await get('mp3FilesCXX', true);
@@ -41,6 +40,7 @@ export async function getAllSongs() {
         await getMp3Files(file?.path);
       }
     }
+      
   }
 
   async function getMp3Files(directoryPath: any) {
@@ -61,7 +61,7 @@ export async function getAllSongs() {
       }
     }
   }
-
+*/
 }
 
 export function getRandomImg() {
@@ -109,4 +109,3 @@ export function getDefaultPicture() {
   }
   return defaultImage;
 }
-  */
