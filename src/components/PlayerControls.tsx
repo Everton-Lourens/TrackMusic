@@ -253,6 +253,39 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 	);
 }
 
+const TimeoutButton = ({ time = 0 }: any) => {
+	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+	useEffect(() => {
+		const manageTimeout = async () => {
+			if (time > 0) {
+				const id = setTimeout(async () => {
+					const timeoutValue = await Storage.get('timeout', false);
+					if (timeoutValue === 'true') {
+						await TrackPlayer.pause();
+					}
+				}, time * 60 * 1000);
+				setTimeoutId(id);
+				await Storage.store('timeout', 'true', false);
+			} else if (timeoutId) {
+				clearTimeout(timeoutId);
+				setTimeoutId(null);
+				await Storage.store('timeout', 'false', false);
+			}
+		};
+
+		manageTimeout();
+
+		return () => {
+			if (timeoutId) {
+				clearTimeout(timeoutId);
+			}
+		};
+	}, [time]);
+
+	return null;
+}
+
 
 const styles = StyleSheet.create({
 	controlBtn: {

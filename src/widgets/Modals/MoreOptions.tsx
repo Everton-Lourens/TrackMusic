@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, Modal, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import Timeout from '../../components/PauseMusic';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -8,6 +9,7 @@ const MoreOptions = ({
 	visible = false,
 	onClose = (p0: boolean) => { },
 	title = 'Título da Música',
+	optionTimeout = false,
 	moreOptions = [
 		{
 			text: 'Iniciar',
@@ -42,6 +44,7 @@ const MoreOptions = ({
 
 	return (
 		<Modal visible={visible} transparent animationType="fade">
+
 			<TouchableOpacity
 				style={[{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, width, height, backgroundColor: 'rgba(0, 0, 0, .5)', zIndex: 999 }]}
 				activeOpacity={1}
@@ -54,6 +57,9 @@ const MoreOptions = ({
 						<Text style={{ color: 'rgba(0, 0, 0, .5)', fontSize: 16, letterSpacing: 1 }}>{text}</Text>
 					</TouchableOpacity>
 				))}
+				{optionTimeout ?
+					<Timeout />
+					: null}
 			</Animatable.View>
 		</Modal>
 	);

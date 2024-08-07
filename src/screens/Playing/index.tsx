@@ -11,9 +11,10 @@ import { Storage } from '../../helpers';
 //import { getAllSongs, getRandomImg } from '../../store/config';
 //import songDetail from '../../store/states/player';
 import { PlayerProgressBar } from '../../components/PlayerProgress';
-import { RepeatButton, ShuffleButton } from '../../components/PlayerControls';
+import { RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
+import PauseMusic from '../../components/PauseMusic';
 import * as Modal from '../../widgets/Modals';
 
 
@@ -165,12 +166,14 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 						/>
 
 					</View>
+
 					<View style={styles.actionsContainer}>
 
 						<RepeatButton
 							iconSize={30}
 							style={{ marginRight: -30 }}
 						/>
+
 
 						<View style={[styles.containerBtn]}>
 							<View style={styles.row}>
@@ -203,7 +206,10 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				</View>
 
 			</ImageBackground >
-			<Modal.MoreOptions visible={moreOptionsModal} onClose={setMoreOptionsModal} title={song?.detail?.title}
+			<Modal.MoreOptions visible={moreOptionsModal}
+				onClose={setMoreOptionsModal}
+				title={song?.detail?.title}
+				optionTimeout={true}
 				moreOptions={[
 					{
 						text: 'Iniciar',
