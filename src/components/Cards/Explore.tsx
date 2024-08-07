@@ -4,9 +4,24 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const Explore = ({ style = {}, imageURL, nameImg = 'default.png', onClick = true, title = 'Explore', subtitle = `Explore`, onPress = () => { } }: any) => {
 
+	const getImage = (name: string) => {
+		switch (name) {
+			case 'music.png':
+				return require('../../assets/explore/music.png');
+			case 'playlist.png':
+				return require('../../assets/explore/playlist.png');
+			default:
+				return require('../../assets/explore/default.png');
+		}
+	};
+
 	return (
 		<View style={[styles.container, style]}>
-			<ImageBackground style={styles.card} imageStyle={styles.imageStyle} source={imageURL ? { uri: imageURL } : require(`../../assets/explore/${nameImg}`)} resizeMode="cover">
+			<ImageBackground
+				style={styles.card}
+				imageStyle={styles.imageStyle}
+				source={imageURL ? { uri: imageURL } : getImage(nameImg)}
+				resizeMode="cover">
 
 				{onClick ?
 					(<LinearGradient
