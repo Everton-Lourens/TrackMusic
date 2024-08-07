@@ -11,9 +11,11 @@ const Index = ({ style = {} }) => {
 
 	return (
 		<Container style={style} title="For you">
+
 			<Card.Explore
 				style={{ marginLeft: 20 }}
 				title="Músicas"
+				nameImg="music.png"
 				subtitle="Lista de músicas"
 				onPress={() => navigation.navigate(SCREENS.SONGS)}
 			/>
@@ -21,6 +23,7 @@ const Index = ({ style = {} }) => {
 			<Card.Explore
 				style={{ marginLeft: 20 }}
 				title="Playlists"
+				nameImg="playlist.png"
 				subtitle="Lista de playlists"
 				onPress={() => navigation.navigate(SCREENS.PLAYLISTS)}
 			/>
@@ -29,6 +32,7 @@ const Index = ({ style = {} }) => {
 				style={{ marginRight: 20 }}
 				onClick={false}
 			/>
+
 		</Container>
 	);
 };

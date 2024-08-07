@@ -2,11 +2,11 @@ import React from 'react';
 import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Explore = ({ style = {}, imageURL, onClick = true, title = 'Explore', subtitle = `Explore`, onPress = () => { } }: any) => {
+const Explore = ({ style = {}, imageURL, nameImg = 'default.png', onClick = true, title = 'Explore', subtitle = `Explore`, onPress = () => { } }: any) => {
 
 	return (
 		<View style={[styles.container, style]}>
-			<ImageBackground style={styles.card} imageStyle={styles.imageStyle} source={imageURL ? { uri: imageURL } : require('../../assets/explore/default.png')} resizeMode="cover">
+			<ImageBackground style={styles.card} imageStyle={styles.imageStyle} source={imageURL ? { uri: imageURL } : require(`../../assets/explore/${nameImg}`)} resizeMode="cover">
 
 				{onClick ?
 					(<LinearGradient
