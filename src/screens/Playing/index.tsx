@@ -14,9 +14,7 @@ import { PlayerProgressBar } from '../../components/PlayerProgress';
 import { RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
-import PauseMusic from '../../components/PauseMusic';
 import * as Modal from '../../widgets/Modals';
-import TimeoutTrack from '../../components/PauseMusic';
 
 
 //CONTINUE CODE HERE
@@ -29,7 +27,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 	const [animation, setAnimation] = useState('');
 	const [showTimeoutModal, setShowTimeoutModal] = useState(false);
-	const [newTimeout] = useState(new TimeoutTrack(30));
 
 	const verifyFav = async () => {
 		const favs = await Storage.get('favourites', true);

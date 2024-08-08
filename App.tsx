@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking, Alert, View, Button, Text } from 'react-native';
+import { Platform, Linking, Alert, View, Button, Text, TouchableWithoutFeedback, StyleSheet } from 'react-native';
 import { check, request, PERMISSIONS, RESULTS, requestMultiple } from 'react-native-permissions';
 import { Provider as RRProvider } from 'react-redux';
 import store from './src/store';
@@ -55,7 +55,7 @@ export default function App() {
 
   const showPermissionAlert = () => {
     Alert.alert(
-      'Permissão Necessária',
+      'Permissão Necessária!',
       'Para acessar arquivos de música, você precisa habilitar as permissões de MÍDIA nas configurações do dispositivo.',
       [
         { text: 'Cancelar', style: 'cancel', onPress: () => showPermissionAlert() },
@@ -70,10 +70,27 @@ export default function App() {
       <Screens />
     </RRProvider>
   ) :
-    (<View>
-      <Text style={{ textAlign: 'center', fontSize: 20, color: 'red' }}>
-        Habilite as permissões de MÍDIA nas configurações do dispositivo.
-      </Text>
-      <Button title="Permissão" onPress={() => showPermissionAlert()} />
-    </View>)
+    (<TouchableWithoutFeedback onPress={showPermissionAlert}>
+        <View style={styles.container}>
+          <Text style={styles.message}>
+            Habilite as permissões de MÍDIA nas configurações do dispositivo.
+          </Text>
+        </View>
+      </TouchableWithoutFeedback>)
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  message: {
+    textAlign: 'center',
+    fontSize: 20,
+    color: 'red',
+    marginBottom: 20,
+  },
+});

@@ -52,7 +52,7 @@ export default class TimeoutTrack {
                     //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@ Pausado @@@@@@@@@@@@@@@@@@@@@@@@@@@', timeClassStorage);
                     const timeoutStorage = await Storage.get('timeout', true);
                     if (timeoutStorage?.timeoutAtived && timeoutStorage?.interval === this.interval) {
-                        TrackPlayer.pause();
+                        TrackPlayer.pause(); // pause music
                         RNExitApp.exitApp(); // exit app
                     }
                     this.storageTime = 0;

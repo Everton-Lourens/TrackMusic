@@ -3,6 +3,7 @@ import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, RepeatMode } fr
 import { Storage } from '../helpers';
 import { useEffect, useState } from 'react';
 import { Modal } from '../widgets';
+import BackgroundService from 'react-native-background-actions';
 import TimeoutTrack from './PauseMusic';
 
 type PlayerControlsProps = {
@@ -34,16 +35,42 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 export const PlayPauseButton = ({ style, iconSize = 48, showMoreOptions = false }: PlayerButtonProps) => {
 	const { playing } = useIsPlaying();
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
-	const newTimeout = new TimeoutTrack();
+	const [newTimeout] = useState(new TimeoutTrack());
+	const sleep = (time: number) => new Promise(resolve => setTimeout(() => resolve(true), time));
 
-	const clickTimeoutStart = (time: number = 30) => {
-		newTimeout.startTimeout(time);
+	const veryIntensiveTask = async (taskDataArguments: any) => {
+		const { time } = taskDataArguments;
+		await newTimeout.startTimeout(time);
+
+		for (let i = 0; BackgroundService.isRunning(); i++) {
+			await sleep(1000); // await	a second
+		}
+	};
+
+	const clickTimeoutStart = async (time: number = 30) => {
+		const options = {
+			taskName: 'Cronômetro',
+			taskTitle: 'Cronômetro em execução',
+			taskDesc: `Parando reprodutor de música em ${time} minutos.`,
+			taskIcon: {
+				name: 'ic_launcher',
+				type: 'mipmap',
+			},
+			color: '#c36334',
+			linkingURI: 'TrackMusic://myHost/path',
+			parameters: {
+				delay: 1000,
+			},
+		};
+		
+		await BackgroundService.start(veryIntensiveTask, options);
 		Alert.alert('Cronômetro', `Cronômetro iniciado em ${time} minutos.`);
-	}
+	};
 
-	const clickTimeoutCancel = () => {
+	const clickTimeoutCancel = async () => {
+		await BackgroundService.stop();
 		newTimeout.stopTimeout();
-	}
+	};
 
 	useEffect(() => {
 		setMoreOptionsModal(showMoreOptions);
