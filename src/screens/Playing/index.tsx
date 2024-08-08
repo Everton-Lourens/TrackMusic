@@ -233,8 +233,8 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 						onPress: () => Alert.alert('Adicionar música à playlist'),
 					},
 					{
-						text: 'TIMEOUT',
-						onPress: () => { setShowTimeoutModal(true); },
+						text: 'Cronômetro: Desligar música',
+						onPress: () => { setShowTimeoutModal(true); setMoreOptionsModal(true); },
 					},
 				]}
 			/>

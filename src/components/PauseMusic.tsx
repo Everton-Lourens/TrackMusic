@@ -45,7 +45,7 @@ export default class TimeoutTrack {
         //this.time = timeClassStorage ? timeClassStorage : this.startTime;
 
         this.interval = setInterval(async () => {
-            //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@ setInterval @@@@@@@@@@@@@@@@@@@@@@@@@@@', this.time);
+           //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@ setInterval @@@@@@@@@@@@@@@@@@@@@@@@@@@', this.time);
             if (this.time <= 0) {
                 clearInterval(this.interval);
                 try {
