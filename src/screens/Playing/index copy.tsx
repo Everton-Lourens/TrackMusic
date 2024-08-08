@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import Marquee from 'react-native-marquee';
 import { Header } from '../../widgets';
 import { DISPATCHES } from '../../constants';
-import { millisToMin, Storage } from '../../helpers';
+import { Storage } from '../../helpers';
 //import { getAllSongs, getRandomImg } from '../../store/config';
 //import songDetail from '../../store/states/player';
 import { PlayerProgressBar } from '../../components/PlayerProgress';
@@ -16,7 +16,6 @@ import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import PauseMusic from '../../components/PauseMusic';
 import * as Modal from '../../widgets/Modals';
-import TimeoutTrack from '../../components/PauseMusic';
 
 
 //CONTINUE CODE HERE
@@ -29,7 +28,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 	const [animation, setAnimation] = useState('');
 	const [showTimeoutModal, setShowTimeoutModal] = useState(false);
-	const [newTimeout] = useState(new TimeoutTrack(30));
 
 	const verifyFav = async () => {
 		const favs = await Storage.get('favourites', true);
@@ -145,13 +143,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					<View style={styles.details}>
 						<View style={{ marginBottom: 25 }}>
 
-							<View style={{ alignSelf: 'flex-start', bottom: 40, position: 'absolute' }}>
-								<TouchableOpacity onPress={() => { setShowTimeoutModal(true); setMoreOptionsModal(true); }} activeOpacity={0.4}>
-									{/*<Text>{millisToMin(newTimeout.storageTime * 1000 || 0)}</Text>*/}
-									<Image source={require('../../assets/icons/timeout-on.png')} />
-								</TouchableOpacity>
-							</View>
-
 							<Animatable.View style={styles.headerBtn} animation={isFav ? animation : "swing"} easing="linear" iterationCount="infinite">
 								<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
 									{isFav ? <Image source={require('../../assets/icons/fav.png')} /> : <Image source={require('../../assets/icons/no-fav.png')} />}
@@ -220,7 +211,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			</ImageBackground >
 
 			<Modal.MoreOptions visible={moreOptionsModal}
-				onClose={() => { setMoreOptionsModal(false); setShowTimeoutModal(false); }}
+				onClose={setMoreOptionsModal}
 				title={song?.detail?.title}
 				moreOptions={[
 					{
@@ -237,7 +228,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					},
 					{
 						text: 'TIMEOUT',
-						onPress: () => { setShowTimeoutModal(true); },
+						onPress: () => { setShowTimeoutModal(true); setMoreOptionsModal(false) },
 					},
 				]}
 			/>

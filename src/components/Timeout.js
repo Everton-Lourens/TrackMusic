@@ -9,6 +9,8 @@ export default class Timeout extends React.Component {
     startTimeout = () => {
         if (this.interval) clearInterval(this.interval); // Limpa qualquer intervalo anterior
 
+        this.setState({ time: startTime });
+
         this.interval = setInterval(() => {
             this.setState(state => {
                 if (state.time <= 0) {

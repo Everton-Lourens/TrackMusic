@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, Linking, Alert } from 'react-native';
+import { Platform, Linking, Alert, View, Button, Text } from 'react-native';
 import { check, request, PERMISSIONS, RESULTS, requestMultiple } from 'react-native-permissions';
 import { Provider as RRProvider } from 'react-redux';
 import store from './src/store';
@@ -50,24 +50,30 @@ export default function App() {
         showPermissionAlert();
       }
     };
-
-    const showPermissionAlert = () => {
-      Alert.alert(
-        'Permissão Necessária',
-        'Para acessar arquivos de música, você precisa habilitar as permissões de MÍDIA nas configurações do dispositivo.',
-        [
-          { text: 'Cancelar', style: 'cancel', onPress: () => showPermissionAlert() },
-          { text: 'Abrir Configurações', onPress: () => Linking.openSettings() }
-        ]
-      );
-    };
-
     requestPermissions();
   }, []);
+
+  const showPermissionAlert = () => {
+    Alert.alert(
+      'Permissão Necessária',
+      'Para acessar arquivos de música, você precisa habilitar as permissões de MÍDIA nas configurações do dispositivo.',
+      [
+        { text: 'Cancelar', style: 'cancel', onPress: () => showPermissionAlert() },
+        { text: 'Abrir Configurações', onPress: () => Linking.openSettings() }
+      ]
+    );
+  };
+
 
   return permissionGranted ? (
     <RRProvider store={store}>
       <Screens />
     </RRProvider>
-  ) : null;
+  ) :
+    (<View>
+      <Text style={{ textAlign: 'center', fontSize: 20, color: 'red' }}>
+        Habilite as permissões de MÍDIA nas configurações do dispositivo.
+      </Text>
+      <Button title="Permissão" onPress={() => showPermissionAlert()} />
+    </View>)
 };

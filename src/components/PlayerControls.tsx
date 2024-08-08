@@ -1,7 +1,9 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, RepeatMode } from 'react-native-track-player';
 import { Storage } from '../helpers';
 import { useEffect, useState } from 'react';
+import { Modal } from '../widgets';
+import TimeoutTrack from './PauseMusic';
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -11,6 +13,7 @@ type PlayerButtonProps = {
 	style?: ViewStyle
 	iconSize?: number
 	visible?: boolean
+	showMoreOptions?: boolean
 }
 
 export const PlayerControls = ({ style }: PlayerControlsProps) => {
@@ -27,11 +30,26 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	)
 }
 
-export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
-	const { playing } = useIsPlaying()
+
+export const PlayPauseButton = ({ style, iconSize = 48, showMoreOptions = false }: PlayerButtonProps) => {
+	const { playing } = useIsPlaying();
+	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
+	const newTimeout = new TimeoutTrack();
+
+	const clickTimeoutStart = (time: number = 30) => {
+		newTimeout.startTimeout(time);
+		Alert.alert('Cronômetro', `Cronômetro iniciado em ${time} minutos.`);
+	}
+
+	const clickTimeoutCancel = () => {
+		newTimeout.stopTimeout();
+	}
+
+	useEffect(() => {
+		setMoreOptionsModal(showMoreOptions);
+	}, [showMoreOptions])
 
 	return (
-
 		<View style={[{ height: iconSize }, style]}>
 			{/*
 				<View style={[{ height: iconSize }, style]}>*/}
@@ -57,10 +75,31 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				) : (
 					<Image source={require('../assets/icons/play.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
 				)}
-
 			</TouchableOpacity>
-		</View>
 
+			<Modal.MoreOptions visible={moreOptionsModal}
+				onClose={setMoreOptionsModal}
+				title={'Parar músicas com cronômetro'}
+				moreOptions={[
+					{
+						text: 'Iniciar cronômetro: 15 minutos',
+						onPress: () => clickTimeoutStart(15),
+					},
+					{
+						text: 'Iniciar cronômetro: 30 minutos',
+						onPress: () => clickTimeoutStart(30),
+					},
+					{
+						text: 'Iniciar cronômetro: 60 minutos',
+						onPress: () => clickTimeoutStart(60),
+					},
+					{
+						text: 'CANCELAR CRONÔMETRO',
+						onPress: () => clickTimeoutCancel(),
+					},
+				]}
+			/>
+		</View>
 	)
 }
 
@@ -251,39 +290,6 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 				</TouchableOpacity>
 			</View>) : null
 	);
-}
-
-const TimeoutButton = ({ time = 0 }: any) => {
-	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
-	useEffect(() => {
-		const manageTimeout = async () => {
-			if (time > 0) {
-				const id = setTimeout(async () => {
-					const timeoutValue = await Storage.get('timeout', false);
-					if (timeoutValue === 'true') {
-						await TrackPlayer.pause();
-					}
-				}, time * 60 * 1000);
-				setTimeoutId(id);
-				await Storage.store('timeout', 'true', false);
-			} else if (timeoutId) {
-				clearTimeout(timeoutId);
-				setTimeoutId(null);
-				await Storage.store('timeout', 'false', false);
-			}
-		};
-
-		manageTimeout();
-
-		return () => {
-			if (timeoutId) {
-				clearTimeout(timeoutId);
-			}
-		};
-	}, [time]);
-
-	return null;
 }
 
 

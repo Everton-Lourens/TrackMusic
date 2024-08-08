@@ -7,6 +7,7 @@ export default class Timer extends React.Component {
     };
 
     startTimer = () => {
+        this.setState({ time: 0 });
         this.interval = setInterval(() => {
             this.setState(state => ({
                 time: state.time + 1,
