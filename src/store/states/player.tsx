@@ -2,11 +2,11 @@ function getSongs() {
 	return [
 		{
 			id: 1,
-			title: 'Heartless',
-			artist: 'The Weeknd',
-			artwork: 'https://img.freepik.com/fotos-premium/foto-de-foco-de-fones-de-ouvido-em-fundo-desfocado-aconchegante-a-noite_980736-3020.jpg',
-			url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623987046/GitHub/Projects/Musicont/mock/audios/heartless_u7exot.mp3',
-		}
+			title: 'Dance Monkey',
+			artist: 'Tones and I',
+			artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/dance-monkey_dht1uv.jpg',
+			url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986803/GitHub/Projects/Musicont/mock/audios/dance-monkey_disxa8.mp3',
+		},
 	];
 
 	return [
@@ -103,10 +103,10 @@ const musicData = {
 		soundObj: {},
 		detail: {
 			id: 1,
-			title: 'Heartless',
-			artist: 'The Weeknd',
-			artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/heartless_du9yxe.jpg',
-			url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623987046/GitHub/Projects/Musicont/mock/audios/heartless_u7exot.mp3',
+			title: 'Dance Monkey',
+			artist: 'Tones and I',
+			artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/dance-monkey_dht1uv.jpg',
+			url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986803/GitHub/Projects/Musicont/mock/audios/dance-monkey_disxa8.mp3',
 		},
 		playbackStatus: {},
 	},
