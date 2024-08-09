@@ -33,15 +33,25 @@ const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 		try {
 			setLoading(true);
 			showToast(false);
-			const mp3Files = await getAllSongs();
-			if (mp3Files?.length > 0) {
-				await Storage.store('mp3Files', mp3Files, true);
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						songs: mp3Files,
-					},
-				});
+			const newMp3Files = await getAllSongs();
+			if (newMp3Files?.length > 0) {
+				let mp3Files = await Storage.get('mp3Files', true);
+				const recentlyAddedSongs = newMp3Files.filter(song =>
+					// @ts-ignore
+					!mp3Files.some(old => old?.url === song?.url)
+				);
+				if (recentlyAddedSongs.length > 0) {
+
+					mp3Files = [...recentlyAddedSongs, ...mp3Files];
+
+					await Storage.store('mp3Files', mp3Files, true);
+					dispatch({
+						type: DISPATCHES.SET_CURRENT_SONG,
+						payload: {
+							songs: mp3Files,
+						},
+					});
+				}
 			}
 			setLoading(false);
 			showToast(true);

@@ -16,7 +16,7 @@ const Index = ({ style = {} }) => {
 				style={{ marginLeft: 20 }}
 				title="Músicas"
 				nameImg="music.png"
-				subtitle="Lista de músicas"
+				subtitle="Atualize suas músicas"
 				onPress={() => navigation.navigate(SCREENS.SONGS)}
 			/>
 

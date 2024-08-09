@@ -8,8 +8,8 @@ const LoadingOverlay = ({ loading }: { loading: boolean }) => {
         let timer: NodeJS.Timeout;
         if (loading) {
             timer = setInterval(() => {
-                setLoadingTextIndex(prev => (prev + 1) % 11); // Ajuste o número 11 se você adicionar mais símbolos
-            }, 1000);
+                setLoadingTextIndex(prev => (prev + 1) % 14); // Ajuste o número 14 se você adicionar mais símbolos
+            }, 500);
         } else {
             setLoadingTextIndex(0);
         }
@@ -17,8 +17,8 @@ const LoadingOverlay = ({ loading }: { loading: boolean }) => {
     }, [loading]);
 
     const getLoadingText = () => {
-        const texts = ['', '♫', '♫♫', '♫♫♫', '♫♫♫♫', '♫♫♫♫♫', '♫♫♫♫♫♫', '♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫♫'];
-        return 'Carregando...\n' + texts[loadingTextIndex];
+        const texts = ['', '♫', '♫♫', '♫♫♫', '♫♫♫♫', '♫♫♫♫♫', '♫♫♫♫♫♫', '♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫♫♫♫', '♫♫♫♫♫♫♫♫♫♫♫♫♫'];
+        return 'Procurando na velocidade da luz...\n' + texts[loadingTextIndex];
     };
 
     return (
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 20,
         fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 

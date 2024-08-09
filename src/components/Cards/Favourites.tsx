@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const Played = ({ style = {}, imageURL, title = 'Song Title', artist = `Artist Name`, onPress = () => { } }: any) => (
+const Played = ({ style = {}, imageURL, title = 'Song Title', artist = ``, onPress = () => { } }: any) => (
 	<TouchableOpacity style={[styles.container, style]} onPress={onPress}>
 		<View>
 			<Image
