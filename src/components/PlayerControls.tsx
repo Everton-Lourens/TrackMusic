@@ -3,7 +3,6 @@ import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, RepeatMode } fr
 import { Storage } from '../helpers';
 import { useEffect, useState } from 'react';
 import { Modal } from '../widgets';
-import BackgroundService from 'react-native-background-actions';
 import TimeoutTrack from './PauseMusic';
 
 type PlayerControlsProps = {
@@ -14,7 +13,6 @@ type PlayerButtonProps = {
 	style?: ViewStyle
 	iconSize?: number
 	visible?: boolean
-	showMoreOptions?: boolean
 }
 
 export const PlayerControls = ({ style }: PlayerControlsProps) => {
@@ -32,49 +30,26 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 }
 
 
-export const PlayPauseButton = ({ style, iconSize = 48, showMoreOptions = false }: PlayerButtonProps) => {
+export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
 	const { playing } = useIsPlaying();
-	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
-	const [newTimeout] = useState(new TimeoutTrack());
-	const sleep = (time: number) => new Promise(resolve => setTimeout(() => resolve(true), time));
 
-	const veryIntensiveTask = async (taskDataArguments: any) => {
-		const { time } = taskDataArguments;
-		await newTimeout.startTimeout(time);
+	async function loadingMusic() {
+		try {
+			const track: any = await TrackPlayer.getQueue();
+			if (!track.length) {
+				const mp3IsStorage = await Storage.get('mp3Files', true);
+				const recents = await Storage.get('recents', true);
 
-		for (let i = 0; BackgroundService.isRunning(); i++) {
-			await sleep(1000); // await	a second
+				await TrackPlayer.reset();
+				await TrackPlayer.add(mp3IsStorage);
+				if (recents && recents?.length > 0) {
+					TrackPlayer.skip(recents[0]); // skip to recent
+				}
+			}
+		} catch (error) {
+			console.error("Error: added music", error);
 		}
-	};
-
-	const clickTimeoutStart = async (time: number = 30) => {
-		const options = {
-			taskName: 'Cronômetro',
-			taskTitle: 'Cronômetro em execução',
-			taskDesc: `Parando reprodutor de música em ${time} minutos.`,
-			taskIcon: {
-				name: 'ic_launcher',
-				type: 'mipmap',
-			},
-			color: '#c36334',
-			linkingURI: 'TrackMusic://myHost/path',
-			parameters: {
-				delay: 1000,
-			},
-		};
-		
-		await BackgroundService.start(veryIntensiveTask, options);
-		Alert.alert('Cronômetro', `Cronômetro iniciado em ${time} minutos.`);
-	};
-
-	const clickTimeoutCancel = async () => {
-		await BackgroundService.stop();
-		newTimeout.stopTimeout();
-	};
-
-	useEffect(() => {
-		setMoreOptionsModal(showMoreOptions);
-	}, [showMoreOptions])
+	}
 
 	return (
 		<View style={[{ height: iconSize }, style]}>
@@ -83,13 +58,15 @@ export const PlayPauseButton = ({ style, iconSize = 48, showMoreOptions = false 
 			<TouchableOpacity
 				activeOpacity={0.85}
 				onPress={async () => {
+					await loadingMusic();
 					try {
-						if (playing) await TrackPlayer.pause();
-						else await TrackPlayer.play();
+						if (playing === true) await TrackPlayer.pause();
+						else if (playing === false) await TrackPlayer.play();
 
 						if (__DEV__) {
-							if (playing) console.log('@PAUSE ');
-							else console.log('@PLAY ');
+							if (playing === true) console.log('@PAUSE');
+							else if (playing === false) console.log('@PLAY');
+							else console.log('@UNDEFINED');
 						}
 					} catch (error) {
 						console.error("Erro ao controlar a reprodução:", error);
@@ -104,28 +81,6 @@ export const PlayPauseButton = ({ style, iconSize = 48, showMoreOptions = false 
 				)}
 			</TouchableOpacity>
 
-			<Modal.MoreOptions visible={moreOptionsModal}
-				onClose={setMoreOptionsModal}
-				title={'Parar músicas com cronômetro'}
-				moreOptions={[
-					{
-						text: 'Iniciar cronômetro: 15 minutos',
-						onPress: () => clickTimeoutStart(15),
-					},
-					{
-						text: 'Iniciar cronômetro: 30 minutos',
-						onPress: () => clickTimeoutStart(30),
-					},
-					{
-						text: 'Iniciar cronômetro: 60 minutos',
-						onPress: () => clickTimeoutStart(60),
-					},
-					{
-						text: 'CANCELAR CRONÔMETRO',
-						onPress: () => clickTimeoutCancel(),
-					},
-				]}
-			/>
 		</View>
 	)
 }

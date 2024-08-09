@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, memo } from 'react';
+import React, { useEffect, useRef, memo, useState } from 'react';
 import { Animated, Dimensions, Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import { Storage } from '../../helpers';
 import { PlayPauseButton, RepeatButton, ShuffleButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, useProgress } from 'react-native-track-player';
 import { PlayerProgressNumber } from '../../components/PlayerProgress';
+import TimeoutMusic from '../../components/TimeoutMusic';
 
 //import { PlayerControls } from '@/src/components/PlayerControls';
 
@@ -21,17 +22,23 @@ const Index = ({ song, dispatch }: any) => {
 	const { navigate } = useNavigation();
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const { duration, position } = useProgress(250);
+	const [newTimeoutMusic] = useState(new TimeoutMusic());
 
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
-			const track: any = await TrackPlayer.getTrack(event.nextTrack);
-			addToRecentlyPlayed(track?.id - 1);
-			dispatch({
-				type: DISPATCHES.SET_CURRENT_SONG,
-				payload: {
-					detail: track,
-				},
-			});
+
+			const timeout = await newTimeoutMusic.checkTimeoutMusic();
+
+			if (timeout === false) {
+				const track: any = await TrackPlayer.getTrack(event.nextTrack);
+				addToRecentlyPlayed(track?.id - 1);
+				dispatch({
+					type: DISPATCHES.SET_CURRENT_SONG,
+					payload: {
+						detail: track,
+					},
+				});
+			}
 		}
 	});
 

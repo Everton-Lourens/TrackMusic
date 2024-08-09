@@ -1,6 +1,7 @@
 import TrackPlayer from 'react-native-track-player';
 import RNExitApp from 'react-native-exit-app';
 import { Storage } from '../helpers';
+import { TapGestureHandler } from 'react-native-gesture-handler';
 
 var timeClassStorage: number;
 
@@ -45,14 +46,15 @@ export default class TimeoutTrack {
         //this.time = timeClassStorage ? timeClassStorage : this.startTime;
 
         this.interval = setInterval(async () => {
-           //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@ setInterval @@@@@@@@@@@@@@@@@@@@@@@@@@@', this.time);
+            //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@ setInterval @@@@@@@@@@@@@@@@@@@@@@@@@@@', this.time);
             if (this.time <= 0) {
                 clearInterval(this.interval);
                 try {
                     //console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@ Pausado @@@@@@@@@@@@@@@@@@@@@@@@@@@', timeClassStorage);
                     const timeoutStorage = await Storage.get('timeout', true);
-                    if (timeoutStorage?.timeoutAtived && timeoutStorage?.interval === this.interval) {
-                        TrackPlayer.pause(); // pause music
+                    if (timeoutStorage?.timeoutAtived) {
+                        await Storage.store('timeout', { timeoutAtived: false }, true);
+                        await TrackPlayer.stop(); // stop music
                         RNExitApp.exitApp(); // exit app
                     }
                     this.storageTime = 0;
@@ -65,16 +67,16 @@ export default class TimeoutTrack {
             timeClassStorage = this.time;
             return this.time;
         }, 1000);
-        await Storage.store('timeout', { timeoutAtived: true, interval: this.interval }, true);
+        await Storage.store('timeout', { timeoutAtived: true }, true);
     };
 
     stopTimeout = async () => {
         clearInterval(this.interval);
-        await Storage.store('timeout', { timeoutAtived: false, interval: null }, true);
+        await Storage.store('timeout', { timeoutAtived: false }, true);
     };
 
     resetTimeout = async () => {
-        await Storage.store('timeout', { timeoutAtived: false, interval: null }, true);
+        await Storage.store('timeout', { timeoutAtived: false }, true);
         clearInterval(this.interval);
         this.time = this.startTime;
         this.storageTime = 0;

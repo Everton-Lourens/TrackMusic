@@ -62,10 +62,13 @@ export default function App() {
   };
 
   React.useEffect(() => {
-    setTimeout(() => {
+    requestPermissions();
+  }, []);
+
+  React.useEffect(() => {
+    !permissionGranted && setTimeout(() => {
       setShowText(true)
     }, 1000);
-    requestPermissions();
   }, []);
 
   return permissionGranted ? (
@@ -76,7 +79,7 @@ export default function App() {
     (<TouchableWithoutFeedback onPress={requestPermissions}>
       <View style={styles.container}>
 
-        {showText && <Text style={styles.message}>
+        {showText && !permissionGranted && <Text style={styles.message}>
           Habilite as permissões de MÍDIA nas configurações do dispositivo.{'\n\n'}
           Clique aqui para iniciar.
         </Text>}

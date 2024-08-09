@@ -15,8 +15,8 @@ import { RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import * as Modal from '../../widgets/Modals';
-
-
+import TimeoutMusic from '../../components/TimeoutMusic';
+import { Toast } from '../../components/Toast';
 //CONTINUE CODE HERE
 
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
@@ -26,7 +26,10 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 	const [animation, setAnimation] = useState('');
-	const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+	const [iconTimeout, setIconTimeout] = useState(false);
+	const [newTimeoutMusic] = useState(new TimeoutMusic());
+	const [toastVisible, setToastVisible] = useState(false);
+	const [messageToast, setMessageToast] = useState('');
 
 	const verifyFav = async () => {
 		const favs = await Storage.get('favourites', true);
@@ -116,6 +119,43 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 		verifyFav();
 	};
 
+	const initTimeoutMusic = (time: number = 30) => {
+		setMoreOptionsModal(false);
+		setIconTimeout(true);
+		newTimeoutMusic.initTimeout(time);
+		showToast(true, time);
+	};
+
+	const cancelTimeoutMusic = () => {
+		setMoreOptionsModal(false);
+		setIconTimeout(false);
+		newTimeoutMusic.deleteTimeout();
+		//showToast(false);
+	};
+
+	useEffect(() => {
+		(async () => {
+			const timeoutStorage: any = await newTimeoutMusic.getTimeout();
+			if (timeoutStorage?.timeoutAtived === true) {
+				setIconTimeout(true);
+			} else {
+				await cancelTimeoutMusic();
+			}
+		})();
+	}, [])
+
+	const showToast = (activated = false, time = 0) => {
+		setToastVisible(true);
+		setTimeout(() => {
+			setToastVisible(false)
+			setMessageToast('');
+		}, 2300); // duration + animation time
+		const message = activated
+			? `Cronômetro Ativado${time === 0 ? '!' : ` com ${time} minutos`}`
+			: 'Cronômetro Desativado!';
+		setMessageToast(message);
+	};
+
 	return (
 		<>
 			<StatusBar barStyle="light-content" backgroundColor='black' />
@@ -143,9 +183,9 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 						<View style={{ marginBottom: 25 }}>
 
 							<View style={{ alignSelf: 'flex-start', bottom: 40, position: 'absolute' }}>
-								<TouchableOpacity onPress={() => { setShowTimeoutModal(true); setMoreOptionsModal(true); }} activeOpacity={0.4}>
+								<TouchableOpacity onPress={() => { iconTimeout ? cancelTimeoutMusic() : setMoreOptionsModal(true) }} activeOpacity={0.4}>
 									{/*<Text>{millisToMin(newTimeout.storageTime * 1000 || 0)}</Text>*/}
-									<Image source={require('../../assets/icons/timeout-on.png')} />
+									<Image source={iconTimeout ? require('../../assets/icons/timeout-on.png') : require('../../assets/icons/timeout-off.png')} />
 								</TouchableOpacity>
 							</View>
 
@@ -192,7 +232,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 								<PlayPauseButton
 									iconSize={80}
-									showMoreOptions={showTimeoutModal}
 								/>
 
 								{/*<Animated.View style={{ opacity: stopBtnAnim }}>
@@ -216,25 +255,28 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 			</ImageBackground >
 
+			<Toast
+				visible={toastVisible}
+				message={messageToast}
+				onHide={() => setToastVisible(false)}
+				colorGray={true}
+			/>
+
 			<Modal.MoreOptions visible={moreOptionsModal}
-				onClose={() => { setMoreOptionsModal(false); setShowTimeoutModal(false); }}
-				title={song?.detail?.title}
+				onClose={() => { setMoreOptionsModal(false); }}
+				title={'Cronômetro para música'}
 				moreOptions={[
 					{
-						text: 'Iniciar',
-						onPress: () => Alert.alert('Iniciar música'),
+						text: 'Desligar em 15 minutos',
+						onPress: () => initTimeoutMusic(15),
 					},
 					{
-						text: 'Adicionar aos favoritos',
-						onPress: () => Alert.alert('Adicionar música aos favoritos'),
+						text: 'Desligar em 30 minutos',
+						onPress: () => initTimeoutMusic(30),
 					},
 					{
-						text: 'Adicionar à playlist',
-						onPress: () => Alert.alert('Adicionar música à playlist'),
-					},
-					{
-						text: 'Cronômetro: Desligar música',
-						onPress: () => { setShowTimeoutModal(true); setMoreOptionsModal(true); },
+						text: 'Desligar em 60 minutos',
+						onPress: () => initTimeoutMusic(60),
 					},
 				]}
 			/>
@@ -349,4 +391,3 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
-

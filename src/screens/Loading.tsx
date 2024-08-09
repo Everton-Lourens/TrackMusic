@@ -8,7 +8,6 @@ import { Storage } from '../helpers';
 import { getRandomImg } from '../store/config';
 import { useLogTrackPlayerState } from '../hooks/useLogTrackPlayerState'
 import { setupPlayer } from '../hooks/useSetupTrackPlayer'
-import TrackPlayer from 'react-native-track-player';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -131,7 +130,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
-			await TrackPlayer.reset();
 
 			dispatch({
 				type: DISPATCHES.STORAGE,
@@ -143,10 +141,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			});
 
 			if (mp3Files?.length > 0) {
-				await TrackPlayer.add(mp3Files);
 				if (recents && recents?.length > 0) {
-					TrackPlayer.skip(recents[0]); // skip to recent
-
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
@@ -158,6 +153,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
+							detail: mp3Files[0],
 							songs: mp3Files,
 						},
 					});
