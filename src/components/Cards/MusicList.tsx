@@ -6,7 +6,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Modal from '../../widgets/Modals';
 import { millisToMin } from '../../helpers';
 
-const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = `Author Name`, duration = '', onPlayPress = () => { }, moreOptions = [] }: any) => {
+const MusicList = ({ style = {}, imageURL, title = 'Song Title', artist = ``, duration = '', onPlayPress = () => { }, moreOptions = [] }: any) => {
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 
 	return (

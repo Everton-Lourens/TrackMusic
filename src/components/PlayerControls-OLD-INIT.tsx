@@ -27,26 +27,9 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	)
 }
 
+
 export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
 	const { playing } = useIsPlaying();
-
-	async function loadingMusic() {
-		try {
-			const track: any = await TrackPlayer.getQueue();
-			if (!track.length) {
-				const mp3IsStorage = await Storage.get('mp3Files', true);
-				const recents = await Storage.get('recents', true);
-
-				await TrackPlayer.reset();
-				await TrackPlayer.add(mp3IsStorage);
-				if (recents && recents?.length > 0) {
-					TrackPlayer.skip(recents[0]); // skip to recent
-				}
-			}
-		} catch (error) {
-			console.error("Error: added music", error);
-		}
-	}
 
 	return (
 		<View style={[{ height: iconSize }, style]}>
@@ -55,7 +38,6 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 			<TouchableOpacity
 				activeOpacity={0.85}
 				onPress={async () => {
-					await loadingMusic();
 					try {
 						if (playing === true) await TrackPlayer.pause();
 						else if (playing === false) await TrackPlayer.play();

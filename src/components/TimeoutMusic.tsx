@@ -37,6 +37,8 @@ export default class TimeoutMusic {
                 //Timeout not expired
                 return false;
             }
+        } else {
+            return false;
         }
     }
 

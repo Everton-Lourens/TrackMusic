@@ -3,17 +3,60 @@ import { Dimensions, Image, ImageBackground, StatusBar, StyleSheet, View } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import { Header, Section, Drawer } from '../../widgets';
+import { Storage } from '../../helpers';
+import { DISPATCHES } from '../../constants';
+import { getAllSongs } from '../../hooks/getStorageMp3';
+import LoadingOverlay from '../../components/LoadingOverlay';
+import { Toast } from '../../components/Toast';
 //import { getRandomImg } from '../../store/config';
 
-const Index = ({ songs }: any) => {
+const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [drawer, setDrawer] = useState(false);
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
+	const [loading, setLoading] = useState<boolean>(false);
+	const [toastVisible, setToastVisible] = useState(false);
+	const [messageToast, setMessageToast] = useState('');
+
+	const showToast = (activated = false) => {
+		setToastVisible(true);
+		setTimeout(() => {
+			setToastVisible(false)
+			setMessageToast('');
+		}, 3000); // duration + animation time
+		const message = activated
+			? `Atualizado com sucesso!`
+			: 'Procurando músicas, aguarde!';
+		setMessageToast(message);
+	};
+
+	const updateMp3Storage = async () => {
+		try {
+			setLoading(true);
+			showToast(false);
+			const mp3Files = await getAllSongs();
+			if (mp3Files?.length > 0) {
+				await Storage.store('mp3Files', mp3Files, true);
+				dispatch({
+					type: DISPATCHES.SET_CURRENT_SONG,
+					payload: {
+						songs: mp3Files,
+					},
+				});
+			}
+			setLoading(false);
+			showToast(true);
+		} catch (e) {
+			setLoading(false);
+		}
+	}
 
 	return (
 		<Drawer active={drawer} current="songs" onItemPressed={() => setDrawer(false)}>
 
 			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
 				<StatusBar barStyle="light-content" backgroundColor='black' />
+
+				{loading && <LoadingOverlay loading={loading} />}
 
 				<SafeAreaView style={styles.container}>
 					<Header
@@ -23,12 +66,13 @@ const Index = ({ songs }: any) => {
 								children: drawer ? <Image source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
+							right: {
+								children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/update.png')} />,
+								onPress: () => updateMp3Storage(),
+							},
 							middle: {
 								show: true,
 								text: 'Todas as músicas',
-							},
-							right: {
-								show: false,
 							},
 						}}
 					/>
@@ -37,13 +81,21 @@ const Index = ({ songs }: any) => {
 					</View>
 				</SafeAreaView>
 
+				<Toast
+					visible={toastVisible}
+					message={messageToast}
+					onHide={() => setToastVisible(false)}
+					colorGray={true}
+				/>
+
 			</ImageBackground>
 		</Drawer>
 	);
 };
 
 const mapStateToProps = (state: any) => ({ songs: state?.player?.songs });
-export default connect(mapStateToProps, null)(Index);
+const mapDispatchToProps = (dispatch: any) => ({ dispatch });
+export default connect(mapStateToProps, mapDispatchToProps)(Index);
 
 const styles = StyleSheet.create({
 	container: {
@@ -57,5 +109,16 @@ const styles = StyleSheet.create({
 	sections: {
 		flex: 1,
 		marginTop: Dimensions.get('screen').height * 0.025,
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		//justifyContent: 'center',
+		//alignItems: 'center',
+		//paddingLeft: 4,
+		borderRadius: 35,
+		//borderWidth: 1.5,
+		//marginHorizontal: 5,
+		//marginVertical: 50, // position
 	},
 });
