@@ -8,14 +8,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createNativeStackNavigator();
 
-function DetailsScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 30, color: 'red' }}>Details Screen</Text>
-    </View>
-  );
-}
-
 const StackNavigation = () => {
   return (
     <Stack.Navigator initialRouteName={SCREENS.LOADING} >
