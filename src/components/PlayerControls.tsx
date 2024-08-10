@@ -40,7 +40,7 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				await TrackPlayer.reset();
 				await TrackPlayer.add(mp3IsStorage);
 				if (recents && recents?.length > 0) {
-					TrackPlayer.skip(recents[0]); // skip to recent
+					await TrackPlayer.skip(recents[0]); // skip to recent
 				}
 			}
 		} catch (error) {

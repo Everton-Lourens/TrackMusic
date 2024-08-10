@@ -9,6 +9,7 @@ import { getRandomImg } from '../store/config';
 import { useLogTrackPlayerState } from '../hooks/useLogTrackPlayerState'
 import { setupPlayer } from '../hooks/useSetupTrackPlayer'
 import { getAllSongs } from '../hooks/getStorageMp3';
+import TrackPlayer from 'react-native-track-player';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -22,6 +23,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
+			await TrackPlayer.reset();
 
 			dispatch({
 				type: DISPATCHES.STORAGE,
@@ -50,6 +52,22 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 						},
 					});
 				}
+			} else {
+				const defaultSong = {
+					id: 1,
+					title: 'Dance Monkey',
+					artist: 'Tones and I',
+					artwork: 'https://res.cloudinary.com/jsxclan/image/upload/v1623984884/GitHub/Projects/Musicont/mock/images/dance-monkey_dht1uv.jpg',
+					url: 'https://res.cloudinary.com/jsxclan/video/upload/v1623986803/GitHub/Projects/Musicont/mock/audios/dance-monkey_disxa8.mp3',
+				}
+				await TrackPlayer.add(defaultSong);
+				dispatch({
+					type: DISPATCHES.SET_CURRENT_SONG,
+					payload: {
+						detail: defaultSong,
+						songs: defaultSong,
+					},
+				});
 			}
 			//await Ads.interstitialAds();
 			resolve();
