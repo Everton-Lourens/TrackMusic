@@ -19,7 +19,7 @@ const MiddleChildren = ({ text }: any) => (
 const RightChildren = () => <Image style={[styles.headerBtn, { tintColor: 'gray' }]} source={require('../../assets/icons/search.png')} resizeMode="contain" />;
 
 
-const Index = ({ style = { marginTop: 10, marginHorizontal: 10 }, options = {} }) => {
+const Index = ({ style = { marginTop: 1, marginHorizontal: 10 }, options = {} }) => {
 	const { navigate } = useNavigation();
 	const config = {
 		left: {
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
+		bottom: '3%',
 	},
 	left: {
 		flexBasis: 60,
@@ -102,12 +103,8 @@ const styles = StyleSheet.create({
 	headerBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
 	},
 });

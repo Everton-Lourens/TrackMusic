@@ -6,8 +6,8 @@ const Played = ({ style = {}, imageURL, title = 'Song Title', artist = ``, onPre
 		<View>
 			<Image
 				style={{
-					width: 130,
-					height: 130,
+					width: 105,
+					height: 105,
 					borderRadius: 10,
 					position: 'absolute',
 					bottom: -6,
@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
 		marginRight: 10,
 	},
 	coverArt: {
-		width: 150,
-		height: 150,
+		width: 120,
+		height: 115,
 	},
 	content: {
 		width: 140,

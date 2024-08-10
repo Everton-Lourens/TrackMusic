@@ -9,10 +9,11 @@ import { SCREENS } from '../../constants';
 
 const Index = ({ songs, playlists, navigation }: any) => {
 	const [drawer, setDrawer] = useState(false);
+	const [urlImg, setUrlImg] = useState('https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376249.jpg');
 
 	return (
 		<Drawer active={drawer} current="playlist" onItemPressed={() => setDrawer(false)}>
-			<ImageBackground style={styles.backgroundcontainer} source={{ uri: 'https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376252.jpg' }} blurRadius={20} resizeMode="cover">
+			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
 			<StatusBar barStyle="light-content" backgroundColor='black' />
 
 				<SafeAreaView style={styles.container}>

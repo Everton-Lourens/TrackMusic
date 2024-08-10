@@ -11,6 +11,7 @@ const Index = ({ songs }: any) => {
 	const { goBack } = useNavigation();
 	const [audios, setAudios] = useState([]);
 	const [search, setSearch] = useState('');
+	const [urlImg, setUrlImg] = useState('https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376249.jpg');
 
 	const textInputRef = useRef(null);
 
@@ -28,7 +29,7 @@ const Index = ({ songs }: any) => {
 	const handleInput = (val: any) => {
 		const value = val.replace('  ', ' ');
 		setSearch(value);
-		if (value.length > 3) {
+		if (value.length > 2) { // if (value.length > 3) {
 			const results = songs.filter((song: any) => {
 				let regex = new RegExp(value, 'ig');
 				return regex.exec(song?.title) || regex.exec(song?.artist);
@@ -42,7 +43,7 @@ const Index = ({ songs }: any) => {
 
 	return (
 		<>
-			<ImageBackground style={styles.backgroundcontainer} source={{ uri: 'https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376252.jpg' }} blurRadius={20} resizeMode="cover">
+			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
 				<StatusBar barStyle="light-content" backgroundColor='black' />
 				<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 					<SafeAreaView style={styles.container}>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'space-between',
+		bottom: '3%',
 	},
 	backgroundcontainer: {
 		flex: 1,
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
 	input: {
 		flex: 1,
 		flexDirection: 'row',
-		paddingVertical: 8,
+		paddingVertical: '1%',
 		paddingHorizontal: 15,
 		backgroundColor: '#E6E6E6',
 		borderRadius: 6,
@@ -111,6 +113,7 @@ const styles = StyleSheet.create({
 		flexBasis: 80,
 		justifyContent: 'center',
 		alignItems: 'center',
+		left: '12%',
 	},
 	btnTxt: {
 		color: '#C4C4C4',
@@ -124,12 +127,6 @@ const styles = StyleSheet.create({
 	headerBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
 	},
 });

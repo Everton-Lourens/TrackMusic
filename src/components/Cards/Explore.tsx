@@ -55,8 +55,8 @@ export default Explore;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: 280,
-		height: 158,
+		width: 250,
+		height: 148,
 		marginHorizontal: 10,
 	},
 	card: {
@@ -98,14 +98,10 @@ const styles = StyleSheet.create({
 		height: 40,
 	},
 	headerBtn: {
-		backgroundColor: 'rgba(255, 255, 255, 0.3)',
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
 	},
 });

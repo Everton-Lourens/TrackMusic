@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import { Header, Section, Drawer } from '../../widgets';
 
 const Index = ({ songs }: any) => {
-const [drawer, setDrawer] = useState(false);
+	const [drawer, setDrawer] = useState(false);
+	const [urlImg, setUrlImg] = useState('https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376249.jpg');
 
 	return (
 		<Drawer active={drawer} current="favourite" onItemPressed={() => setDrawer(false)}>
-			<ImageBackground style={styles.backgroundcontainer} source={{ uri: 'https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376252.jpg' }} blurRadius={20} resizeMode="cover">
+			<ImageBackground style={styles.backgroundcontainer} source={{ uri: urlImg }} blurRadius={20} resizeMode="cover">
 				<StatusBar barStyle="light-content" backgroundColor='black' />
 
 				<SafeAreaView style={styles.container}>
@@ -18,7 +19,7 @@ const [drawer, setDrawer] = useState(false);
 						options={{
 							left: {
 								// @ts-ignore
-								children: drawer ? <Image source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
+								children: drawer ? <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
 							middle: {
@@ -60,5 +61,12 @@ const styles = StyleSheet.create({
 	sections: {
 		flex: 1,
 		marginTop: Dimensions.get('screen').height * 0.025,
+	},
+	headerBtn: {
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
+		alignSelf: 'flex-end',
+		borderRadius: 35,
+		bottom: '1%',
+		left: '15%',
 	},
 });

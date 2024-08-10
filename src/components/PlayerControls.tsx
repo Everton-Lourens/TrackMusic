@@ -274,7 +274,7 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 
 const styles = StyleSheet.create({
 	controlBtn: {
-		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+		backgroundColor: 'rgba(0, 0, 0, 0.1)',
 		justifyContent: 'center',
 		//alignItems: 'center',
 		//paddingLeft: 4,

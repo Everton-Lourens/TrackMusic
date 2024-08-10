@@ -176,20 +176,20 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				/>
 
 				<View style={styles.frame}>
-					<View style={{ top: 40 }}>
+					<View style={{ top: '2%' }}>
 						<Image style={styles.clipart} source={{ uri: song?.detail?.artwork }} resizeMode="cover" borderRadius={20} />
 					</View>
 					<View style={styles.details}>
 						<View style={{ marginBottom: 25 }}>
 
-							<View style={{ alignSelf: 'flex-start', bottom: 40, position: 'absolute' }}>
+							<View style={styles.timeoutBtn}>
 								<TouchableOpacity onPress={() => { iconTimeout ? cancelTimeoutMusic() : setMoreOptionsModal(true) }} activeOpacity={0.4}>
 									{/*<Text>{millisToMin(newTimeout.storageTime * 1000 || 0)}</Text>*/}
 									<Image source={iconTimeout ? require('../../assets/icons/timeout-on.png') : require('../../assets/icons/timeout-off.png')} />
 								</TouchableOpacity>
 							</View>
 
-							<Animatable.View style={styles.headerBtn} animation={isFav ? animation : "swing"} easing="linear" iterationCount="infinite">
+							<Animatable.View style={styles.favBtn} animation={isFav ? animation : "swing"} easing="linear" iterationCount="infinite">
 								<TouchableOpacity onPress={handleFav} activeOpacity={0.4}>
 									{isFav ? <Image source={require('../../assets/icons/fav.png')} /> : <Image source={require('../../assets/icons/no-fav.png')} />}
 								</TouchableOpacity>
@@ -208,17 +208,15 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 									{song?.detail?.artist}
 								</Text> : null}
 						</View>
-						<PlayerProgressBar
-							right={45}
-							left={-35}
-						/>
+
+						<PlayerProgressBar />
 
 					</View>
 
 					<View style={styles.actionsContainer}>
 
 						<RepeatButton
-							iconSize={30}
+							iconSize={25}
 							style={{ marginRight: -30 }}
 						/>
 
@@ -227,11 +225,11 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 							<View style={styles.row}>
 
 								<SkipToPreviousButton
-									iconSize={55}
+									iconSize={50}
 								/>
 
 								<PlayPauseButton
-									iconSize={80}
+									iconSize={70}
 								/>
 
 								{/*<Animated.View style={{ opacity: stopBtnAnim }}>
@@ -239,14 +237,14 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 								</Animated.View>*/}
 
 								<SkipToNextButton
-									iconSize={55}
+									iconSize={50}
 								/>
 
 							</View>
 						</View>
 
 						<ShuffleButton
-							iconSize={30}
+							iconSize={25}
 							style={{ marginLeft: -30 }}
 						/>
 
@@ -297,13 +295,19 @@ const styles = StyleSheet.create({
 	headerBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
+	},
+	favBtn: {
+		alignSelf: 'flex-end',
+		borderRadius: 35,
+		top: '5%',
+	},
+	timeoutBtn: {
+		alignSelf: 'flex-start',
+		bottom: '45%',
+		position: 'absolute'
 	},
 	shuffleBtn: {
 		position: 'absolute',
@@ -329,7 +333,7 @@ const styles = StyleSheet.create({
 	},
 	details: {
 		width: '85%',
-		top: 90,
+		top: '5%',
 	},
 	songTitle: {
 		color: '#FFF',
@@ -351,10 +355,12 @@ const styles = StyleSheet.create({
 		color: '#FFF',
 	},
 	actionsContainer: {
+		bottom: '2%',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 370, // Distância player
+		//width: 370, // Distância player
+		width: '85%',
 	},
 	playAndPauseBtn: {
 		justifyContent: 'center',

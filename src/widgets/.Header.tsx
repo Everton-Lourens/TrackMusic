@@ -97,16 +97,11 @@ const styles = StyleSheet.create({
 	btn: {
 		padding: 10,
 	},
-
 	headerBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
 	},
 });

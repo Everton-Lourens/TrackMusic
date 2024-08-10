@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
 	coverArt: {
 		justifyContent: 'center',
 		alignItems: 'center',
-		width: 150,
-		height: 150,
+		width: 120,
+		height: 115,
 		marginRight: 10,
 	},
 	overlay: {

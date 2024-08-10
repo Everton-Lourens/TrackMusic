@@ -119,8 +119,8 @@ NOT WORKING
 				/>
 
 				<PlayerProgressNumber
-					left={60}
-					right={50}
+					left={34}
+					right={87}
 					fontSize={10}
 					style={{ marginTop: -7 }}
 				/>
@@ -147,6 +147,7 @@ NOT WORKING
 					</View>
 				</TouchableWithoutFeedback>
 			</View>
+
 			<View style={styles.content}>
 				<Marquee
 					style={styles.songTitle}
@@ -155,7 +156,7 @@ NOT WORKING
 					delay={0}
 					loop={true}
 				>
-					{song?.detail?.title}
+					{song?.detail?.title + '                                               ' + song?.detail?.title + '                                               ' + song?.detail?.title + '                                               ' + song?.detail?.title}
 				</Marquee>
 
 				{song?.detail?.artist ?
@@ -163,18 +164,22 @@ NOT WORKING
 						{song?.detail?.artist}
 					</Text> : null}
 			</View>
-			<View style={styles.actions}>
 
-				<RepeatButton visible={false} />
+			<View style={{ flexDirection: 'column', }}>
 
-				<SkipToPreviousButton iconSize={35} />
+				<View style={styles.actions}>
 
-				<PlayPauseButton iconSize={45} />
+					<RepeatButton visible={false} />
 
-				<SkipToNextButton iconSize={35} />
+					<SkipToPreviousButton iconSize={50} />
 
-				<ShuffleButton visible={false} />
+					<PlayPauseButton iconSize={70} />
 
+					<SkipToNextButton iconSize={50} />
+
+					<ShuffleButton visible={false} />
+
+				</View>
 			</View>
 		</View>
 
@@ -190,14 +195,15 @@ const styles = StyleSheet.create({
 		backgroundColor: 'rgba(0, 0, 0, .4)', // 'gray', // '#FFF',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		//width,
 		width,
-		height: 100,
+		height: '12%',
 		borderBottomLeftRadius: 15,
 		borderBottomRightRadius: 15,
 	},
 	tracker: {
 		position: 'absolute',
-		width,
+		width: '122%',
 		top: -11,
 		right: 0,
 		left: 0,
@@ -220,7 +226,9 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		justifyContent: 'center',
-		marginLeft: 5,
+		marginLeft: -15,
+		marginRight: '-57%',
+		bottom: '7%',
 	},
 	songTitle: {
 		color: 'white', // '#555555',
@@ -235,11 +243,14 @@ const styles = StyleSheet.create({
 	actions: {
 		flexBasis: 150,
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: 5,
-		marginRight: 15,
-	},
+		marginRight: '20%', // Centraliza horizontalmente
+		transform: [{ translateX: -75 }], // Ajusta a posição para o centro exato
+		bottom: '3%',
+	  },
+	  
 	btn: {
 		padding: 5,
 	},

@@ -173,5 +173,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(memo(Index));
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		bottom: 30,
 	},
 });

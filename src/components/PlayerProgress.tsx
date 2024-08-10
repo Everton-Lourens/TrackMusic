@@ -13,7 +13,7 @@ interface PlayerProgressNumberProps extends ViewProps {
 	fontSize?: number;
 }
 
-export const PlayerProgressBar = ({ style, left = -30, right = 65 }: PlayerProgressNumberProps) => {
+export const PlayerProgressBar = ({ style, left = -15, right = 20 }: PlayerProgressNumberProps) => {
 	const { duration, position } = useProgress(250)
 
 	const trackElapsedTime = formatSecondsToMinutes(position)
@@ -61,10 +61,12 @@ export const PlayerProgressNumber = ({ style, left = -30, right = 65, fontSize =
 
 	return (
 		<View style={[styles.timeRow, style]}>
-			<Text style={[styles.timeText, { left, fontSize }]}>
+			{/*//@ts-ignore*/}
+			<Text style={[styles.timeText, { left: `${left}0%`, fontSize }]}>
 				{trackElapsedTime}
 			</Text>
-			<Text style={[styles.timeText, { right, fontSize }]}>
+			{/*//@ts-ignore*/}
+			<Text style={[styles.timeText, { right: `${right}0%`, fontSize }]}>
 				{trackRemainingTime}
 			</Text>
 		</View>

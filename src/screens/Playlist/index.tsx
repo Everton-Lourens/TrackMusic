@@ -119,16 +119,12 @@ const styles = StyleSheet.create({
 		height: Dimensions.get('screen').height * 0.7,
 	},
 	headerBtn: {
-		tintColor: 'gray',
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
+		tintColor: 'gray',
 	},
 	imageBackground: {
 		backgroundColor: 'rgba(0, 0, 0, 0.1)',

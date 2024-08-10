@@ -37,10 +37,10 @@ const Index = () => {
 
 						<View style={styles.sections}>
 
-							<Section.Explore />
-							<Section.Recent style={{ marginTop: 30 }} />
-							<Section.Favourites style={{ marginTop: 30 }} />
-							<Section.Playlist style={{ marginTop: 30 }} />
+							<Section.Explore style={{ marginTop: '25%' }} />
+							<Section.Favourites style={{ marginTop: '7%' }} />
+							<Section.Recent style={{ marginTop: '5%' }} />
+							<Section.Playlist style={{ marginTop: '5%' }} />
 
 							<ScrollView>
 								<View style={{
@@ -72,6 +72,7 @@ const styles = StyleSheet.create({
 	sections: {
 		flex: 1,
 		marginTop: Dimensions.get('screen').height * 0.025,
+		bottom: '12%'
 	},
 	row: {
 		flexDirection: 'row',
@@ -81,12 +82,8 @@ const styles = StyleSheet.create({
 	headerBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
 	},
 });

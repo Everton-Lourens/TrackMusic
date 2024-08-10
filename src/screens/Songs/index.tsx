@@ -12,7 +12,7 @@ import { Toast } from '../../components/Toast';
 
 const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [drawer, setDrawer] = useState(false);
-	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
+	const [urlImg, setUrlImg] = useState('https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376249.jpg');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [toastVisible, setToastVisible] = useState(false);
 	const [messageToast, setMessageToast] = useState('');
@@ -73,7 +73,7 @@ const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 						options={{
 							left: {
 								// @ts-ignore
-								children: drawer ? <Image source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
+								children: drawer ? <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
 								onPress: () => setDrawer(!drawer),
 							},
 							right: {
@@ -123,12 +123,8 @@ const styles = StyleSheet.create({
 	headerBtn: {
 		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		alignSelf: 'flex-end',
-		//justifyContent: 'center',
-		//alignItems: 'center',
-		//paddingLeft: 4,
 		borderRadius: 35,
-		//borderWidth: 1.5,
-		//marginHorizontal: 5,
-		//marginVertical: 50, // position
+		bottom: '1%',
+		left: '15%',
 	},
 });
