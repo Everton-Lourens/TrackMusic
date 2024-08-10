@@ -109,6 +109,14 @@ NOT WORKING
 						zIndex: 99,
 					}}
 				/>
+
+				<PlayerProgressNumber
+					left={-15}
+					right={85}
+					fontSize={10}
+					style={{ marginTop: -7 }}
+				/>
+
 				<Slider
 					minimumValue={0}
 					maximumValue={duration}
@@ -118,12 +126,6 @@ NOT WORKING
 					value={position}
 				/>
 
-				<PlayerProgressNumber
-					left={34}
-					right={87}
-					fontSize={10}
-					style={{ marginTop: -7 }}
-				/>
 			</View>
 			<View style={styles.left}>
 				{/*// @ts-ignore*/}
@@ -173,7 +175,7 @@ NOT WORKING
 
 					<SkipToPreviousButton iconSize={50} />
 
-					<PlayPauseButton iconSize={70} />
+					<PlayPauseButton iconSize={65} />
 
 					<SkipToNextButton iconSize={50} />
 
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
 	content: {
 		flex: 1,
 		justifyContent: 'center',
-		marginLeft: -15,
+		marginLeft: -17,
 		marginRight: '-57%',
 		bottom: '7%',
 	},
@@ -246,7 +248,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: 5,
-		marginRight: '20%', // Centraliza horizontalmente
+		marginRight: '21%', // Centraliza horizontalmente
 		transform: [{ translateX: -75 }], // Ajusta a posição para o centro exato
 		bottom: '3%',
 	  },
