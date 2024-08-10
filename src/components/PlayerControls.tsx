@@ -16,7 +16,7 @@ type PlayerButtonProps = {
 async function loadingMusic() {
 	try {
 		const track: any = await TrackPlayer.getQueue();
-		if (!track.length) {
+		if (!track?.length) {
 			const mp3IsStorage = await Storage.get('mp3Files', true);
 			const recents = await Storage.get('recents', true);
 

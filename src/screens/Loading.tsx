@@ -15,7 +15,7 @@ const { width, height } = Dimensions.get('screen');
 const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [mp3Files, setMp3Files] = useState<Array<any>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const { playing } = useIsPlaying();
+	//const { playing } = useIsPlaying();
 	useLogTrackPlayerState();
 
 	const getStorage = async () => {
@@ -23,7 +23,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
-			playing ? null : await TrackPlayer.reset();
+			//playing ? null : await TrackPlayer.reset();
 
 			dispatch({
 				type: DISPATCHES.STORAGE,
