@@ -24,7 +24,7 @@ async function loadingMusic() {
 			await TrackPlayer.add(mp3IsStorage);
 
 			if (recents && recents?.length > 0) {
-				await TrackPlayer.skip(recents[0]); // skip to recent music
+				await TrackPlayer.skip(recents[0]); // skip to recent music 
 			}
 		}
 	} catch (error) {
