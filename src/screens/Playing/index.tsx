@@ -96,7 +96,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 				await TrackPlayer.skipToNext();
 				await TrackPlayer.play();
 				addToRecentlyPlayed(params?.song?.id);
-			}).catch((e) => TrackPlayer.play());
+			}).catch(async (e) => await TrackPlayer.play());
 		}
 	}, [params?.forcePlay, params?.song, params?.index]);
 

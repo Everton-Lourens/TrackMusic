@@ -9,7 +9,7 @@ import { SCREENS } from '../../constants';
 
 const Index = ({ songs, playlists, navigation }: any) => {
 	const [drawer, setDrawer] = useState(false);
-	const [urlImg, setUrlImg] = useState('https://img.freepik.com/fotos-gratis/natacao-morta-de-guitarra-eletrica_23-2151376249.jpg');
+	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
 
 	return (
 		<Drawer active={drawer} current="playlist" onItemPressed={() => setDrawer(false)}>

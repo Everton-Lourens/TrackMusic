@@ -31,13 +31,15 @@ const Index = ({ song, dispatch }: any) => {
 
 			if (timeout === false) {
 				const track: any = await TrackPlayer.getTrack(event.nextTrack);
-				addToRecentlyPlayed(track?.id - 1);
-				dispatch({
-					type: DISPATCHES.SET_CURRENT_SONG,
-					payload: {
-						detail: track,
-					},
-				});
+				if (!!track?.url) {
+					addToRecentlyPlayed(track?.id - 1);
+					dispatch({
+						type: DISPATCHES.SET_CURRENT_SONG,
+						payload: {
+							detail: track,
+						},
+					});
+				}
 			}
 		}
 	});
@@ -110,6 +112,7 @@ NOT WORKING
 					}}
 				/>
 
+
 				<PlayerProgressNumber
 					left={-15}
 					right={85}
@@ -158,7 +161,7 @@ NOT WORKING
 					delay={0}
 					loop={true}
 				>
-					{song?.detail?.title + '                                               ' + song?.detail?.title + '                                               ' + song?.detail?.title + '                                               ' + song?.detail?.title}
+					{(song?.detail?.title || '') + '                                               ' + (song?.detail?.title || '') + '                                               ' + (song?.detail?.title || '') + '                                               ' + (song?.detail?.title || '')}
 				</Marquee>
 
 				{song?.detail?.artist ?
@@ -169,19 +172,22 @@ NOT WORKING
 
 			<View style={{ flexDirection: 'column', }}>
 
-				<View style={styles.actions}>
+				<View style={{ position: 'absolute', bottom: '5%', transform: [{ translateX: -330 }] }}>
+					<View style={styles.actions}>
 
-					<RepeatButton visible={false} />
+						<RepeatButton visible={false} />
 
-					<SkipToPreviousButton iconSize={50} />
+						<SkipToPreviousButton iconSize={50} />
 
-					<PlayPauseButton iconSize={65} />
+						<PlayPauseButton iconSize={65} />
 
-					<SkipToNextButton iconSize={50} />
+						<SkipToNextButton iconSize={50} />
 
-					<ShuffleButton visible={false} />
+						<ShuffleButton visible={false} />
 
+					</View>
 				</View>
+
 			</View>
 		</View>
 
@@ -248,11 +254,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: 5,
-		marginRight: '21%', // Centraliza horizontalmente
-		transform: [{ translateX: -75 }], // Ajusta a posição para o centro exato
+		//marginRight: '21%',
+		//transform: [{ translateX: -75 }], // Ajusta a posição para o centro exato
 		bottom: '3%',
-	  },
-	  
+	},
+
 	btn: {
 		padding: 5,
 	},

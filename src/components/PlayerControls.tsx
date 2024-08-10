@@ -13,6 +13,25 @@ type PlayerButtonProps = {
 	visible?: boolean
 }
 
+async function loadingMusic() {
+	try {
+		const track: any = await TrackPlayer.getQueue();
+		if (!track.length) {
+			const mp3IsStorage = await Storage.get('mp3Files', true);
+			const recents = await Storage.get('recents', true);
+
+			await TrackPlayer.reset();
+			await TrackPlayer.add(mp3IsStorage);
+
+			if (recents && recents?.length > 0) {
+				await TrackPlayer.skip(recents[0]); // skip to recent
+			}
+		}
+	} catch (error) {
+		console.error("Error: added music", error);
+	}
+}
+
 export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	return (
 		<View style={[styles.container, style]}>
@@ -30,24 +49,6 @@ export const PlayerControls = ({ style }: PlayerControlsProps) => {
 export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => {
 	const { playing } = useIsPlaying();
 
-	async function loadingMusic() {
-		try {
-			const track: any = await TrackPlayer.getQueue();
-			if (!track.length) {
-				const mp3IsStorage = await Storage.get('mp3Files', true);
-				const recents = await Storage.get('recents', true);
-
-				await TrackPlayer.reset();
-				await TrackPlayer.add(mp3IsStorage);
-				if (recents && recents?.length > 0) {
-					await TrackPlayer.skip(recents[0]); // skip to recent
-				}
-			}
-		} catch (error) {
-			console.error("Error: added music", error);
-		}
-	}
-
 	return (
 		<View style={[{ height: iconSize }, style]}>
 			{/*
@@ -57,8 +58,17 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				onPress={async () => {
 					await loadingMusic();
 					try {
-						if (playing === true) await TrackPlayer.pause();
-						else if (playing === false) await TrackPlayer.play();
+						if (playing === true) {
+							await TrackPlayer.pause();
+						} else if (playing === false) {
+							await TrackPlayer.play();
+							const isPlaying: any = await TrackPlayer.getState();
+							if (isPlaying === 'paused' || isPlaying === 'none') { // if don't play === bug
+								await TrackPlayer.reset();
+								await loadingMusic();
+								await TrackPlayer.play();
+							}
+						}
 
 						if (__DEV__) {
 							if (playing === true) console.log('@PAUSE');
@@ -96,7 +106,10 @@ export const StopOutLineButton = ({ style, iconSize = 40 }: PlayerButtonProps) =
 export const SkipToNextButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
 		<View style={[{ height: iconSize }, style]}>
-			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToNext()}>
+			<TouchableOpacity activeOpacity={0.7} onPress={async () => {
+				await loadingMusic();
+				await TrackPlayer.skipToNext();
+			}}>
 				<Image source={require('../assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
 			</TouchableOpacity>
 		</View>
@@ -107,7 +120,11 @@ export const SkipToNextButton = ({ style, iconSize = 40 }: PlayerButtonProps) =>
 export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps) => {
 	return (
 		<View style={[{ height: iconSize }, style]}>
-			<TouchableOpacity activeOpacity={0.7} onPress={() => TrackPlayer.skipToPrevious()}>
+			<TouchableOpacity activeOpacity={0.7}
+				onPress={async () => {
+					await loadingMusic();
+					await TrackPlayer.skipToPrevious();
+				}}>
 				<Image source={require('../assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
 			</TouchableOpacity>
 		</View>

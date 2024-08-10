@@ -5,17 +5,17 @@ import RNFS from 'react-native-fs';
 import { DISPATCHES, SCREENS } from '../constants';
 import { Storage } from '../helpers';
 //import Sound from 'react-native-sound';
-import { getRandomImg } from '../store/config';
 import { useLogTrackPlayerState } from '../hooks/useLogTrackPlayerState'
 import { setupPlayer } from '../hooks/useSetupTrackPlayer'
 import { getAllSongs } from '../hooks/getStorageMp3';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 
 const { width, height } = Dimensions.get('screen');
 
 const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [mp3Files, setMp3Files] = useState<Array<any>>([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	const { playing } = useIsPlaying();
 	useLogTrackPlayerState();
 
 	const getStorage = async () => {
@@ -23,7 +23,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
-			await TrackPlayer.reset();
+			playing ? null : await TrackPlayer.reset();
 
 			dispatch({
 				type: DISPATCHES.STORAGE,
