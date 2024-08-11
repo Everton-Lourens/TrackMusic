@@ -15,8 +15,8 @@ type PlayerButtonProps = {
 
 async function loadingMusic() {
 	try {
-		const track: any = await TrackPlayer.getQueue();
-		if (!track?.length) {
+		const isPlaying: any = await TrackPlayer.getQueue();
+		if (!isPlaying?.length) {
 			const mp3IsStorage = await Storage.get('mp3Files', true);
 			const recents = await Storage.get('recents', true);
 
@@ -57,13 +57,15 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				activeOpacity={0.85}
 				onPress={async () => {
 					await loadingMusic();
+					console.log('playing', playing);
 					try {
 						if (playing === true) {
 							await TrackPlayer.pause();
 						} else if (playing === false) {
 							await TrackPlayer.play();
 							const isPlaying: any = await TrackPlayer.getState();
-							if (isPlaying === 'paused' || isPlaying === 'none') { // if don't play === bug
+							//if (isPlaying === 'paused' || isPlaying === 'none') { // if don't play === bug
+							if (isPlaying === 'none' || isPlaying === 'ended') { // if don't play === bug
 								await TrackPlayer.reset();
 								await loadingMusic();
 								await TrackPlayer.play();
