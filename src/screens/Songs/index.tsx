@@ -36,10 +36,23 @@ const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const newMp3Files = await getAllSongs();
 			if (newMp3Files?.length > 0) {
 				let mp3Files = await Storage.get('mp3Files', true);
-				const recentlyAddedSongs = newMp3Files.filter(song =>
+				/*
+				const recentlyAddedSongs = newMp3Files.filter(newSong =>
 					// @ts-ignore
-					!mp3Files.some(old => old?.url === song?.url)
+					!mp3Files.some(oldSong => oldSong?.url === newSong?.url)
 				);
+				*///@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				let countSongs = 1;
+				const recentlyAddedSongs = newMp3Files.filter(newSong => {
+				  // @ts-ignore
+					if (!mp3Files.some(oldSong => oldSong?.url === newSong?.url)) {
+					newSong.id = mp3Files.length + countSongs;
+					countSongs++;
+					return true; // Retorna `true` para incluir a música na lista filtrada
+				  }
+				  return false; // Retorna `false` para excluir a música da lista filtrada
+				});
+
 				if (recentlyAddedSongs.length > 0) {
 
 					mp3Files = [...recentlyAddedSongs, ...mp3Files];

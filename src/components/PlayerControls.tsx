@@ -15,8 +15,8 @@ type PlayerButtonProps = {
 
 async function loadingMusic() {
 	try {
-		const isPlaying: any = await TrackPlayer.getQueue();
-		if (!isPlaying?.length) {
+		const isPlaying: any = await TrackPlayer.getState();
+		if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
 			const mp3IsStorage = await Storage.get('mp3Files', true);
 			const recents = await Storage.get('recents', true);
 
@@ -56,26 +56,23 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 			<TouchableOpacity
 				activeOpacity={0.85}
 				onPress={async () => {
-					await loadingMusic();
-					console.log('playing', playing);
 					try {
-						if (playing === true) {
+						const isPlaying: any = await TrackPlayer.getState();
+						//console.log('Start isPlaying:::', isPlaying);
+						if (isPlaying === 'playing') {
 							await TrackPlayer.pause();
-						} else if (playing === false) {
+							console.log('@PAUSE')
+						} else if (isPlaying === 'paused') {
 							await TrackPlayer.play();
-							const isPlaying: any = await TrackPlayer.getState();
-							//if (isPlaying === 'paused' || isPlaying === 'none') { // if don't play === bug
-							if (isPlaying === 'none' || isPlaying === 'ended') { // if don't play === bug
-								await TrackPlayer.reset();
-								await loadingMusic();
-								await TrackPlayer.play();
-							}
+							console.log('@PLAY')
+						} else if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
+							await loadingMusic();
+							await TrackPlayer.play();
+							console.log('@UNDEFINED:::', isPlaying);
 						}
-
 						if (__DEV__) {
-							if (playing === true) console.log('@PAUSE');
-							else if (playing === false) console.log('@PLAY');
-							else console.log('@UNDEFINED');
+							//const isPlayingEnd: any = await TrackPlayer.getState();
+							//console.log('End isPlaying:::', isPlayingEnd);
 						}
 					} catch (error) {
 						console.error("Erro ao controlar a reprodução:", error);
@@ -90,7 +87,7 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				)}
 			</TouchableOpacity>
 
-		</View>
+		</View >
 	)
 }
 

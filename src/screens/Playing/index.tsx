@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
+import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 //import LinearGradient from 'react-native-linear-gradient';
@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import Marquee from 'react-native-marquee';
 import { Header } from '../../widgets';
 import { DISPATCHES } from '../../constants';
-import { millisToMin, Storage } from '../../helpers';
+import { Storage } from '../../helpers';
 //import { getAllSongs, getRandomImg } from '../../store/config';
 //import songDetail from '../../store/states/player';
 import { PlayerProgressBar } from '../../components/PlayerProgress';

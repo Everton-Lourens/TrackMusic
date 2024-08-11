@@ -27,7 +27,7 @@ const Index = ({ favourites, songs, style = {} }: any) => {
 	return (
 		audios &&
 		audios.length > 0 && (
-			<Container style={style} title="Top 10 Favoritos">
+			<Container style={style} title="Favoritos">
 				{audios.map((index, key) => (
 					<Card.Favourites
 						key={key}
