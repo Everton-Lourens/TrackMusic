@@ -32,13 +32,22 @@ const Index = ({ song, dispatch }: any) => {
 			if (timeout === false) {
 				const track: any = await TrackPlayer.getTrack(event.nextTrack);
 				if (!!track?.url) {
-					addToRecentlyPlayed(track?.id - 1);
+					//const isPlaying: any = await TrackPlayer.getState();
+					//if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
+					//const recents = await Storage.get('recents', true);
+					//await TrackPlayer.skip(recents[0]); // skip to recent music 
+					//console.log('@@@@@@@@@@@ skip next:', recents[0]);
+					//console.log(recents);
+					//} else {
+					const currentTrackId = track.id - 1;
+					addToRecentlyPlayed(currentTrackId);
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
 							detail: track,
 						},
 					});
+					//}
 				}
 			}
 		}

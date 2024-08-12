@@ -13,24 +13,31 @@ type PlayerButtonProps = {
 	visible?: boolean
 }
 
-async function loadingMusic() {
+async function loadingMusic(force: boolean = false) {
 	try {
 		const isPlaying: any = await TrackPlayer.getState();
-		if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
-			const mp3IsStorage = await Storage.get('mp3Files', true);
-			const recents = await Storage.get('recents', true);
+		if (force === true || isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
 
-			await TrackPlayer.reset();
-			await TrackPlayer.add(mp3IsStorage);
-
-			if (recents && recents?.length > 0) {
-				await TrackPlayer.skip(recents[0]); // skip to recent music 
+			let mp3Files;
+			const shuffle = await Storage.get('shuffle', false) == 'true' ? true : false;
+			if (shuffle) {
+				//console.log("SHUFFLE TRUE");
+				mp3Files = await Storage.get('mp3Files_shuffle', true);
+			} else {
+				//console.log("SHUFFLE FALSE");
+				mp3Files = await Storage.get('mp3Files', true);
 			}
+			await TrackPlayer.setQueue(mp3Files);
+
+			//console.log("@@@@@@@@@@@@@>", mp3Files[recents[0]].id);
+			//console.log("@@@@@@@@@@@@@>", mp3Files[recents[1]].id);
+			//await TrackPlayer.skip(92); // skip to recent music 
 		}
 	} catch (error) {
-		console.error("Error: added music", error);
+		console.error("Error loadingMusic: added music", error);
 	}
 }
+
 
 export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	return (
@@ -58,11 +65,13 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 				onPress={async () => {
 					try {
 						const isPlaying: any = await TrackPlayer.getState();
-						//console.log('Start isPlaying:::', isPlaying);
+						if (__DEV__) {
+							//console.log('::::::::::Start isPlaying::::::::::', isPlaying);
+						}
 						if (isPlaying === 'playing') {
 							await TrackPlayer.pause();
 							console.log('@PAUSE')
-						} else if (isPlaying === 'paused') {
+						} else if (isPlaying === 'paused' || isPlaying === 'ready') {
 							await TrackPlayer.play();
 							console.log('@PLAY')
 						} else if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
@@ -72,7 +81,7 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 						}
 						if (__DEV__) {
 							//const isPlayingEnd: any = await TrackPlayer.getState();
-							//console.log('End isPlaying:::', isPlayingEnd);
+							//console.log('::::::::::End isPlaying::::::::::', isPlayingEnd);
 						}
 					} catch (error) {
 						console.error("Erro ao controlar a reprodução:", error);
@@ -148,6 +157,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 					mp3Files.unshift(nextTrack);
 					await TrackPlayer.setQueue(mp3Files);
 					await TrackPlayer.play();
+					await Storage.store('mp3Files_shuffle', mp3Files, true);
 					setConfigQueue(false);  // null to not shuffle or organize
 				}).catch(async (e) => await TrackPlayer.play());
 			} catch (error) {

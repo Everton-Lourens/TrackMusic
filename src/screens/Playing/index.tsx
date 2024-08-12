@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
 	favBtn: {
 		alignSelf: 'flex-end',
 		borderRadius: 35,
-		top: '5%',
+		top: '0%',
 	},
 	timeoutBtn: {
 		alignSelf: 'flex-start',
