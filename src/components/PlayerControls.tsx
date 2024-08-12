@@ -23,6 +23,7 @@ async function loadingMusic(force: boolean = false) {
 			if (shuffle) {
 				//console.log("SHUFFLE TRUE");
 				mp3Files = await Storage.get('mp3Files_shuffle', true);
+				mp3Files = mp3Files?.length > 0 ? mp3Files : await Storage.get('mp3Files', true);
 			} else {
 				//console.log("SHUFFLE FALSE");
 				mp3Files = await Storage.get('mp3Files', true);
