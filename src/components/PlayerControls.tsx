@@ -17,22 +17,25 @@ async function loadingMusic(force: boolean = false) {
 	try {
 		const isPlaying: any = await TrackPlayer.getState();
 		if (force === true || isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
+			await TrackPlayer.reset();
 
-			let mp3Files;
 			const shuffle = await Storage.get('shuffle', false) == 'true' ? true : false;
+			const mp3Files = await Storage.get('mp3Files', true);
 			if (shuffle) {
-				//console.log("SHUFFLE TRUE");
-				mp3Files = await Storage.get('mp3Files_shuffle', true);
-				mp3Files = mp3Files?.length > 0 ? mp3Files : await Storage.get('mp3Files', true);
-			} else {
-				//console.log("SHUFFLE FALSE");
-				mp3Files = await Storage.get('mp3Files', true);
+				mp3Files.sort(() => Math.random() - 0.5);
 			}
-			await TrackPlayer.setQueue(mp3Files);
-
-			//console.log("@@@@@@@@@@@@@>", mp3Files[recents[0]].id);
-			//console.log("@@@@@@@@@@@@@>", mp3Files[recents[1]].id);
-			//await TrackPlayer.skip(92); // skip to recent music 
+			const lastPlayedSong = await Storage.get('lastPlayedSong', true);
+			if (lastPlayedSong !== null) {
+				await TrackPlayer.skip(0); // stores the index of the last song, this makes the cache go back to the beginning
+				const index = mp3Files.findIndex((item: any) => item.id === lastPlayedSong.id);
+				if (index !== -1) {
+					const [foundSong] = mp3Files.splice(index, 1);
+					mp3Files.unshift(foundSong);
+					await TrackPlayer.add(mp3Files);
+				}
+			} else {
+				await TrackPlayer.add(mp3Files);
+			}
 		}
 	} catch (error) {
 		console.error("Error loadingMusic: added music", error);
@@ -158,7 +161,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 					mp3Files.unshift(nextTrack);
 					await TrackPlayer.setQueue(mp3Files);
 					await TrackPlayer.play();
-					await Storage.store('mp3Files_shuffle', mp3Files, true);
+					//await Storage.store('mp3Files_shuffle', mp3Files, true);
 					setConfigQueue(false);  // null to not shuffle or organize
 				}).catch(async (e) => await TrackPlayer.play());
 			} catch (error) {

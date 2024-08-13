@@ -32,22 +32,22 @@ const Index = ({ song, dispatch }: any) => {
 			if (timeout === false) {
 				const track: any = await TrackPlayer.getTrack(event.nextTrack);
 				if (!!track?.url) {
-					//const isPlaying: any = await TrackPlayer.getState();
-					//if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
-					//const recents = await Storage.get('recents', true);
-					//await TrackPlayer.skip(recents[0]); // skip to recent music 
-					//console.log('@@@@@@@@@@@ skip next:', recents[0]);
-					//console.log(recents);
-					//} else {
-					const currentTrackId = track.id - 1;
-					addToRecentlyPlayed(currentTrackId);
-					dispatch({
-						type: DISPATCHES.SET_CURRENT_SONG,
-						payload: {
-							detail: track,
-						},
-					});
-					//}
+					const isPlaying: any = await TrackPlayer.getState();
+					if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
+						const recents = await Storage.get('recents', true);
+						await TrackPlayer.skip(recents[0]); // skip to recent music 
+					} else {
+						const currentTrack: any = await TrackPlayer.getActiveTrack();
+						currentTrack !== null && await Storage.store('lastPlayedSong', currentTrack, true);
+						const currentTrackId = track.id - 1;
+						addToRecentlyPlayed(currentTrackId);
+						dispatch({
+							type: DISPATCHES.SET_CURRENT_SONG,
+							payload: {
+								detail: track,
+							},
+						});
+					}
 				}
 			}
 		}
@@ -69,9 +69,9 @@ NOT WORKING
 	*/
 
 
-	async function addToRecentlyPlayed(index: number) {
+	async function addToRecentlyPlayed(index: any) {
 		try {
-			if (!index) index = 0; // avoiding undefined
+			if (!index && index !== 0) return//index = 0; // avoiding undefined
 			let filtered: any;
 			const recents = await Storage.get('recents', true);
 			if (recents === null) {
