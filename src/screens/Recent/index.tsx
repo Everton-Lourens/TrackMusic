@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 
 import { Header, Section, Drawer } from '../../widgets';
-//import { getRandomImg } from '../../store/config';
+//import { getArtworkImg } from '../../store/config';
 
 const Index = ({ songs }: any) => {
 	const [drawer, setDrawer] = useState(false);

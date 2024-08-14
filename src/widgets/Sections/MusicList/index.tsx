@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import { Card } from '../../../components';
 import { DISPATCHES, SCREENS } from '../../../constants';
 import { Storage } from '../../../helpers';
-//import { getRandomImg } from '../../../store/config';
+//import { getArtworkImg } from '../../../store/config';
 import * as Modal from '../../../widgets/Modals';
 
-const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, useIndex = false }: any) => {
+const Index = ({ song, songs, dispatch, style = {}, audios = [], indicator = true, useIndex = false }: any) => {
 	const { navigate } = useNavigation();
 	const [favs, setFavs] = useState([]);
 	const [playlistModal, setPlaylistModal] = useState(false);
@@ -65,7 +65,6 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 		return renderWithFlatList();
 	}
 
-
 	function renderWithFlatList() {
 		return (
 			<View style={styles.container}>
@@ -82,6 +81,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 
 						return (
 							<Card.MusicList
+								style={song?.detail?.id === item?.id ? { backgroundColor: 'rgba(0, 255, 0, 0.2)' } : {}}
 								imageURL={item?.artwork}
 								title={item?.title}
 								artist={item?.artist || item?.artist}
@@ -130,6 +130,7 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 				{audios.map((index: any, key: any) => (
 					<Card.MusicList
 						key={key}
+						style={song?.detail?.id === songs[index]?.id ? { backgroundColor: 'red' } : {}}
 						imageURL={songs[index]?.artwork}
 						title={songs[index]?.title}
 						artist={songs[index]?.artist}
@@ -158,15 +159,14 @@ const Index = ({ songs, dispatch, style = {}, audios = [], indicator = true, use
 							},
 						]}
 					/>
-				))
-				}
+				))}
 				<Modal.Playlist visible={playlistModal} onClose={setPlaylistModal} songIndex={songIndex} />
 			</ScrollView>
 		);
 	}
 };
 
-const mapStateToProps = (state: any) => ({ songs: state?.player?.songs });
+const mapStateToProps = (state: any) => ({ song: state?.player?.currentSong, songs: state?.player?.songs });
 const mapDispatchToProps = (dispatch: any) => ({ dispatch });
 export default connect(mapStateToProps, mapDispatchToProps)(memo(Index));
 //export default connect(mapStateToProps, mapDispatchToProps)(memo(Index));

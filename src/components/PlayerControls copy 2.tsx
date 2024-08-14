@@ -13,7 +13,7 @@ type PlayerButtonProps = {
 	visible?: boolean
 }
 
-export async function loadingMusic(force = false, firstSong = null) {
+async function loadingMusic(force: boolean = false) {
 	try {
 		const isPlaying: any = await TrackPlayer.getState();
 		if (force === true || isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
@@ -24,10 +24,10 @@ export async function loadingMusic(force = false, firstSong = null) {
 			if (shuffle) {
 				mp3Files.sort(() => Math.random() - 0.5);
 			}
-			const putMusicFirst = firstSong ? firstSong : await Storage.get('lastPlayedSong', true);
-			if (putMusicFirst !== null) {
+			const lastPlayedSong = await Storage.get('lastPlayedSong', true);
+			if (lastPlayedSong !== null) {
 				await TrackPlayer.skip(0); // stores the index of the last song, this makes the cache go back to the beginning
-				const index = mp3Files.findIndex((item: any) => item.id === putMusicFirst.id);
+				const index = mp3Files.findIndex((item: any) => item.id === lastPlayedSong.id);
 				if (index !== -1) {
 					const [foundSong] = mp3Files.splice(index, 1);
 					mp3Files.unshift(foundSong);
@@ -148,7 +148,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 	const [configQueue, setConfigQueue] = useState<boolean>(false);
 	const [shuffle, setShuffle] = useState<any>(null);
 
-	const checkShufflePlay = async () => {
+	const checkMusicList = async () => {
 		if (configQueue === true) { // It only starts if the user clicks and not when rendering
 			try {
 				TrackPlayer.pause().then(async () => {
@@ -181,7 +181,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
 			try {
-				await checkShufflePlay();
+				await checkMusicList();
 			} catch (error) {
 				console.error("Shuffle: Erro ao controlar a reprodução:", error);
 			}

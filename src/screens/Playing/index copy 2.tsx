@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Animated, Image, ImageBackground, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 //import LinearGradient from 'react-native-linear-gradient';
@@ -11,7 +11,7 @@ import { Storage } from '../../helpers';
 //import { getAllSongs, getRandomImg } from '../../store/config';
 //import songDetail from '../../store/states/player';
 import { PlayerProgressBar } from '../../components/PlayerProgress';
-import { loadingMusic, RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
+import { RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import * as Modal from '../../widgets/Modals';
@@ -22,8 +22,8 @@ import { Toast } from '../../components/Toast';
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
 	const [isFav, setIsFav] = useState(false);
-	//const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
-	//const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
+	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
+	const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 	const [animation, setAnimation] = useState('');
 	const [iconTimeout, setIconTimeout] = useState(false);
@@ -70,7 +70,21 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			(async () => {
 				await TrackPlayer.pause()
 					.finally(async () => {
-						await loadingMusic(true, params?.song);
+						const currentTrack: number = await TrackPlayer.getCurrentTrack() || 0;
+						const queue = await TrackPlayer.getQueue();
+						if (queue?.length > 0) {
+							await TrackPlayer.add(params?.song, currentTrack + 1);
+							await TrackPlayer.skipToNext();
+						} else {
+							const shuffle = await Storage.get('shuffle', false) == 'true' ? true : false;
+							const mp3Files = await Storage.get('mp3Files', true);
+							if (shuffle) {
+								mp3Files.sort(() => Math.random() - 0.5);
+							}
+							mp3Files.unshift(params?.song);
+							await TrackPlayer.skip(0);
+							await TrackPlayer.add(mp3Files);
+						}
 						await TrackPlayer.play();
 					});
 			})();

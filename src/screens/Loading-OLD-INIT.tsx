@@ -5,7 +5,7 @@ import RNFS from 'react-native-fs';
 import { DISPATCHES, SCREENS } from '../constants';
 import { Storage } from '../helpers';
 //import Sound from 'react-native-sound';
-import { getRandomImg } from '../store/config';
+import { getArtworkImg } from '../store/config';
 import { useLogTrackPlayerState } from '../hooks/useLogTrackPlayerState'
 import { setupPlayer } from '../hooks/useSetupTrackPlayer'
 import TrackPlayer from 'react-native-track-player';
@@ -75,7 +75,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							else {
 								//const durationMillis = await getDurationMillis(file?.path)
 								//if (!durationMillis) return;
-								const img = getRandomImg()
+								const img = getArtworkImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
 									url: file?.path,
@@ -109,7 +109,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 							else {
 								//const durationMillis = await getDurationMillis(file?.path)
 								//if (!durationMillis) return;
-								const img = getRandomImg()
+								const img = getArtworkImg()
 								mp3Files.push({
 									id: mp3Files?.length + 1,
 									url: file?.path,

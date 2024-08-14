@@ -22,7 +22,7 @@ import { Toast } from '../../components/Toast';
 const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack } }: any) => {
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
 	const [isFav, setIsFav] = useState(false);
-	//const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
+	const { playing } = useIsPlaying(); // const playbackState = usePlaybackState();
 	//const stopBtnAnim = useRef(new Animated.Value(playing ? 1 : 0.3)).current;
 	const [moreOptionsModal, setMoreOptionsModal] = useState(false);
 	const [animation, setAnimation] = useState('');

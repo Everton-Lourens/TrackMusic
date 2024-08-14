@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		marginBottom: 20,
+		borderRadius: 15
 	},
 	left: {},
 	middle: {

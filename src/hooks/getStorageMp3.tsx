@@ -1,6 +1,6 @@
 import RNFS from 'react-native-fs';
 import TrackPlayer from 'react-native-track-player';
-import { getRandomImg } from '../store/config';
+import { getArtworkImg } from '../store/config';
 
 let mp3Files: Array<any> = [];
 
@@ -46,8 +46,17 @@ export async function getAllSongs() {
             },
         ];
     }
-    
+
     return mp3Files;
+
+    async function reverseArray(oldArray: Array<any>) {
+        oldArray.map((item, index, array) => {
+            const newId = array.length - index;
+            return { ...item, id: newId };
+        });
+        const newArrayReversed = oldArray.reverse();
+        return newArrayReversed;
+    }
 
     async function getAllFiles(directoryPath: string) {
         try {
@@ -63,7 +72,7 @@ export async function getAllSongs() {
                         //const durationMillis = await getDurationMillis(file?.path)
                         //if (!durationMillis) return;
 
-                        const img = getRandomImg();
+                        const img = getArtworkImg();
                         mp3Files.push({
                             id: mp3Files?.length + 1,
                             url: file.path,

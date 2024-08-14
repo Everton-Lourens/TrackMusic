@@ -8,7 +8,7 @@ import { DISPATCHES } from '../../constants';
 import { getAllSongs } from '../../hooks/getStorageMp3';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import { Toast } from '../../components/Toast';
-//import { getRandomImg } from '../../store/config';
+//import { getArtworkImg } from '../../store/config';
 
 const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 	const [drawer, setDrawer] = useState(false);

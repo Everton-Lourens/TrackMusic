@@ -148,7 +148,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 	const [configQueue, setConfigQueue] = useState<boolean>(false);
 	const [shuffle, setShuffle] = useState<any>(null);
 
-	const checkShufflePlay = async () => {
+	const checkMusicList = async () => {
 		if (configQueue === true) { // It only starts if the user clicks and not when rendering
 			try {
 				TrackPlayer.pause().then(async () => {
@@ -181,7 +181,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
 		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
 			try {
-				await checkShufflePlay();
+				await checkMusicList();
 			} catch (error) {
 				console.error("Shuffle: Erro ao controlar a reprodução:", error);
 			}
