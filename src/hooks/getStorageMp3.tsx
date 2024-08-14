@@ -47,15 +47,13 @@ export async function getAllSongs() {
         ];
     }
 
-    return mp3Files;
+    return reverseIdArray(mp3Files); // Last song added first
 
-    async function reverseArray(oldArray: Array<any>) {
-        oldArray.map((item, index, array) => {
-            const newId = array.length - index;
-            return { ...item, id: newId };
+    function reverseIdArray(oldArray: Array<any>) {
+        const reversedArray = oldArray.reverse().map((item, index) => {
+            return { ...item, id: index + 1 };
         });
-        const newArrayReversed = oldArray.reverse();
-        return newArrayReversed;
+        return reversedArray;
     }
 
     async function getAllFiles(directoryPath: string) {
