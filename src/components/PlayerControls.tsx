@@ -13,11 +13,10 @@ type PlayerButtonProps = {
 	visible?: boolean
 }
 
-export async function loadingMusic(force = false, firstSong = null) {
+export async function loadingMusic(force = false, firstSong = null, positionTrack = 0) {
 	try {
 		const isPlaying: any = await TrackPlayer.getState();
 		if (force === true || isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
-			await TrackPlayer.reset();
 
 			const shuffle = await Storage.get('shuffle', false) == 'true' ? true : false;
 			const mp3Files = await Storage.get('mp3Files', true);
@@ -31,11 +30,12 @@ export async function loadingMusic(force = false, firstSong = null) {
 				if (index !== -1) {
 					const [foundSong] = mp3Files.splice(index, 1);
 					mp3Files.unshift(foundSong);
-					await TrackPlayer.add(mp3Files);
+					await TrackPlayer.setQueue(mp3Files);
 				}
 			} else {
-				await TrackPlayer.add(mp3Files);
+				await TrackPlayer.setQueue(mp3Files);
 			}
+			!!positionTrack && await TrackPlayer.seekTo(positionTrack);
 		}
 	} catch (error) {
 		console.error("Error loadingMusic: added music", error);
@@ -145,55 +145,27 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 }
 
 export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerButtonProps) => {
-	const [configQueue, setConfigQueue] = useState<boolean>(false);
 	const [shuffle, setShuffle] = useState<any>(null);
-
-	const checkShufflePlay = async () => {
-		if (configQueue === true) { // It only starts if the user clicks and not when rendering
-			try {
-				TrackPlayer.pause().then(async () => {
-					const thisWillBeNext: any = await TrackPlayer.getCurrentTrack();
-					const nextTrack: any = await TrackPlayer.getTrack(thisWillBeNext);
-					const mp3Files: any = await Storage.get('mp3Files', true);
-					if (shuffle) {
-						mp3Files.sort(() => Math.random() - 0.5);
-					}
-					mp3Files.unshift(nextTrack);
-					await TrackPlayer.setQueue(mp3Files);
-					await TrackPlayer.play();
-					//await Storage.store('mp3Files_shuffle', mp3Files, true);
-					setConfigQueue(false);  // null to not shuffle or organize
-				}).catch(async (e) => await TrackPlayer.play());
-			} catch (error) {
-				console.error("check-MusicList: Erro ao controlar a reprodução:", error);
-			}
-		}
-	}
 
 	const changeShuffle = async () => {
 		const newShuffle = !shuffle;
 		setShuffle(newShuffle);
-		setConfigQueue(true);
 		await Storage.store('shuffle', String(newShuffle), false);
-	}
-
-
-	useTrackPlayerEvents([Event.PlaybackTrackChanged], async (event) => {
-		if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
-			try {
-				await checkShufflePlay();
-			} catch (error) {
-				console.error("Shuffle: Erro ao controlar a reprodução:", error);
-			}
+		try {
+			const positionCurrentTrack: number = await TrackPlayer.getPosition();
+			const currentTrackNumber: any = await TrackPlayer.getCurrentTrack();
+			const theCurrentTrackContinues: any = await TrackPlayer.getTrack(currentTrackNumber);
+			await loadingMusic(true, theCurrentTrackContinues, positionCurrentTrack);
+		} catch (error) {
+			console.error("check-MusicList: Erro ao controlar a reprodução:", error);
 		}
-	});
+	}
 
 	useEffect(() => {
 		(async () => {
 			if (shuffle === null) {
 				const storageShuffle = await Storage.get('shuffle', false) == 'true' ? true : false
 				setShuffle(!!storageShuffle);
-				if (storageShuffle) setConfigQueue(true);
 			}
 		})();
 	}, [])
@@ -202,7 +174,6 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 	return (
 		visible ? (
 			<View style={[{ height: iconSize }, style]}>
-				{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
 				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeShuffle()}>
 					{shuffle ?
 						<Image source={require('../assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
@@ -292,10 +263,8 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 	return (
 		visible ? (
 			<View style={[{ height: iconSize }, style]}>
-				{/*<TouchableOpacity style={style} onPress={async () => await changeShuffle()}>*/}
 				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeRepeat()}>
 					{getIcon()}
-
 				</TouchableOpacity>
 			</View>) : null
 	);
