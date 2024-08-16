@@ -1,7 +1,6 @@
-import { colors, fontSize } from '../constants/tokens'
 import { formatSecondsToMinutes } from '../helpers/miscellaneous'
-import { defaultStyles, utilsStyles } from '../styles'
-import { SafeAreaView, StatusBar, StyleSheet, Text, View, ViewProps } from 'react-native'
+import { defaultStyles } from '../styles'
+import { StatusBar, StyleSheet, Text, View, ViewProps } from 'react-native'
 //import { Slider } from 'react-native-awesome-slider'
 import Slider from '@react-native-community/slider';
 import TrackPlayer, { useProgress } from 'react-native-track-player'
@@ -16,8 +15,8 @@ interface PlayerProgressNumberProps extends ViewProps {
 export const PlayerProgressBar = ({ style, left = -15, right = 20 }: PlayerProgressNumberProps) => {
 	const { duration, position } = useProgress(250)
 
-	const trackElapsedTime = formatSecondsToMinutes(position)
-	const trackRemainingTime = formatSecondsToMinutes(duration - position)
+	//const trackElapsedTime = formatSecondsToMinutes(position)
+	//const trackRemainingTime = formatSecondsToMinutes(duration - position)
 	const [isSliding, setIsSliding] = useState<boolean>(false)
 
 	return (

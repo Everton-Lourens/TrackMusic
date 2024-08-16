@@ -23,7 +23,6 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
-			//playing ? null : await TrackPlayer.reset();
 
 			dispatch({
 				type: DISPATCHES.STORAGE,

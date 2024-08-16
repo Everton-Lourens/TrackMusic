@@ -1,7 +1,8 @@
 import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
-import TrackPlayer, { useTrackPlayerEvents, Event, useIsPlaying, RepeatMode } from 'react-native-track-player';
+import TrackPlayer, { useIsPlaying, RepeatMode, State } from 'react-native-track-player';
 import { Storage } from '../helpers';
 import { useEffect, useState } from 'react';
+import { getStorageTimeTrack, setStorageTimeTrack } from './StorageTimeTrack';
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -15,8 +16,17 @@ type PlayerButtonProps = {
 
 export async function loadingMusic(force = false, firstSong = null, positionTrack = 0) {
 	try {
-		const isPlaying: any = await TrackPlayer.getState();
-		if (force === true || isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
+		const [isPlaying, currentQueue] = await Promise.all([
+			TrackPlayer.getState(),
+			TrackPlayer.getQueue(),
+		]);
+
+		const shouldPlay =
+			force ||
+			!currentQueue?.length ||
+			[State.Stopped, State.Ended, State.None, State.Error].includes(isPlaying);
+
+		if (shouldPlay) {
 
 			const shuffle = await Storage.get('shuffle', false) == 'true' ? true : false;
 			const mp3Files = await Storage.get('mp3Files', true);
@@ -35,6 +45,7 @@ export async function loadingMusic(force = false, firstSong = null, positionTrac
 			} else {
 				await TrackPlayer.setQueue(mp3Files);
 			}
+			await getStorageTimeTrack();
 			!!positionTrack && await TrackPlayer.seekTo(positionTrack);
 		}
 	} catch (error) {
@@ -70,23 +81,28 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 					try {
 						const isPlaying: any = await TrackPlayer.getState();
 						if (__DEV__) {
-							//console.log('::::::::::Start isPlaying::::::::::', isPlaying);
+							console.log('::::::::::Start isPlaying::::::::::', isPlaying);
 						}
 						if (isPlaying === 'playing') {
 							await TrackPlayer.pause();
+							await setStorageTimeTrack();
 							console.log('@PAUSE')
 						} else if (isPlaying === 'paused' || isPlaying === 'ready') {
+							await getStorageTimeTrack();
 							await TrackPlayer.play();
+							const isPlayingEnd: any = await TrackPlayer.getState();
+							if (isPlayingEnd !== 'playing') {
+								await TrackPlayer.pause();
+								await loadingMusic(true, null, 0);
+								await TrackPlayer.play();
+							}
 							console.log('@PLAY')
 						} else if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
 							await loadingMusic();
 							await TrackPlayer.play();
 							console.log('@UNDEFINED:::', isPlaying);
 						}
-						if (__DEV__) {
-							//const isPlayingEnd: any = await TrackPlayer.getState();
-							//console.log('::::::::::End isPlaying::::::::::', isPlayingEnd);
-						}
+
 					} catch (error) {
 						console.error("Erro ao controlar a reprodução:", error);
 					}

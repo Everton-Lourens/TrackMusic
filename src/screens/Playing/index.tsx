@@ -162,7 +162,6 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 
 							<View style={styles.timeoutBtn}>
 								<TouchableOpacity onPress={() => { iconTimeout ? cancelTimeoutMusic() : setMoreOptionsModal(true) }} activeOpacity={0.4}>
-									{/*<Text>{millisToMin(newTimeout.storageTime * 1000 || 0)}</Text>*/}
 									<Image source={iconTimeout ? require('../../assets/icons/timeout-on.png') : require('../../assets/icons/timeout-off.png')} />
 								</TouchableOpacity>
 							</View>
