@@ -129,7 +129,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			setMessageToast('');
 		}, 2300); // duration + animation time
 		const message = activated
-			? `Cronômetro Ativado${time === 0 ? '!' : ` com ${time} minutos`}`
+			? `Cronômetro Ativado${time === 0 ? '!' : ` ${time} minutos`}`
 			: 'Cronômetro Desativado!';
 		setMessageToast(message);
 	};
@@ -193,36 +193,35 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 					<View style={styles.actionsContainer}>
 
 						<RepeatButton
-							iconSize={25}
+							iconSize={35}
 							style={{ marginRight: -30 }}
 						/>
-
 
 						<View style={[styles.containerBtn]}>
 							<View style={styles.row}>
 
 								<SkipToPreviousButton
-									iconSize={50}
+									iconSize={55}
 								/>
 
 								<PlayPauseButton
-									iconSize={70}
+									iconSize={75}
 								/>
 
 								{/*<Animated.View style={{ opacity: stopBtnAnim }}>
-									<StopOutLineButton iconSize={30} />
+									<StopOutLineButton iconSize={35} />
 								</Animated.View>*/}
 
 								<SkipToNextButton
-									iconSize={50}
+									iconSize={55}
 								/>
 
 							</View>
 						</View>
 
 						<ShuffleButton
-							iconSize={25}
-							style={{ marginLeft: -30 }}
+							iconSize={35}
+							style={{ marginLeft: -35 }}
 						/>
 
 					</View>
@@ -231,6 +230,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			</ImageBackground >
 
 			<Toast
+				style={{ bottom: 50 }}
 				visible={toastVisible}
 				message={messageToast}
 				onHide={() => setToastVisible(false)}
@@ -367,6 +367,7 @@ const styles = StyleSheet.create({
 	},
 	containerBtn: {
 		width: '100%',
+		right: 7
 	},
 	row: {
 		flexDirection: 'row',

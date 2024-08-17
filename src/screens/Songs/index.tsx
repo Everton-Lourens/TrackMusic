@@ -99,6 +99,7 @@ const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 				</SafeAreaView>
 
 				<Toast
+					style={{ bottom: 50 }}
 					visible={toastVisible}
 					message={messageToast}
 					onHide={() => setToastVisible(false)}

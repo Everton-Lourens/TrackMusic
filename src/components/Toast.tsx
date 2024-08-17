@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Animated, StyleSheet, TouchableOpacity } from 'react-native';
 
-export const Toast = ({ visible, message, duration = 2000, onHide, colorGray = false }: any) => {
+export const Toast = ({ style, visible, message, duration = 2000, onHide, colorGray = false }: any) => {
     const [opacity] = useState(new Animated.Value(0));
 
     if (visible) {
@@ -22,7 +22,12 @@ export const Toast = ({ visible, message, duration = 2000, onHide, colorGray = f
 
     return (
         visible && (
-            <Animated.View style={[{ backgroundColor: colorGray ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)' }, styles.toastContainer, { opacity }]}>
+            <Animated.View style={[
+                style,
+                { backgroundColor: colorGray ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)' },
+                styles.toastContainer,
+                { opacity }]}
+            >
                 <Text style={styles.toastText}>{message}</Text>
             </Animated.View>
         )
@@ -53,7 +58,7 @@ const ExempleToUseApp = () => {
             </TouchableOpacity>
             <Toast
                 visible={toastVisible}
-                message={'Cronômetro Ativado com 5 minutos'}
+                message={messageToast}
                 onHide={() => setToastVisible(false)}
                 colorGray={true}
             />
@@ -70,7 +75,6 @@ const styles = StyleSheet.create({
     },
     toastContainer: {
         position: 'absolute',
-        bottom: 50,
         left: 20,
         right: 20,
         borderRadius: 10,

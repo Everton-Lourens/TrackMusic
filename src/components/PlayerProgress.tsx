@@ -4,7 +4,8 @@ import { StatusBar, StyleSheet, Text, View, ViewProps } from 'react-native'
 //import { Slider } from 'react-native-awesome-slider'
 import Slider from '@react-native-community/slider';
 import TrackPlayer, { useProgress } from 'react-native-track-player'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { setStorageTimeTrack } from './StorageTimeTrack';
 
 interface PlayerProgressNumberProps extends ViewProps {
 	left?: number;
@@ -13,11 +14,11 @@ interface PlayerProgressNumberProps extends ViewProps {
 }
 
 export const PlayerProgressBar = ({ style, left = -15, right = 20 }: PlayerProgressNumberProps) => {
-	const { duration, position } = useProgress(250)
+	let { duration, position } = useProgress(250)
 
 	//const trackElapsedTime = formatSecondsToMinutes(position)
 	//const trackRemainingTime = formatSecondsToMinutes(duration - position)
-	const [isSliding, setIsSliding] = useState<boolean>(false)
+	const [isSliding, setIsSliding] = useState<boolean>(false);
 
 	return (
 		<View>
@@ -32,14 +33,14 @@ export const PlayerProgressBar = ({ style, left = -15, right = 20 }: PlayerProgr
 						value={position}
 						onSlidingStart={() => (setIsSliding(true))}
 						onValueChange={(value) => {
-							TrackPlayer.seekTo(value)
+							TrackPlayer.seekTo(value);
 						}}
 						onSlidingComplete={(value) => {
 							// if the user is not sliding, we should not update the position
 							if (!isSliding) return
 							setIsSliding(false)
-
 							TrackPlayer.seekTo(value)
+							setStorageTimeTrack(value);
 						}}
 					/>
 				</View>
@@ -53,10 +54,16 @@ export const PlayerProgressBar = ({ style, left = -15, right = 20 }: PlayerProgr
 }
 
 export const PlayerProgressNumber = ({ style, left = -30, right = 65, fontSize = 13 }: PlayerProgressNumberProps) => {
-	const { duration, position } = useProgress(250)
+	let { duration, position } = useProgress(250);
 
-	const trackElapsedTime = formatSecondsToMinutes(position)
-	const trackRemainingTime = formatSecondsToMinutes(duration - position)
+	useEffect(() => {
+		setInterval(async () => {
+			setStorageTimeTrack();
+		}, 5000);
+	}, []);
+
+	const trackElapsedTime = formatSecondsToMinutes(position);
+	const trackRemainingTime = formatSecondsToMinutes(duration - position);
 
 	return (
 		<View style={[styles.timeRow, style]}>

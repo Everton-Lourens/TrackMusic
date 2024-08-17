@@ -1,9 +1,9 @@
 import TrackPlayer from "react-native-track-player";
 import { Storage } from "../helpers";
 
-export async function setStorageTimeTrack() {
+export async function setStorageTimeTrack(position: number | string = 0) {
     try {
-        const position = await TrackPlayer.getPosition();
+        position = Number(position) > 0 ? Number(position) : await TrackPlayer.getPosition();
         const track = await TrackPlayer.getActiveTrack();
         if (track && position) {
             await Storage.store(`position_track_${JSON.stringify(track)}`, position.toString(), false);

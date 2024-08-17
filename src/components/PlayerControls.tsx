@@ -3,6 +3,7 @@ import TrackPlayer, { useIsPlaying, RepeatMode, State } from 'react-native-track
 import { Storage } from '../helpers';
 import { useEffect, useState } from 'react';
 import { getStorageTimeTrack, setStorageTimeTrack } from './StorageTimeTrack';
+import { Toast } from './Toast';
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -85,7 +86,7 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 						}
 						if (isPlaying === 'playing') {
 							await TrackPlayer.pause();
-							await setStorageTimeTrack();
+							//await setStorageTimeTrack();
 							console.log('@PAUSE')
 						} else if (isPlaying === 'paused' || isPlaying === 'ready') {
 							await getStorageTimeTrack();
@@ -162,9 +163,23 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 
 export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerButtonProps) => {
 	const [shuffle, setShuffle] = useState<any>(null);
+	const [toastVisible, setToastVisible] = useState(false);
+	const [messageToast, setMessageToast] = useState('');
 
+	const showToast = (activated = false) => {
+		setToastVisible(true);
+		setTimeout(() => {
+			setToastVisible(false)
+			setMessageToast('');
+		}, 3000); // duration + animation time
+		const message = activated
+			? `Modo aleatório ativado!`
+			: 'Modo aleatório desativado!';
+		setMessageToast(message);
+	};
 	const changeShuffle = async () => {
 		const newShuffle = !shuffle;
+		showToast(newShuffle);
 		setShuffle(newShuffle);
 		await Storage.store('shuffle', String(newShuffle), false);
 		try {
@@ -189,21 +204,45 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 
 	return (
 		visible ? (
-			<View style={[{ height: iconSize }, style]}>
-				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeShuffle()}>
-					{shuffle ?
-						<Image source={require('../assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
-						: <Image source={require('../assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
-					}
-				</TouchableOpacity>
+			<>
+				<View style={[{ height: iconSize }, style]}>
+					<TouchableOpacity activeOpacity={0.7} onPress={changeShuffle}>
+						{shuffle ?
+							<Image source={require('../assets/icons/shuffled.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+							: <Image source={require('../assets/icons/shuffle.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
+						}
+					</TouchableOpacity>
 
-			</View>) : null
+				</View>
+				<Toast
+					style={{ bottom: -50 }}
+					visible={toastVisible}
+					message={messageToast}
+					onHide={() => setToastVisible(false)}
+					colorGray={true}
+				/>
+			</>
+		) : null
 	);
 }
 
 
 export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerButtonProps) => {
 	const [repeat, setRepeat] = useState<number>(999);
+	const [toastVisible, setToastVisible] = useState(false);
+	const [messageToast, setMessageToast] = useState('');
+
+	const showToast = (activated = false) => {
+		setToastVisible(true);
+		setTimeout(() => {
+			setToastVisible(false)
+			setMessageToast('');
+		}, 3000); // duration + animation time
+		const message = activated
+			? `Repetição ativada!`
+			: 'Repetição desativada!';
+		setMessageToast(message);
+	};
 	const changeRepeat = async () => {
 		try {
 			const newRepeat = setRepeatMode();
@@ -213,21 +252,27 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 		} catch (error) {
 			console.error("Repeat: Erro ao controlar a reprodução:", error);
 		}
-		function setRepeatMode() {
-			switch (repeat) {
-				case RepeatMode?.Off:
-					return RepeatMode?.Queue || 2;
+	}
 
-				case RepeatMode?.Queue:
-					return RepeatMode?.Track || 1;
+	function setRepeatMode() {
+		switch (repeat) {
+			case RepeatMode?.Off:
+				return RepeatMode?.Queue || 2;
 
-				case RepeatMode?.Track:
-					return RepeatMode?.Off || 0;
+			case RepeatMode?.Queue:
+				return RepeatMode?.Track || 1;
 
-				default:
-					return RepeatMode?.Off || 0;
-			}
+			case RepeatMode?.Track:
+				return RepeatMode?.Off || 0;
+
+			default:
+				return RepeatMode?.Off || 0;
 		}
+	}
+
+	function showMessageToast() {
+		const mode = setRepeatMode();
+		mode === RepeatMode?.Off ? showToast(false) : showToast(true);
 	}
 
 	useEffect(() => {
@@ -278,11 +323,21 @@ export const RepeatButton = ({ style, iconSize = 40, visible = true }: PlayerBut
 
 	return (
 		visible ? (
-			<View style={[{ height: iconSize }, style]}>
-				<TouchableOpacity activeOpacity={0.7} onPress={async () => await changeRepeat()}>
-					{getIcon()}
-				</TouchableOpacity>
-			</View>) : null
+			<>
+				<View style={[{ height: iconSize }, style]}>
+					<TouchableOpacity activeOpacity={0.7} onPress={() => { changeRepeat(); showMessageToast(); }}>
+						{getIcon()}
+					</TouchableOpacity>
+				</View>
+				<Toast
+					style={{ bottom: -50 }}
+					visible={toastVisible}
+					message={messageToast}
+					onHide={() => setToastVisible(false)}
+					colorGray={true}
+				/>
+			</>
+		) : null
 	);
 }
 
