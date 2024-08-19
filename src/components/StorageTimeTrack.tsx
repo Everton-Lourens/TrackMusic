@@ -26,6 +26,7 @@ export async function getStorageTimeTrack(skipTo = true) {
             skipTo && Number(position) && await TrackPlayer.seekTo(Number(position));
             return Number(position);
         }
+        await Storage.remove(`position_track_${JSON.stringify(track)}`); // reset to not store the position of multiple songs
         return 0;
     } catch (error) {
         console.error(error);
