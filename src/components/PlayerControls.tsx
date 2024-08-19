@@ -2,8 +2,9 @@ import { Image, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-nati
 import TrackPlayer, { useIsPlaying, RepeatMode, State } from 'react-native-track-player';
 import { Storage } from '../helpers';
 import { useEffect, useState } from 'react';
-import { getStorageTimeTrack, setStorageTimeTrack } from './StorageTimeTrack';
+import { getStorageTimeTrack } from './StorageTimeTrack';
 import { Toast } from './Toast';
+import { LoadingFirstMusic } from './LoadingFirstMusic';
 
 type PlayerControlsProps = {
 	style?: ViewStyle
@@ -14,46 +15,6 @@ type PlayerButtonProps = {
 	iconSize?: number
 	visible?: boolean
 }
-
-export async function loadingMusic(force = false, firstSong = null, positionTrack = 0) {
-	try {
-		const [isPlaying, currentQueue] = await Promise.all([
-			TrackPlayer.getState(),
-			TrackPlayer.getQueue(),
-		]);
-
-		const shouldPlay =
-			force ||
-			!currentQueue?.length ||
-			[State.Stopped, State.Ended, State.None, State.Error].includes(isPlaying);
-
-		if (shouldPlay) {
-
-			const shuffle = await Storage.get('shuffle', false) == 'true' ? true : false;
-			const mp3Files = await Storage.get('mp3Files', true);
-			if (shuffle) {
-				mp3Files.sort(() => Math.random() - 0.5);
-			}
-			const putMusicFirst = firstSong ? firstSong : await Storage.get('lastPlayedSong', true);
-			if (putMusicFirst !== null) {
-				await TrackPlayer.skip(0); // stores the index of the last song, this makes the cache go back to the beginning
-				const index = mp3Files.findIndex((item: any) => item.id === putMusicFirst.id);
-				if (index !== -1) {
-					const [foundSong] = mp3Files.splice(index, 1);
-					mp3Files.unshift(foundSong);
-					await TrackPlayer.setQueue(mp3Files);
-				}
-			} else {
-				await TrackPlayer.setQueue(mp3Files);
-			}
-			await getStorageTimeTrack();
-			!!positionTrack && await TrackPlayer.seekTo(positionTrack);
-		}
-	} catch (error) {
-		console.error("Error loadingMusic: added music", error);
-	}
-}
-
 
 export const PlayerControls = ({ style }: PlayerControlsProps) => {
 	return (
@@ -74,8 +35,7 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 
 	return (
 		<View style={[{ height: iconSize }, style]}>
-			{/*
-				<View style={[{ height: iconSize }, style]}>*/}
+			{/*<View style={[{ height: iconSize }, style]}>*/}
 			<TouchableOpacity
 				activeOpacity={0.85}
 				onPress={async () => {
@@ -94,12 +54,12 @@ export const PlayPauseButton = ({ style, iconSize = 48 }: PlayerButtonProps) => 
 							const isPlayingEnd: any = await TrackPlayer.getState();
 							if (isPlayingEnd !== 'playing') {
 								await TrackPlayer.pause();
-								await loadingMusic(true, null, 0);
+								await LoadingFirstMusic(true, null, 0);
 								await TrackPlayer.play();
 							}
 							console.log('@PLAY')
 						} else if (isPlaying === 'stopped' || isPlaying === 'ended' || isPlaying === 'none') {
-							await loadingMusic();
+							await LoadingFirstMusic();
 							await TrackPlayer.play();
 							console.log('@UNDEFINED:::', isPlaying);
 						}
@@ -136,7 +96,7 @@ export const SkipToNextButton = ({ style, iconSize = 40 }: PlayerButtonProps) =>
 	return (
 		<View style={[{ height: iconSize }, style]}>
 			<TouchableOpacity activeOpacity={0.7} onPress={async () => {
-				await loadingMusic();
+				await LoadingFirstMusic();
 				await TrackPlayer.skipToNext();
 			}}>
 				<Image source={require('../assets/icons/next.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
@@ -151,7 +111,7 @@ export const SkipToPreviousButton = ({ style, iconSize = 40 }: PlayerButtonProps
 		<View style={[{ height: iconSize }, style]}>
 			<TouchableOpacity activeOpacity={0.7}
 				onPress={async () => {
-					await loadingMusic();
+					await LoadingFirstMusic();
 					await TrackPlayer.skipToPrevious();
 				}}>
 				<Image source={require('../assets/icons/previous.png')} style={[{ height: iconSize, width: iconSize }, styles.controlBtn]} />
@@ -186,7 +146,7 @@ export const ShuffleButton = ({ style, iconSize = 40, visible = true }: PlayerBu
 			const positionCurrentTrack: number = await TrackPlayer.getPosition();
 			const currentTrackNumber: any = await TrackPlayer.getCurrentTrack();
 			const theCurrentTrackContinues: any = await TrackPlayer.getTrack(currentTrackNumber);
-			await loadingMusic(true, theCurrentTrackContinues, positionCurrentTrack);
+			await LoadingFirstMusic(true, theCurrentTrackContinues, positionCurrentTrack);
 		} catch (error) {
 			console.error("check-MusicList: Erro ao controlar a reprodução:", error);
 		}

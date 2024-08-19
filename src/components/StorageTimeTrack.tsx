@@ -16,14 +16,14 @@ export async function setStorageTimeTrack(position: number | string = 0) {
     }
 }
 
-export async function getStorageTimeTrack() {
+export async function getStorageTimeTrack(skipTo = true) {
     try {
         const position = await TrackPlayer.getPosition();
         const track = await TrackPlayer.getActiveTrack();
         if (track && !position) {
             const position = await Storage.get(`position_track_${JSON.stringify(track)}`, false);
             await Storage.remove(`position_track_${JSON.stringify(track)}`); // reset to not store the position of multiple songs
-            Number(position) && await TrackPlayer.seekTo(Number(position));
+            skipTo && Number(position) && await TrackPlayer.seekTo(Number(position));
             return Number(position);
         }
         return 0;

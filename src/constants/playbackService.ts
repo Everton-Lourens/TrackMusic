@@ -1,6 +1,6 @@
 import TrackPlayer, { Event } from 'react-native-track-player'
 import { getStorageTimeTrack, setStorageTimeTrack } from '../components/StorageTimeTrack'
-import { loadingMusic } from '../components/PlayerControls';
+import { LoadingFirstMusic } from '../components/LoadingFirstMusic';
 
 export const playbackService = async () => {
 	TrackPlayer.addEventListener(Event.RemotePlay, async () => {
@@ -10,7 +10,7 @@ export const playbackService = async () => {
 			await getStorageTimeTrack();
 		} else {
 			await TrackPlayer.pause();
-			await loadingMusic(true, null, 0);
+			await LoadingFirstMusic(true, null, 0);
 			await TrackPlayer.play();
 		}
 	})

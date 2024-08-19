@@ -11,7 +11,8 @@ import { Storage } from '../../helpers';
 //import { getAllSongs, getRandomImg } from '../../store/config';
 //import songDetail from '../../store/states/player';
 import { PlayerProgressBar } from '../../components/PlayerProgress';
-import { loadingMusic, RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
+import { RepeatButton, ShuffleButton, } from '../../components/PlayerControls';
+import { LoadingFirstMusic } from '../../components/LoadingFirstMusic';
 import TrackPlayer, { useIsPlaying } from 'react-native-track-player';
 import { PlayPauseButton, SkipToNextButton, SkipToPreviousButton } from '../../components/PlayerControls';
 import * as Modal from '../../widgets/Modals';
@@ -70,7 +71,7 @@ const Index = ({ song, songs, dispatch, route: { params }, navigation: { goBack 
 			(async () => {
 				await TrackPlayer.pause()
 					.finally(async () => {
-						await loadingMusic(true, params?.song);
+						await LoadingFirstMusic(true, params?.song, 1);
 						await TrackPlayer.play();
 					});
 			})();
