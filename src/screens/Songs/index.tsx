@@ -10,7 +10,7 @@ import LoadingOverlay from '../../components/LoadingOverlay';
 import { Toast } from '../../components/Toast';
 //import { getArtworkImg } from '../../store/config';
 
-const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
+const Index = ({ songs, dispatch, navigation: { goBack } }: any) => {
 	const [drawer, setDrawer] = useState(false);
 	const [urlImg, setUrlImg] = useState('https://img.freepik.com/premium-photo/headphones-music-background-generative-ai_1160-3253.jpg');
 	const [loading, setLoading] = useState<boolean>(false);
@@ -79,9 +79,8 @@ const Index = ({ songs, dispatch, navigation: { replace } }: any) => {
 					<Header
 						options={{
 							left: {
-								// @ts-ignore
-								children: drawer ? <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/close-icon.png')} resizeMode="contain" /> : <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/hamburger.png')} resizeMode="contain" />,
-								onPress: () => setDrawer(!drawer),
+								children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/go-back.png')} />,
+								onPress: goBack,
 							},
 							right: {
 								children: <Image style={[styles.headerBtn, { tintColor: 'gray', }]} source={require('../../assets/icons/update.png')} />,
