@@ -29,7 +29,27 @@ const Index = ({ songs, dispatch, navigation: { goBack } }: any) => {
 		setMessageToast(message);
 	};
 
+
 	const updateMp3Storage = async () => {
+		try {
+			setLoading(true);
+			showToast(false);
+			const newMp3Files = await getAllSongs();
+			await Storage.store('mp3Files', newMp3Files, true);
+			dispatch({
+				type: DISPATCHES.SET_CURRENT_SONG,
+				payload: {
+					songs: newMp3Files,
+				},
+			});
+			setLoading(false);
+			showToast(true);
+		} catch (e) {
+			setLoading(false);
+		}
+	}
+
+	const updateMp3Storage_DEFAULT_function = async () => {
 		try {
 			setLoading(true);
 			showToast(false);

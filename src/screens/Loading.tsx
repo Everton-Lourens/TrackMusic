@@ -23,6 +23,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 			const favourites = await Storage.get('favourites', true);
 			const recents = await Storage.get('recents', true);
 			const playlists = await Storage.get('playlists', true);
+			//const lastSongPlayed = await Storage.get('lastPlayedSong', true);
 
 			dispatch({
 				type: DISPATCHES.STORAGE,
@@ -38,7 +39,7 @@ const Loading = ({ songs, dispatch, navigation: { replace } }: any) => {
 					dispatch({
 						type: DISPATCHES.SET_CURRENT_SONG,
 						payload: {
-							detail: mp3Files[recents[0]],
+							detail: mp3Files[recents[0]], // lastSongPlayed
 							songs: mp3Files,
 						},
 					});

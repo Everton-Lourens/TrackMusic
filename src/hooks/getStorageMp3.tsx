@@ -1,10 +1,10 @@
 import RNFS from 'react-native-fs';
-import TrackPlayer from 'react-native-track-player';
+//import TrackPlayer from 'react-native-track-player';
 import { getArtworkImg } from '../store/config';
 
-let mp3Files: Array<any> = [];
-
 export async function getAllSongs() {
+    let mp3Files: Array<any> = [];
+
     await getAllFiles(RNFS.ExternalStorageDirectoryPath);
 
     if (__DEV__ && !mp3Files?.length) {
@@ -50,6 +50,7 @@ export async function getAllSongs() {
     return reverseIdArray(mp3Files); // Last song added first
 
     function reverseIdArray(oldArray: Array<any>) {
+        if (!oldArray?.length) return [];
         const reversedArray = oldArray.reverse().map((item, index) => {
             return { ...item, id: index + 1 };
         });
