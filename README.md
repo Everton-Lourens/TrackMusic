@@ -28,7 +28,7 @@ TrackMusic é um reprodutor de música desenvolvido em React Native com TypeScri
 
 1. Baixe o aplicatvio para Android:
    ```bash
-   not found
+   https://drive.google.com/drive/folders/1qTk1UButL5Vt1IS03mgWpka8h4OLhplM?usp=drive_link
 
 2. Clone este repositório:
    ```bash
